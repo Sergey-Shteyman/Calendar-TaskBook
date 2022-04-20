@@ -9,13 +9,14 @@
 /* Begin PBXBuildFile section */
 		5E4E97EB280F1C6500ED5D15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */; };
 		5E4E97ED280F1C6500ED5D15 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */; };
-		5E4E97EF280F1C6500ED5D15 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EE280F1C6500ED5D15 /* ViewController.swift */; };
-		5E4E97F2280F1C6500ED5D15 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E97F0280F1C6500ED5D15 /* Main.storyboard */; };
+		5E4E97EF280F1C6500ED5D15 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EE280F1C6500ED5D15 /* CalendarViewController.swift */; };
 		5E4E97F4280F1C6500ED5D15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E97F3280F1C6500ED5D15 /* Assets.xcassets */; };
 		5E4E97F7280F1C6500ED5D15 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E4E97F5280F1C6500ED5D15 /* LaunchScreen.storyboard */; };
 		5E4E9802280F1C6500ED5D15 /* TaskBookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E9801280F1C6500ED5D15 /* TaskBookTests.swift */; };
 		5E4E980C280F1C6500ED5D15 /* TaskBookUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E980B280F1C6500ED5D15 /* TaskBookUITests.swift */; };
 		5E4E980E280F1C6500ED5D15 /* TaskBookUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E980D280F1C6500ED5D15 /* TaskBookUITestsLaunchTests.swift */; };
+		5E83E7EC2810873D00160AA8 /* ModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E83E7EB2810873D00160AA8 /* ModuleBuilder.swift */; };
+		5E83E7EF281087F300160AA8 /* CalendarPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E83E7EE281087F300160AA8 /* CalendarPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +40,7 @@
 		5E4E97E7280F1C6500ED5D15 /* TaskBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		5E4E97EE280F1C6500ED5D15 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		5E4E97F1280F1C6500ED5D15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5E4E97EE280F1C6500ED5D15 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		5E4E97F3280F1C6500ED5D15 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5E4E97F6280F1C6500ED5D15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5E4E97F8280F1C6500ED5D15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +49,8 @@
 		5E4E9807280F1C6500ED5D15 /* TaskBookUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskBookUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E4E980B280F1C6500ED5D15 /* TaskBookUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBookUITests.swift; sourceTree = "<group>"; };
 		5E4E980D280F1C6500ED5D15 /* TaskBookUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBookUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5E83E7EB2810873D00160AA8 /* ModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleBuilder.swift; sourceTree = "<group>"; };
+		5E83E7EE281087F300160AA8 /* CalendarPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				5E4E97E9280F1C6500ED5D15 /* TaskBook */,
+				5E83E7ED2810874300160AA8 /* Modules */,
 				5E4E9800280F1C6500ED5D15 /* TaskBookTests */,
 				5E4E980A280F1C6500ED5D15 /* TaskBookUITests */,
 				5E4E97E8280F1C6500ED5D15 /* Products */,
@@ -99,13 +102,8 @@
 		5E4E97E9280F1C6500ED5D15 /* TaskBook */ = {
 			isa = PBXGroup;
 			children = (
-				5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */,
-				5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */,
-				5E4E97EE280F1C6500ED5D15 /* ViewController.swift */,
-				5E4E97F0280F1C6500ED5D15 /* Main.storyboard */,
-				5E4E97F3280F1C6500ED5D15 /* Assets.xcassets */,
-				5E4E97F5280F1C6500ED5D15 /* LaunchScreen.storyboard */,
-				5E4E97F8280F1C6500ED5D15 /* Info.plist */,
+				5E83E7E92810861F00160AA8 /* Aplication */,
+				5E83E7E8281085FC00160AA8 /* Core */,
 			);
 			path = TaskBook;
 			sourceTree = "<group>";
@@ -125,6 +123,51 @@
 				5E4E980D280F1C6500ED5D15 /* TaskBookUITestsLaunchTests.swift */,
 			);
 			path = TaskBookUITests;
+			sourceTree = "<group>";
+		};
+		5E83E7E7281085E600160AA8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5E4E97F3280F1C6500ED5D15 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		5E83E7E8281085FC00160AA8 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				5E83E7EA2810872A00160AA8 /* ServiceLayer */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		5E83E7E92810861F00160AA8 /* Aplication */ = {
+			isa = PBXGroup;
+			children = (
+				5E83E7E7281085E600160AA8 /* Resources */,
+				5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */,
+				5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */,
+				5E4E97F5280F1C6500ED5D15 /* LaunchScreen.storyboard */,
+				5E4E97F8280F1C6500ED5D15 /* Info.plist */,
+			);
+			path = Aplication;
+			sourceTree = "<group>";
+		};
+		5E83E7EA2810872A00160AA8 /* ServiceLayer */ = {
+			isa = PBXGroup;
+			children = (
+				5E83E7EB2810873D00160AA8 /* ModuleBuilder.swift */,
+			);
+			path = ServiceLayer;
+			sourceTree = "<group>";
+		};
+		5E83E7ED2810874300160AA8 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				5E4E97EE280F1C6500ED5D15 /* CalendarViewController.swift */,
+				5E83E7EE281087F300160AA8 /* CalendarPresenter.swift */,
+			);
+			path = Modules;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +276,6 @@
 			files = (
 				5E4E97F7280F1C6500ED5D15 /* LaunchScreen.storyboard in Resources */,
 				5E4E97F4280F1C6500ED5D15 /* Assets.xcassets in Resources */,
-				5E4E97F2280F1C6500ED5D15 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,9 +300,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E4E97EF280F1C6500ED5D15 /* ViewController.swift in Sources */,
+				5E4E97EF280F1C6500ED5D15 /* CalendarViewController.swift in Sources */,
 				5E4E97EB280F1C6500ED5D15 /* AppDelegate.swift in Sources */,
 				5E4E97ED280F1C6500ED5D15 /* SceneDelegate.swift in Sources */,
+				5E83E7EC2810873D00160AA8 /* ModuleBuilder.swift in Sources */,
+				5E83E7EF281087F300160AA8 /* CalendarPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,14 +341,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5E4E97F0280F1C6500ED5D15 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5E4E97F1280F1C6500ED5D15 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		5E4E97F5280F1C6500ED5D15 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -440,10 +476,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TaskBook/Info.plist;
+				INFOPLIST_FILE = TaskBook/Aplication/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -467,10 +502,9 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TaskBook/Info.plist;
+				INFOPLIST_FILE = TaskBook/Aplication/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
