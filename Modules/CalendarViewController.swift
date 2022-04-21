@@ -43,7 +43,7 @@ class CalendarViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 20
+        stackView.spacing = 5
         return stackView
     }()
 
@@ -77,6 +77,7 @@ private extension CalendarViewController {
         for day in weekDay {
             let label = UILabel()
             label.text = day.rawValue
+            label.textAlignment = .center
             stackView.addArrangedSubview(label)
         }
     }
@@ -98,7 +99,8 @@ private extension CalendarViewController {
             rightButton.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 38),
             
             stackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
-            stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15)
         ])
     }
 }
