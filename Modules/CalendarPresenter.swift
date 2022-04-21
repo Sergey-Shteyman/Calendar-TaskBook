@@ -11,7 +11,6 @@ import Foundation
 protocol CalendarPresenterProtocol: AnyObject {
     
 }
-
 // MARK: - CalendarPresenter
 final class CalendarPresenter {
     
