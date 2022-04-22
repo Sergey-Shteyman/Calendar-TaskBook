@@ -19,6 +19,7 @@ final class CalendarPresenter {
     
     private let moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
+    var totalSquares = [String]()
     
     init(calendarHelper: CalendarHelperProtocol,
          moduleBuilder: Buildable) {
@@ -35,5 +36,9 @@ extension CalendarPresenter: CalendarPresenterProtocol {
     
     func changeToPreviousMonth() {
         viewController?.showCurrentMonth()
+    }
+    
+    func setMonthView() {
+        totalSquares.removeAll()
     }
 }
