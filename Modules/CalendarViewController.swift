@@ -46,6 +46,16 @@ class CalendarViewController: UIViewController {
         stackView.spacing = 5
         return stackView
     }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.myRegister(CalenderViewCell.self)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        return collectionView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +67,25 @@ class CalendarViewController: UIViewController {
 // MARK: - CalendarViewProtocol Impl
 extension CalendarViewController: CalendarViewProtocol {
     
+}
+
+// MARK: - UICollectionViewDelegate Impl
+extension CalendarViewController: UICollectionViewDelegate {
+    
+}
+
+// MARK: - UICollectionViewDataSource Impl
+extension CalendarViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let myCell = collectionView.myDequeueReusableCell(type: CalenderViewCell.self, indePath: indexPath)
+        myCell.setupCell()
+        return myCell
+    }
 }
 
 // MARK: - Private Methods
@@ -83,7 +112,7 @@ private extension CalendarViewController {
     }
     
     func addSubViews() {
-        let arraySubViews = [leftButton, dateLabel, rightButton, stackView]
+        let arraySubViews = [leftButton, dateLabel, rightButton, stackView, collectionView]
         view.myAddSubViews(from: arraySubViews)
     }
     
@@ -100,7 +129,12 @@ private extension CalendarViewController {
             
             stackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15)
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            
+            collectionView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
