@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - CalendarViewProtocol
 protocol CalendarViewProtocol: AnyObject {
-    
+    func showCurrentMonth()
 }
 
 // MARK: - CalendarViewController
@@ -29,6 +29,7 @@ class CalendarViewController: UIViewController {
         var button = UIButton()
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: "arrow.right", withConfiguration: boldConfiguration), for: .normal)
+        button.addTarget(self, action: #selector(changeToNextMonth), for: .touchUpInside)
         return button
     }()
     
@@ -36,6 +37,7 @@ class CalendarViewController: UIViewController {
         let button = UIButton()
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: "arrow.left", withConfiguration: boldConfiguration), for: .normal)
+        button.addTarget(self, action: #selector(changeToPreviousMonth), for: .touchUpInside)
         return button
     }()
     
@@ -62,11 +64,22 @@ class CalendarViewController: UIViewController {
         view.backgroundColor = .white
         setupViewController()
     }
+    
+    @objc func changeToNextMonth() {
+        presenter?.changeToNextMonth()
+    }
+
+    @objc func changeToPreviousMonth() {
+        presenter?.changeToPreviousMonth()
+    }
 }
 
 // MARK: - CalendarViewProtocol Impl
 extension CalendarViewController: CalendarViewProtocol {
     
+    func showCurrentMonth() {
+        print(#function)
+    }
 }
 
 // MARK: - UICollectionViewDelegate Impl

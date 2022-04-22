@@ -42,10 +42,11 @@ private extension CalenderViewCell {
     }
     
     func addConstraints() {
+        let frameHeight = frame.height
+        let padding = frameHeight * 0.25
         NSLayoutConstraint.activate([
             date.centerXAnchor.constraint(equalTo: centerXAnchor),
-            date.centerYAnchor.constraint(equalTo: centerYAnchor),
-//            date.centerYAnchor.constraint(equalToSystemSpacingBelow: centerYAnchor, multiplier: 0.5)
+            date.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -padding)
         ])
     }
 }
