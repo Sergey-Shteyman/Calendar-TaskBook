@@ -10,9 +10,8 @@ import UIKit
 // MARK: - CalenderViewCell
 final class CalenderViewCell: UICollectionViewCell {
     
-    private lazy var date: UILabel = {
+    private lazy var dayOfMonth: UILabel = {
         let label = UILabel()
-        label.text = "1"
         label.font = .boldSystemFont(ofSize: 20)
         label.textAlignment = .center
         return label
@@ -23,7 +22,7 @@ final class CalenderViewCell: UICollectionViewCell {
 // MARK: - publick Methods
 extension CalenderViewCell {
     
-    func setupCell() {
+    func setupCell(with dayOfMonth: String) {
         backgroundColor = .systemGray6
         setupCellConfiguration()
     }
@@ -38,15 +37,15 @@ private extension CalenderViewCell {
     }
     
     func addSubViews() {
-        myAddSubView(date)
+        myAddSubView(dayOfMonth)
     }
     
     func addConstraints() {
         let frameHeight = frame.height
         let padding = frameHeight * 0.25
         NSLayoutConstraint.activate([
-            date.centerXAnchor.constraint(equalTo: centerXAnchor),
-            date.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -padding)
+            dayOfMonth.centerXAnchor.constraint(equalTo: centerXAnchor),
+            dayOfMonth.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -padding)
         ])
     }
 }

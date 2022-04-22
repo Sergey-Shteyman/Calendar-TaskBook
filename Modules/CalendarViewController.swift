@@ -17,10 +17,14 @@ class CalendarViewController: UIViewController {
     
     var presenter: CalendarPresenter?
     
+    var sectedDate = Date()
+    var totalSquares = [String]()
+    
+    // TODO: -
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Marth 2022"
+        label.text = "Marth 2022"  //
         label.font = .boldSystemFont(ofSize: 26)
         return label
     }()
@@ -28,7 +32,7 @@ class CalendarViewController: UIViewController {
     private lazy var rightButton: UIButton = {
         var button = UIButton()
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
-        button.setImage(UIImage(systemName: "arrow.right", withConfiguration: boldConfiguration), for: .normal)
+        button.setImage(UIImage(systemName: Arrow.right.rawValue, withConfiguration: boldConfiguration), for: .normal)
         button.addTarget(self, action: #selector(changeToNextMonth), for: .touchUpInside)
         return button
     }()
@@ -36,7 +40,7 @@ class CalendarViewController: UIViewController {
     private lazy var leftButton: UIButton = {
         let button = UIButton()
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
-        button.setImage(UIImage(systemName: "arrow.left", withConfiguration: boldConfiguration), for: .normal)
+        button.setImage(UIImage(systemName: Arrow.left.rawValue, withConfiguration: boldConfiguration), for: .normal)
         button.addTarget(self, action: #selector(changeToPreviousMonth), for: .touchUpInside)
         return button
     }()
@@ -91,12 +95,12 @@ extension CalendarViewController: UICollectionViewDelegate {
 extension CalendarViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        5
+        totalSquares.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CalenderViewCell.self, indePath: indexPath)
-        myCell.setupCell()
+        myCell.setupCell(with: totalSquares[indexPath.item])
         return myCell
     }
 }
@@ -105,6 +109,7 @@ extension CalendarViewController: UICollectionViewDataSource {
 private extension CalendarViewController {
     
     func setupViewController() {
+        setCellsView()
         addSubViews()
         addDaysToStackView()
         addConstraints()
@@ -122,6 +127,16 @@ private extension CalendarViewController {
             label.textAlignment = .center
             stackView.addArrangedSubview(label)
         }
+    }
+    
+    func setCellsView() {
+        let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+        let height = (collectionView.frame.size.height - 2) / 8
+        let width = (collectionView.frame.size.width - 2) / 8
+        guard let flowLayout = flowLayout else {
+            return
+        }
+        flowLayout.itemSize = CGSize(width: width, height: height)
     }
     
     func addSubViews() {

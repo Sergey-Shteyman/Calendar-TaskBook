@@ -18,9 +18,12 @@ final class CalendarPresenter {
     var viewController: CalendarViewController?
     
     private let moduleBuilder: Buildable
+    private let calendarHelper: CalendarHelperProtocol
     
-    init(moduleBuilder: Buildable) {
+    init(calendarHelper: CalendarHelperProtocol,
+         moduleBuilder: Buildable) {
         self.moduleBuilder = moduleBuilder
+        self.calendarHelper = calendarHelper
     }
 }
 
