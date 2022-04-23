@@ -23,12 +23,14 @@ class CalendarViewController: UIViewController {
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.textColor = .systemRed
         label.font = .boldSystemFont(ofSize: 26)
         return label
     }()
 
     private lazy var rightButton: UIButton = {
         var button = UIButton()
+        button.tintColor = .systemRed
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: Arrow.right.rawValue, withConfiguration: boldConfiguration), for: .normal)
         button.addTarget(self, action: #selector(changeToNextMonth), for: .touchUpInside)
@@ -37,6 +39,7 @@ class CalendarViewController: UIViewController {
     
     private lazy var leftButton: UIButton = {
         let button = UIButton()
+        button.tintColor = .systemRed
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: Arrow.left.rawValue, withConfiguration: boldConfiguration), for: .normal)
         button.addTarget(self, action: #selector(changeToPreviousMonth), for: .touchUpInside)
@@ -56,6 +59,7 @@ class CalendarViewController: UIViewController {
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.myRegister(CalenderViewCell.self)
+        collectionView.backgroundColor = .darkGray
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
@@ -63,7 +67,7 @@ class CalendarViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+//        view.backgroundColor = .darkGray
         setupViewController()
     }
     
@@ -125,7 +129,7 @@ private extension CalendarViewController {
         addSubViews()
         addDaysToStackView()
         addConstraints()
-        
+        view.backgroundColor = .darkGray
         presenter?.setMonthView()
     }
     
@@ -138,6 +142,7 @@ private extension CalendarViewController {
         for day in weekDay {
             let label = UILabel()
             label.text = day.rawValue
+            label.textColor = .white
             label.textAlignment = .center
             stackView.addArrangedSubview(label)
         }

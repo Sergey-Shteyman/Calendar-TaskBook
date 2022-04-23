@@ -14,6 +14,7 @@ final class CalenderViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)
         label.textAlignment = .center
+        label.textColor = .systemRed
         return label
     }()
     
