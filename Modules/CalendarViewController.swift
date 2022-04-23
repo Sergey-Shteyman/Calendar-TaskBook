@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - CalendarViewProtocol
 protocol CalendarViewProtocol: AnyObject {
-    
+    func showCurrentMonth()
 }
 
 // MARK: - CalendarViewController
@@ -29,6 +29,7 @@ class CalendarViewController: UIViewController {
         var button = UIButton()
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: "arrow.right", withConfiguration: boldConfiguration), for: .normal)
+        button.addTarget(self, action: #selector(changeToNextMonth), for: .touchUpInside)
         return button
     }()
     
@@ -36,6 +37,7 @@ class CalendarViewController: UIViewController {
         let button = UIButton()
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: "arrow.left", withConfiguration: boldConfiguration), for: .normal)
+        button.addTarget(self, action: #selector(changeToPreviousMonth), for: .touchUpInside)
         return button
     }()
     
@@ -46,17 +48,57 @@ class CalendarViewController: UIViewController {
         stackView.spacing = 5
         return stackView
     }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.myRegister(CalenderViewCell.self)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        return collectionView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViewController()
     }
+    
+    @objc func changeToNextMonth() {
+        presenter?.changeToNextMonth()
+    }
+
+    @objc func changeToPreviousMonth() {
+        presenter?.changeToPreviousMonth()
+    }
 }
 
 // MARK: - CalendarViewProtocol Impl
 extension CalendarViewController: CalendarViewProtocol {
     
+    func showCurrentMonth() {
+        print(#function)
+    }
+}
+
+// MARK: - UICollectionViewDelegate Impl
+extension CalendarViewController: UICollectionViewDelegate {
+    
+}
+
+// MARK: - UICollectionViewDataSource Impl
+extension CalendarViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let myCell = collectionView.myDequeueReusableCell(type: CalenderViewCell.self, indePath: indexPath)
+        myCell.setupCell()
+        return myCell
+    }
 }
 
 // MARK: - Private Methods
@@ -83,7 +125,7 @@ private extension CalendarViewController {
     }
     
     func addSubViews() {
-        let arraySubViews = [leftButton, dateLabel, rightButton, stackView]
+        let arraySubViews = [leftButton, dateLabel, rightButton, stackView, collectionView]
         view.myAddSubViews(from: arraySubViews)
     }
     
@@ -100,7 +142,12 @@ private extension CalendarViewController {
             
             stackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15)
+            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            
+            collectionView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }

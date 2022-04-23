@@ -9,7 +9,8 @@ import Foundation
 
 // MARK: - CalendarPresenterProtocol
 protocol CalendarPresenterProtocol: AnyObject {
-    
+    func changeToNextMonth()
+    func changeToPreviousMonth()
 }
 // MARK: - CalendarPresenter
 final class CalendarPresenter {
@@ -25,5 +26,11 @@ final class CalendarPresenter {
 
 // MARK: - CalendarPresenterProtocol Impl
 extension CalendarPresenter: CalendarPresenterProtocol {
+    func changeToNextMonth() {
+        viewController?.showCurrentMonth()
+    }
     
+    func changeToPreviousMonth() {
+        viewController?.showCurrentMonth()
+    }
 }
