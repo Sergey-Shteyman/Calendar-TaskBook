@@ -9,7 +9,8 @@ import UIKit
 
 // MARK: - CalendarViewProtocol
 protocol CalendarViewProtocol: AnyObject {
-    func showCurrentMonth()
+    func showCurrentMonth(with date: String)
+    func display(with squares: [String])
 }
 
 // MARK: - CalendarViewController
@@ -17,14 +18,11 @@ class CalendarViewController: UIViewController {
     
     var presenter: CalendarPresenter?
     
-    var sectedDate = Date()
-    var totalSquares = [String]()
+    private var totalSquares = [String]()
     
-    // TODO: -
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.text = "Marth 2022"  //
         label.font = .boldSystemFont(ofSize: 26)
         return label
     }()
@@ -55,9 +53,10 @@ class CalendarViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.myRegister(CalenderViewCell.self)
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
@@ -81,8 +80,13 @@ class CalendarViewController: UIViewController {
 // MARK: - CalendarViewProtocol Impl
 extension CalendarViewController: CalendarViewProtocol {
     
-    func showCurrentMonth() {
-        print(#function)
+    func display(with squares: [String]) {
+        totalSquares = squares
+        collectionView.reloadData()
+    }
+
+    func showCurrentMonth(with date: String) {
+        dateLabel.text = date
     }
 }
 
@@ -105,14 +109,24 @@ extension CalendarViewController: UICollectionViewDataSource {
     }
 }
 
+extension CalendarViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (collectionView.frame.size.width - 10) / 9
+        let height = (collectionView.frame.size.height - 2) / 15
+        return CGSize(width: width, height: height)
+    }
+}
+
 // MARK: - Private Methods
 private extension CalendarViewController {
     
     func setupViewController() {
-        setCellsView()
         addSubViews()
         addDaysToStackView()
         addConstraints()
+        
+        presenter?.setMonthView()
     }
     
     func addDaysToStackView() {
@@ -129,16 +143,6 @@ private extension CalendarViewController {
         }
     }
     
-    func setCellsView() {
-        let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
-        let height = (collectionView.frame.size.height - 2) / 8
-        let width = (collectionView.frame.size.width - 2) / 8
-        guard let flowLayout = flowLayout else {
-            return
-        }
-        flowLayout.itemSize = CGSize(width: width, height: height)
-    }
-    
     func addSubViews() {
         let arraySubViews = [leftButton, dateLabel, rightButton, stackView, collectionView]
         view.myAddSubViews(from: arraySubViews)
@@ -148,12 +152,13 @@ private extension CalendarViewController {
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             dateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+            dateLabel.widthAnchor.constraint(equalToConstant: 200),
             
             leftButton.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
-            leftButton.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -38),
+            leftButton.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -7),
             
             rightButton.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
-            rightButton.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 38),
+            rightButton.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 7),
             
             stackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
@@ -161,7 +166,7 @@ private extension CalendarViewController {
             
             collectionView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
