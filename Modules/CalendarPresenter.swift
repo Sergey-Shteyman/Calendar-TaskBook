@@ -16,21 +16,50 @@ protocol CalendarPresenterProtocol: AnyObject {
 final class CalendarPresenter {
     
     var viewController: CalendarViewController?
+    var selectedDate = Date()
     
     private let moduleBuilder: Buildable
+    private let calendarHelper: CalendarHelperProtocol
+    private var totalSquares = [String]()
     
-    init(moduleBuilder: Buildable) {
+    init(calendarHelper: CalendarHelperProtocol,
+         moduleBuilder: Buildable) {
         self.moduleBuilder = moduleBuilder
+        self.calendarHelper = calendarHelper
     }
 }
 
 // MARK: - CalendarPresenterProtocol Impl
 extension CalendarPresenter: CalendarPresenterProtocol {
+    
+    func setMonthView() {
+        totalSquares.removeAll()
+        
+        let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
+        let startingSpaces = calendarHelper.weekDay(date: selectedDate)
+        
+        var count: Int = 2
+        
+        while(count <= 42) {
+            if (count <= startingSpaces || count - startingSpaces > daysInMonth) {
+                totalSquares.append("")
+            } else {
+                totalSquares.append(String(count - startingSpaces))
+            }
+            count += 1
+        }
+        viewController?.display(with: totalSquares)
+        let dateString = calendarHelper.monthString(date: selectedDate) + " " + calendarHelper.yearString(date: selectedDate)
+        viewController?.showCurrentMonth(with: dateString)
+    }
+    
     func changeToNextMonth() {
-        viewController?.showCurrentMonth()
+        selectedDate = calendarHelper.plusMonth(date: selectedDate)
+        setMonthView()
     }
     
     func changeToPreviousMonth() {
-        viewController?.showCurrentMonth()
+        selectedDate = calendarHelper.minusMonth(date: selectedDate)
+        setMonthView()
     }
 }
