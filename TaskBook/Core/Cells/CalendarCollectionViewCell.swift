@@ -23,7 +23,6 @@ final class CalenderViewCell: UICollectionViewCell {
 extension CalenderViewCell {
     
     func setupCell(with dayOfMonth: String) {
-//        backgroundColor = .systemGray6
         self.dayOfMonth.text = dayOfMonth
         setupCellConfiguration()
     }
