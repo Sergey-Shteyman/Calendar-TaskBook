@@ -84,6 +84,12 @@ extension CalendarHelper: CalendarHelperProtocol{
         guard let days = components.weekday else {
             return Int()
         }
-        return days - 1
+        
+        if days == 1 {
+            print(days)
+            return 6
+        }
+        print(days)
+        return days - 2
     }
 }
