@@ -36,9 +36,10 @@ extension CalendarPresenter: CalendarPresenterProtocol {
         totalSquares.removeAll()
         
         let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
-        let startingSpaces = calendarHelper.weekDay(date: selectedDate)
+        let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
+        let startingSpaces = calendarHelper.weekDay(date: firstDayOfMonth)
         
-        var count: Int = 2
+        var count: Int = 1
         
         while(count <= 42) {
             if (count <= startingSpaces || count - startingSpaces > daysInMonth) {
