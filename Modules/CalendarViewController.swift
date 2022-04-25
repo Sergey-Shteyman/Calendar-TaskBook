@@ -17,9 +17,7 @@ protocol CalendarViewProtocol: AnyObject {
 class CalendarViewController: UIViewController {
     
     var presenter: CalendarPresenter?
-    
     private var totalSquares = [String]()
-    
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -53,7 +51,7 @@ class CalendarViewController: UIViewController {
         stackView.spacing = 5
         return stackView
     }()
-    
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -69,7 +67,7 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         setupViewController()
     }
-    
+
     @objc func changeToNextMonth() {
         presenter?.changeToNextMonth()
     }
@@ -81,7 +79,7 @@ class CalendarViewController: UIViewController {
 
 // MARK: - CalendarViewProtocol Impl
 extension CalendarViewController: CalendarViewProtocol {
-    
+
     func display(with squares: [String]) {
         totalSquares = squares
         collectionView.reloadData()
@@ -94,17 +92,18 @@ extension CalendarViewController: CalendarViewProtocol {
 
 // MARK: - UICollectionViewDelegate Impl
 extension CalendarViewController: UICollectionViewDelegate {
-    
+
 }
 
 // MARK: - UICollectionViewDataSource Impl
 extension CalendarViewController: UICollectionViewDataSource {
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         totalSquares.count
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CalenderViewCell.self, indePath: indexPath)
         myCell.setupCell(with: totalSquares[indexPath.item])
         return myCell
@@ -113,7 +112,7 @@ extension CalendarViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout Impl
 extension CalendarViewController: UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (collectionView.frame.size.width - 10) / 9
         let height = (collectionView.frame.size.height - 2) / 15
@@ -123,7 +122,7 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Private Methods
 private extension CalendarViewController {
-    
+
     func setupViewController() {
         addSubViews()
         addDaysToStackView()
@@ -131,7 +130,7 @@ private extension CalendarViewController {
         view.backgroundColor = .darkGray
         presenter?.setMonthView()
     }
-    
+
     func addDaysToStackView() {
         let weekDay = [
             WeekDay.monday, WeekDay.tuesday,
@@ -146,28 +145,29 @@ private extension CalendarViewController {
             stackView.addArrangedSubview(label)
         }
     }
-    
+
     func addSubViews() {
         let arraySubViews = [leftButton, dateLabel, rightButton, stackView, collectionView]
         view.myAddSubViews(from: arraySubViews)
     }
-    
+
     func addConstraints() {
+        
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             dateLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             dateLabel.widthAnchor.constraint(equalToConstant: 200),
-            
+
             leftButton.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
             leftButton.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -7),
-            
+
             rightButton.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
             rightButton.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 7),
-            
+
             stackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            
+
             collectionView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
@@ -175,4 +175,3 @@ private extension CalendarViewController {
         ])
     }
 }
-

@@ -14,9 +14,9 @@ protocol Buildable {
 
 // MARK: - ModuleBuilder
 final class ModuleBuilder {
-    
+
     private let calendarHelper: CalendarHelperProtocol
-    
+
     init() {
         calendarHelper = CalendarHelper()
     }
@@ -24,15 +24,15 @@ final class ModuleBuilder {
 
 // MARK: - Buildable Impl
 extension ModuleBuilder: Buildable {
-    
+
     func buildMainModule() -> CalendarViewController {
         let viewController = CalendarViewController()
         let presenter = CalendarPresenter(calendarHelper: calendarHelper,
                                           moduleBuilder: self)
-        
+
         viewController.presenter = presenter
         presenter.viewController = viewController
-        
+
         return viewController
     }
 }

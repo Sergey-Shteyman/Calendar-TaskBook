@@ -8,7 +8,7 @@
 import UIKit
 
 extension UICollectionViewCell {
-    
+
     class var myReuseId: String {
         return String(describing: Self.self)
     }
