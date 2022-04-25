@@ -258,7 +258,6 @@
 				AAE7A5DB3D68798D596C118A /* Pods-TaskBookTests.debug.xcconfig */,
 				BC21F2CF7DC5D63512A85FC6 /* Pods-TaskBookTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -269,6 +268,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E4E9811280F1C6500ED5D15 /* Build configuration list for PBXNativeTarget "TaskBook" */;
 			buildPhases = (
+				5E83E8072816AC1A00160AA8 /* ShellScript */,
 				E87BA21C3EC8F9D995FF2B10 /* [CP] Check Pods Manifest.lock */,
 				5E4E97E3280F1C6500ED5D15 /* Sources */,
 				5E4E97E4280F1C6500ED5D15 /* Frameworks */,
@@ -409,6 +409,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TaskBook/Pods-TaskBook-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		5E83E8072816AC1A00160AA8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		67180B184701BB2EDC311B6A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

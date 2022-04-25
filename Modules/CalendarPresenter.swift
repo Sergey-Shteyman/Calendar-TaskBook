@@ -17,11 +17,11 @@ final class CalendarPresenter {
     
     var viewController: CalendarViewController?
     var selectedDate = Date()
-    
+
     private let moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
     private var totalSquares = [String]()
-    
+
     init(calendarHelper: CalendarHelperProtocol,
          moduleBuilder: Buildable) {
         self.moduleBuilder = moduleBuilder
@@ -31,18 +31,18 @@ final class CalendarPresenter {
 
 // MARK: - CalendarPresenterProtocol Impl
 extension CalendarPresenter: CalendarPresenterProtocol {
-    
+
     func setMonthView() {
         totalSquares.removeAll()
-        
+
         let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
         let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
         let startingSpaces = calendarHelper.weekDay(date: firstDayOfMonth)
-        
+
         var count: Int = 1
-        
-        while(count <= 42) {
-            if (count <= startingSpaces || count - startingSpaces > daysInMonth) {
+
+        while count <= 42 {
+            if count <= startingSpaces || count - startingSpaces > daysInMonth {
                 totalSquares.append("")
             } else {
                 totalSquares.append(String(count - startingSpaces))
@@ -53,12 +53,12 @@ extension CalendarPresenter: CalendarPresenterProtocol {
         let dateString = calendarHelper.monthString(date: selectedDate) + " " + calendarHelper.yearString(date: selectedDate)
         viewController?.showCurrentMonth(with: dateString)
     }
-    
+
     func changeToNextMonth() {
         selectedDate = calendarHelper.plusMonth(date: selectedDate)
         setMonthView()
     }
-    
+
     func changeToPreviousMonth() {
         selectedDate = calendarHelper.minusMonth(date: selectedDate)
         setMonthView()
