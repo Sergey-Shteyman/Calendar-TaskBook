@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - CalenderViewCell
 final class CalenderViewCell: UICollectionViewCell {
-
+    
     private lazy var dayOfMonth: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 20)

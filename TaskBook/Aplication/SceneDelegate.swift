@@ -40,7 +40,8 @@ private extension SceneDelegate {
     func setupRootViewController(with windowScene: UIWindowScene) {
         let window = UIWindow(windowScene: windowScene)
         let moduleBuilder = ModuleBuilder()
-        let mainViewController = moduleBuilder.buildMainModule()
+//        let mainViewController = moduleBuilder.buildCalendarModule()
+        let mainViewController = moduleBuilder.buildTaskModule()
         let navigationController = UINavigationController(rootViewController: mainViewController)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

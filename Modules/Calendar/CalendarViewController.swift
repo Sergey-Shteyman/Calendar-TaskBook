@@ -17,6 +17,7 @@ protocol CalendarViewProtocol: AnyObject {
 class CalendarViewController: UIViewController {
     
     var presenter: CalendarPresenter?
+    
     private var totalSquares = [String]()
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
