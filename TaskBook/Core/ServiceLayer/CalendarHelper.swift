@@ -9,7 +9,6 @@ import UIKit
 
 // MARK: - protocol CalendarHelperProtocol {
 protocol CalendarHelperProtocol {
-
     func plusMonth(date: Date) -> Date
     func minusMonth(date: Date) -> Date
     func monthString(date: Date) -> String
@@ -86,10 +85,8 @@ extension CalendarHelper: CalendarHelperProtocol {
         }
 
         if days == 1 {
-            print(days)
             return 6
         }
-        print(days)
         return days - 2
     }
 }
