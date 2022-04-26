@@ -19,8 +19,10 @@ final class ContainerViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.myRegister(ContainerViewCell.self)
+        tableView.myRegister(CalendarViewCell.self)
         tableView.dataSource = self
+        tableView.delegate = self
+        tableView.allowsSelection = false
         return tableView
     }()
     
@@ -32,18 +34,30 @@ final class ContainerViewController: UIViewController {
 
 // MARK: - ContainerViewControllerProtocol Impl
 extension ContainerViewController: ContainerViewControllerProtocol {
-    
+
+}
+
+// MARK: - UITableViewDelegate Impl
+extension ContainerViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        view.frame.height / 2 - 60
+    }
 }
 
 // MARK: - UITableViewDataSource Impl
 extension ContainerViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let myCell = presenter?.moduleBuilder.buildCalendarModule() else {
+            return UITableViewCell()
+        }
+        myCell.setupCellConfiguration()
+        return myCell
     }
 }
 
@@ -51,10 +65,16 @@ extension ContainerViewController: UITableViewDataSource {
 private extension ContainerViewController {
     func setupViewController() {
         view.myAddSubView(tableView)
+        view.backgroundColor = .white
         addConstraints()
     }
     
     func addConstraints() {
-        NSLayoutConstraint.activate([])
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 }
