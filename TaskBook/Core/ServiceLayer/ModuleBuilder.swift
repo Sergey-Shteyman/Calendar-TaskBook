@@ -11,6 +11,7 @@ import Foundation
 protocol Buildable {
     func buildContainerModule() -> ContainerViewController
     func buildCalendarModule() -> CalendarViewCell
+    func buildTaskModule() -> TaskViewCell
 }
 
 // MARK: - ModuleBuilder
@@ -43,8 +44,8 @@ extension ModuleBuilder: Buildable {
         return viewController
     }
     
-    func buildTaskModule() -> TaskViewController {
-        let viewController = TaskViewController()
+    func buildTaskModule() -> TaskViewCell {
+        let viewController = TaskViewCell()
         let presenter = TaskPresenter(moduleBuilder: self)
         viewController.presenter = presenter
         presenter.viewController = viewController

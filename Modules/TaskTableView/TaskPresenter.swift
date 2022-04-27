@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - TaskPresenterProtocol
 protocol TaskPresenterProtocol: AnyObject {
-    func colorView()
+
 }
 
 // MARK: - TaskPresenter
@@ -26,7 +26,5 @@ final class TaskPresenter {
 
 // MARK: - TaskPresenterProtocol Impl
 extension TaskPresenter: TaskPresenterProtocol {
-    func colorView() {
-        viewController?.display()
-    }
+
 }

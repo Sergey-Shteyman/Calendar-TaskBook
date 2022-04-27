@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - ContainerViewControllerProtocol
 protocol ContainerViewControllerProtocol: AnyObject {
-    
+  
 }
 
 // MARK: - ContainerViewController
@@ -34,7 +34,7 @@ final class ContainerViewController: UIViewController {
 
 // MARK: - ContainerViewControllerProtocol Impl
 extension ContainerViewController: ContainerViewControllerProtocol {
-
+    
 }
 
 // MARK: - UITableViewDelegate Impl
@@ -49,15 +49,22 @@ extension ContainerViewController: UITableViewDelegate {
 extension ContainerViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let myCell = presenter?.moduleBuilder.buildCalendarModule() else {
+//        if indexPath.row < 1 {
+//            guard let myCell = presenter?.moduleBuilder.buildCalendarModule() else {
+//                return UITableViewCell()
+//            }
+//            myCell.setupCellConfiguration()
+//            return myCell
+//        }
+        guard let cell = presenter?.moduleBuilder.buildTaskModule() else {
             return UITableViewCell()
         }
-        myCell.setupCellConfiguration()
-        return myCell
+        cell.setupCellConfiguration()
+        return cell
     }
 }
 
