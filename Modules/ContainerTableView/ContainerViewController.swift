@@ -24,7 +24,6 @@ final class ContainerViewController: UIViewController {
         tableView.myRegister(CalendarViewCell.self)
         tableView.myRegister(TaskCell.self)
         tableView.dataSource = self
-//        tableView.delegate = self
         tableView.allowsSelection = false
         return tableView
     }()
@@ -75,6 +74,7 @@ extension ContainerViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - CalendarViewCellDelegate Impl
 extension ContainerViewController: CalendarViewCellDelegate {
     
     func calendarViewDidTapNextMonthButton() {

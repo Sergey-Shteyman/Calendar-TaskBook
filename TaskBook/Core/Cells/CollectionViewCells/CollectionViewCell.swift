@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - CalenderViewCell
-final class CalenderViewCell: UICollectionViewCell {
+final class CollectionViewCell: UICollectionViewCell {
     
     private lazy var dayOfMonth: UILabel = {
         let label = UILabel()
@@ -19,7 +19,7 @@ final class CalenderViewCell: UICollectionViewCell {
 }
 
 // MARK: - publick Methods
-extension CalenderViewCell {
+extension CollectionViewCell {
 
     func setupCell(with dayOfMonth: String) {
         self.dayOfMonth.text = dayOfMonth
@@ -28,7 +28,7 @@ extension CalenderViewCell {
 }
 
 // MARK: - Private Methods
-private extension CalenderViewCell {
+private extension CollectionViewCell {
 
     func setupCellConfiguration() {
         addSubViews()

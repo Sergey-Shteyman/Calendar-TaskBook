@@ -12,20 +12,10 @@ protocol CalendarViewCellDelegate: AnyObject {
     func calendarViewDidTapPreviousMonthButton()
 }
 
-// MARK: - CalendarCellProtocol
-protocol CalendarCellProtocol: AnyObject {
-    func showCurrentMonth(with date: String)
-    func display(with squares: [String])
-}
-
 // MARK: - CalendarViewCell
-class CalendarViewCell: UITableViewCell {
-    
-    var presenter: CalendarPresenter?
+final class CalendarViewCell: UITableViewCell {
     
     weak var delegate: CalendarViewCellDelegate?
-    
-    private let minimumInterItemSpacing: CGFloat = 10
     
     private var totalSquares = [String]()
     private lazy var dateLabel: UILabel = {
@@ -62,10 +52,10 @@ class CalendarViewCell: UITableViewCell {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = self.minimumInterItemSpacing
+        layout.minimumLineSpacing = 7
+        layout.minimumInteritemSpacing = 7
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.myRegister(CalenderViewCell.self)
+        collectionView.myRegister(CollectionViewCell.self)
         collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -101,19 +91,6 @@ extension CalendarViewCell {
     }
 }
 
-// MARK: - CalendarCellProtocol Impl
-extension CalendarViewCell: CalendarCellProtocol {
-
-    func display(with squares: [String]) {
-        totalSquares = squares
-        collectionView.reloadData()
-    }
-
-    func showCurrentMonth(with date: String) {
-        dateLabel.text = date
-    }
-}
-
 // MARK: - UICollectionViewDelegate Impl
 extension CalendarViewCell: UICollectionViewDelegate {
 
@@ -128,7 +105,7 @@ extension CalendarViewCell: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let myCell = collectionView.myDequeueReusableCell(type: CalenderViewCell.self, indePath: indexPath)
+        let myCell = collectionView.myDequeueReusableCell(type: CollectionViewCell.self, indePath: indexPath)
         myCell.setupCell(with: totalSquares[indexPath.item])
         return myCell
     }
@@ -137,7 +114,9 @@ extension CalendarViewCell: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout Impl
 extension CalendarViewCell: UICollectionViewDelegateFlowLayout {
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = (UIScreen.main.bounds.width - 20) / 9
         let height = width
         return CGSize(width: width, height: height)
@@ -151,7 +130,6 @@ private extension CalendarViewCell {
         addSubViews()
         addDaysToStackView()
         addConstraints()
-        presenter?.setMonthView()
     }
 
     func addDaysToStackView() {
@@ -169,13 +147,15 @@ private extension CalendarViewCell {
     }
 
     func addSubViews() {
-        let arraySubViews = [leftButton, dateLabel, rightButton, stackView, collectionView]
+        let arraySubViews = [leftButton, dateLabel,
+                             rightButton, stackView, collectionView]
         contentView.myAddSubViews(from: arraySubViews)
     }
     
     func fetchCallendarViewHeight() -> CGFloat {
+        let heightCollectionView: CGFloat = 10 * 5
         let heightCell = (UIScreen.main.bounds.width - 20) / 9
-        let result = (heightCell * 6) + (minimumInterItemSpacing * 5)
+        let result = (heightCell * 6) + heightCollectionView
         return result 
     }
 

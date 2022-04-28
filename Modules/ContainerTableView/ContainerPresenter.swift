@@ -43,20 +43,12 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     
     func didTapNextMonthButton() {
         selectedDate = calendarHelper.plusMonth(date: selectedDate)
-        let calendarViewModel = fetchCalendarViewModel()
-        let sections: [Section] = [
-            .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)])
-        ]
-        viewController?.updateTableView(sections: sections)
+        viewIsReady()
     }
     
     func didTapPreviousMonthButton() {
         selectedDate = calendarHelper.minusMonth(date: selectedDate)
-        let calendarViewModel = fetchCalendarViewModel()
-        let sections: [Section] = [
-            .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)])
-        ]
-        viewController?.updateTableView(sections: sections)
+        viewIsReady()
     }
 }
 
@@ -83,19 +75,4 @@ private extension ContainerPresenter {
         let result = CalendarViewModel(squares: totalSquares, title: dateString)
         return result
     }
-}
-
-struct Section {
-    let type: SectionType
-    let rows: [RowType]
-}
-
-enum SectionType {
-    case calendar
-    case tasks
-}
-
-enum RowType {
-    case calendar(viewModel: CalendarViewModel)
-    case task(viewModel: TaskViewModel)
 }
