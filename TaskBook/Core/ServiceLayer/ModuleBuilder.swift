@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Buildable
 protocol Buildable {
-    func buildMainModule() -> CalendarViewController
+    func buildContainerModule() -> ContainerViewController
 }
 
 // MARK: - ModuleBuilder
@@ -25,14 +25,11 @@ final class ModuleBuilder {
 // MARK: - Buildable Impl
 extension ModuleBuilder: Buildable {
 
-    func buildMainModule() -> CalendarViewController {
-        let viewController = CalendarViewController()
-        let presenter = CalendarPresenter(calendarHelper: calendarHelper,
-                                          moduleBuilder: self)
-
+    func buildContainerModule() -> ContainerViewController {
+        let viewController = ContainerViewController()
+        let presenter = ContainerPresenter(moduleBuilder: self, calendarHelper: calendarHelper)
         viewController.presenter = presenter
         presenter.viewController = viewController
-
         return viewController
     }
 }
