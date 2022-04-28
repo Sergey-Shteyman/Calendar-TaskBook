@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - ContainerViewControllerProtocol
 protocol ContainerViewControllerProtocol: AnyObject {
-  
+    func updateTableView (sections: [Section])
 }
 
 // MARK: - ContainerViewController
@@ -17,11 +17,14 @@ final class ContainerViewController: UIViewController {
     
     var presenter: ContainerPresenterProtocol?
     
+    private var sections: [Section] = []
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.myRegister(CalendarViewCell.self)
+        tableView.myRegister(TaskCell.self)
         tableView.dataSource = self
-        tableView.delegate = self
+//        tableView.delegate = self
         tableView.allowsSelection = false
         return tableView
     }()
@@ -35,36 +38,51 @@ final class ContainerViewController: UIViewController {
 // MARK: - ContainerViewControllerProtocol Impl
 extension ContainerViewController: ContainerViewControllerProtocol {
     
-}
-
-// MARK: - UITableViewDelegate Impl
-extension ContainerViewController: UITableViewDelegate {
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        view.frame.height / 2 - 60
+    func updateTableView(sections: [Section]) {
+        self.sections = sections
+        tableView.reloadData()
     }
 }
 
 // MARK: - UITableViewDataSource Impl
 extension ContainerViewController: UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        return sections[section].rows.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if indexPath.row < 1 {
-//            guard let myCell = presenter?.moduleBuilder.buildCalendarModule() else {
-//                return UITableViewCell()
-//            }
-//            myCell.setupCellConfiguration()
-//            return myCell
-//        }
-        guard let cell = presenter?.moduleBuilder.buildTaskModule() else {
-            return UITableViewCell()
+        let section = indexPath.section
+        let row = indexPath.row
+        let type = sections[section].rows[row]
+        
+        switch type {
+        case .calendar(let viewModel):
+            let cell = tableView.myDequeueReusableCell(type: CalendarViewCell.self, indePath: indexPath)
+            cell.delegate = self
+            cell.setupCellConfiguration(viewModel: viewModel)
+            return cell
+        case .task(let viewModel):
+            let cell = tableView.myDequeueReusableCell(type: TaskCell.self, indePath: indexPath)
+            cell.setupCellConfiguration(viewModel)
+            cell.backgroundColor = .red
+            return cell
         }
-        cell.setupCellConfiguration()
-        return cell
+    }
+}
+
+extension ContainerViewController: CalendarViewCellDelegate {
+    
+    func calendarViewDidTapNextMonthButton() {
+        presenter?.didTapNextMonthButton()
+    }
+    
+    func calendarViewDidTapPreviousMonthButton() {
+        presenter?.didTapPreviousMonthButton()
     }
 }
 
@@ -74,6 +92,7 @@ private extension ContainerViewController {
         view.myAddSubView(tableView)
         view.backgroundColor = .white
         addConstraints()
+        presenter?.viewIsReady()
     }
     
     func addConstraints() {

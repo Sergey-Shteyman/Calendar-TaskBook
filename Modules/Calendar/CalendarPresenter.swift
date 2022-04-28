@@ -9,8 +9,8 @@ import Foundation
 
 // MARK: - CalendarPresenterProtocol
 protocol CalendarPresenterProtocol: AnyObject {
-    func changeToNextMonth()
-    func changeToPreviousMonth()
+//    func changeToNextMonth()
+//    func changeToPreviousMonth()
 }
 // MARK: - CalendarPresenter
 final class CalendarPresenter {
@@ -56,13 +56,13 @@ extension CalendarPresenter {
 // MARK: - CalendarPresenterProtocol Impl
 extension CalendarPresenter: CalendarPresenterProtocol {
 
-    func changeToNextMonth() {
-        selectedDate = calendarHelper.plusMonth(date: selectedDate)
-        setMonthView()
-    }
-
-    func changeToPreviousMonth() {
-        selectedDate = calendarHelper.minusMonth(date: selectedDate)
-        setMonthView()
-    }
+//    func changeToNextMonth() {
+//        selectedDate = calendarHelper.plusMonth(date: selectedDate)
+//        setMonthView()
+//    }
+//
+//    func changeToPreviousMonth() {
+//        selectedDate = calendarHelper.minusMonth(date: selectedDate)
+//        setMonthView()
+//    }
 }

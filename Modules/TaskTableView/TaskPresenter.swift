@@ -14,8 +14,7 @@ protocol TaskPresenterProtocol: AnyObject {
 
 // MARK: - TaskPresenter
 final class TaskPresenter {
-    
-    var viewController: TaskViewControllerProtocol?
+
     private let moduleBuilder: Buildable
     
     init(moduleBuilder: Buildable) {

@@ -7,11 +7,6 @@
 
 import UIKit
 
-// MARK: - TaskViewControllerProtocol
-protocol TaskViewControllerProtocol: AnyObject {
-    
-}
-
 // MARK: - TaskViewController
 final class TaskViewCell: UITableViewCell {
     
@@ -26,14 +21,9 @@ final class TaskViewCell: UITableViewCell {
     }()
 }
 
-// MARK: - TaskViewController Impl
-extension TaskViewCell: TaskViewControllerProtocol {
-    
-}
-
 // MARK: - Public Methods
 extension TaskViewCell {
-    func setupCellConfiguration() {
+    func setupCellConfiguration(_ viewModel: TaskViewModel) {
         setupCell()
     }
 }

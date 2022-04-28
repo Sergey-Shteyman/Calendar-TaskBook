@@ -10,8 +10,8 @@ import Foundation
 // MARK: - Buildable
 protocol Buildable {
     func buildContainerModule() -> ContainerViewController
-    func buildCalendarModule() -> CalendarViewCell
-    func buildTaskModule() -> TaskViewCell
+//    func buildCalendarModule() -> CalendarViewCell
+//    func buildTaskModule() -> TaskViewCell
 }
 
 // MARK: - ModuleBuilder
@@ -29,26 +29,26 @@ extension ModuleBuilder: Buildable {
 
     func buildContainerModule() -> ContainerViewController {
         let viewController = ContainerViewController()
-        let presenter = ContainerPresenter(moduleBuilder: self)
+        let presenter = ContainerPresenter(moduleBuilder: self, calendarHelper: calendarHelper)
         viewController.presenter = presenter
         presenter.viewController = viewController
         return viewController
     }
     
-    func buildCalendarModule() -> CalendarViewCell {
-        let viewController = CalendarViewCell()
-        let presenter = CalendarPresenter(calendarHelper: calendarHelper,
-                                          moduleBuilder: self)
-        viewController.presenter = presenter
-        presenter.viewController = viewController
-        return viewController
-    }
-    
-    func buildTaskModule() -> TaskViewCell {
-        let viewController = TaskViewCell()
-        let presenter = TaskPresenter(moduleBuilder: self)
-        viewController.presenter = presenter
-        presenter.viewController = viewController
-        return viewController
-    }
+//    func buildCalendarModule() -> CalendarViewCell {
+//        let viewController = CalendarViewCell()
+//        let presenter = CalendarPresenter(calendarHelper: calendarHelper,
+//                                          moduleBuilder: self)
+//        viewController.presenter = presenter
+//        presenter.viewController = viewController
+//        return viewController
+//    }
+//
+//    func buildTaskModule() -> TaskViewCell {
+//        let viewController = TaskViewCell()
+//        let presenter = TaskPresenter(moduleBuilder: self)
+//        viewController.presenter = presenter
+//        presenter.viewController = viewController
+//        return viewController
+//    }
 }

@@ -5,8 +5,6 @@
 //  Created by Сергей Штейман on 21.04.2022.
 //
 
-import Foundation
-
 enum WeekDay: String {
     case monday = "Mon"
     case tuesday = "Tue"
