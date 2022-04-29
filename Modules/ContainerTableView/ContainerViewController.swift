@@ -68,7 +68,6 @@ extension ContainerViewController: UITableViewDataSource {
         case .task(let viewModel):
             let cell = tableView.myDequeueReusableCell(type: TaskCell.self, indePath: indexPath)
             cell.setupCellConfiguration(viewModel)
-            cell.backgroundColor = .red
             return cell
         }
     }

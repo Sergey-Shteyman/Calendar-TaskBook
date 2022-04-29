@@ -36,7 +36,8 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     func viewIsReady() {
         let calendarViewModel = fetchCalendarViewModel()
         let sections: [Section] = [
-            .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)])
+            .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
+            .init(type: .tasks, rows: [.task(viewModel: .init())])
         ]
         viewController?.updateTableView(sections: sections)
     }
