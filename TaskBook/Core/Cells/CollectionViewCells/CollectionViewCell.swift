@@ -21,8 +21,9 @@ final class CollectionViewCell: UICollectionViewCell {
 // MARK: - publick Methods
 extension CollectionViewCell {
 
-    func setupCell(with dayOfMonth: String) {
+    func setupCell(with dayOfMonth: String, color: UIColor) {
         self.dayOfMonth.text = dayOfMonth
+        self.dayOfMonth.textColor = color
         setupCellConfiguration()
     }
 }
@@ -36,15 +37,15 @@ private extension CollectionViewCell {
     }
 
     func addSubViews() {
-        myAddSubView(dayOfMonth)
+        contentView.myAddSubView(dayOfMonth)
     }
 
     func addConstraints() {
         let frameHeight = frame.height
         let padding = frameHeight * 0.25
         NSLayoutConstraint.activate([
-            dayOfMonth.centerXAnchor.constraint(equalTo: centerXAnchor),
-            dayOfMonth.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -padding)
+            dayOfMonth.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            dayOfMonth.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -padding)
         ])
     }
 }

@@ -24,7 +24,7 @@ final class ContainerViewController: UIViewController {
         tableView.myRegister(CalendarViewCell.self)
         tableView.myRegister(TaskCell.self)
         tableView.dataSource = self
-        tableView.allowsSelection = false
+        tableView.delegate = self
         return tableView
     }()
     
@@ -40,6 +40,16 @@ extension ContainerViewController: ContainerViewControllerProtocol {
     func updateTableView(sections: [Section]) {
         self.sections = sections
         tableView.reloadData()
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension ContainerViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            tableView.allowsSelection = false
+        }
     }
 }
 
@@ -75,13 +85,17 @@ extension ContainerViewController: UITableViewDataSource {
 
 // MARK: - CalendarViewCellDelegate Impl
 extension ContainerViewController: CalendarViewCellDelegate {
-    
+
     func calendarViewDidTapNextMonthButton() {
         presenter?.didTapNextMonthButton()
     }
     
     func calendarViewDidTapPreviousMonthButton() {
         presenter?.didTapPreviousMonthButton()
+    }
+    
+    func calendarViewDidTapItem(index: Int) {
+        presenter?.didTapDay(index: index)
     }
 }
 

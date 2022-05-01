@@ -7,9 +7,11 @@
 
 import UIKit
 
+// MARK: - CalendarViewCellDelegate
 protocol CalendarViewCellDelegate: AnyObject {
     func calendarViewDidTapNextMonthButton()
     func calendarViewDidTapPreviousMonthButton()
+    func calendarViewDidTapItem(index: Int)
 }
 
 // MARK: - CalendarViewCell
@@ -94,6 +96,10 @@ extension CalendarViewCell {
 // MARK: - UICollectionViewDelegate Impl
 extension CalendarViewCell: UICollectionViewDelegate {
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let index = indexPath.item
+        delegate?.calendarViewDidTapItem(index: index)
+    }
 }
 
 // MARK: - UICollectionViewDataSource Impl
@@ -106,7 +112,7 @@ extension CalendarViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CollectionViewCell.self, indePath: indexPath)
-        myCell.setupCell(with: totalSquares[indexPath.item])
+        myCell.setupCell(with: totalSquares[indexPath.item], color: .black)
         return myCell
     }
 }

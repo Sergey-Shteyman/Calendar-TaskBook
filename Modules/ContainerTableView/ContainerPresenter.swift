@@ -9,9 +9,10 @@ import Foundation
 
 // MARK: - ContainerPresenterProtocol
 protocol ContainerPresenterProtocol: AnyObject {
+    func viewIsReady()
     func didTapNextMonthButton()
     func didTapPreviousMonthButton()
-    func viewIsReady()
+    func didTapDay(index: Int)
 }
 
 // MARK: - ContainerPresenter
@@ -22,6 +23,7 @@ final class ContainerPresenter {
     private let calendarHelper: CalendarHelperProtocol
     private var totalSquares = [String]()
     private var selectedDate = Date()
+    private var daysOfMonth = [Date?]()
     
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol) {
@@ -37,7 +39,11 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         let calendarViewModel = fetchCalendarViewModel()
         let sections: [Section] = [
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
-            .init(type: .tasks, rows: [.task(viewModel: .init())])
+            .init(type: .tasks, rows: [
+                .task(viewModel: .init(title: "Task1")),
+                .task(viewModel: .init(title: "Task2")),
+                .task(viewModel: .init(title: "Task3"))
+            ])
         ]
         viewController?.updateTableView(sections: sections)
     }
@@ -50,6 +56,10 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     func didTapPreviousMonthButton() {
         selectedDate = calendarHelper.minusMonth(date: selectedDate)
         viewIsReady()
+    }
+    
+    func didTapDay(index: Int) {
+        print(index)
     }
 }
 
@@ -76,4 +86,27 @@ private extension ContainerPresenter {
         let result = CalendarViewModel(squares: totalSquares, title: dateString)
         return result
     }
+    
+//    func fetchCalendarViewModelWithDate() -> CalendarViewModel {
+//        
+//        daysOfMonth.removeAll()
+//        let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
+//        let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
+//        let startingSpaces = calendarHelper.weekDay(date: firstDayOfMonth)
+//        
+//        var count: Int = 1
+//
+//        while count <= 42 {
+//            if count <= startingSpaces || count - startingSpaces > daysInMonth {
+//                totalSquares.append("")
+//            } else {
+//                totalSquares.append(String(count - startingSpaces))
+//            }
+//            count += 1
+//        }
+//        
+//        let dateString = calendarHelper.monthString(date: selectedDate) + " " + calendarHelper.yearString(date: selectedDate)
+//        let result = CalendarViewModel(squares: totalSquares, title: dateString)
+//        return result
+//    }
 }
