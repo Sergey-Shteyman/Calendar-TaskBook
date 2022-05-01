@@ -19,15 +19,18 @@ protocol ContainerPresenterProtocol: AnyObject {
 final class ContainerPresenter {
     
     var viewController: ContainerViewControllerProtocol?
-    private var moduleBuilder: Buildable
+    private let moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
+    private let dateHelper: DateHelperProtocol
+    
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
     
     init(moduleBuilder: Buildable,
-         calendarHelper: CalendarHelperProtocol) {
+         calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
         self.moduleBuilder = moduleBuilder
         self.calendarHelper = calendarHelper
+        self.dateHelper = dateHelper
     }
 }
 
@@ -72,18 +75,17 @@ private extension ContainerPresenter {
         fetchDaysOfMonth()
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
+        let dayFormat = DateHelperElements.dayFormatToOneDay
+        let localeIdentifire = DateHelperElements.localeIdentifireRU
         let title = month + " " + year
         let squares = daysOfMonth.map { date -> String in
             guard let date = date else {
                 return ""
             }
-            // ---------
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "d"
-            dateFormatter.locale = Locale(identifier: "ru_RU")
-            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-            // ---------
-            let dateString = dateFormatter.string(from: date)
+            let dateString = dateHelper.formateDateToString(dateFormat: dayFormat,
+                                                            localeIdentifire: localeIdentifire,
+                                                            timeZoneSeconds: 0,
+                                                            date: date)
             return dateString
         }
         let viewModel = CalendarViewModel(squares: squares, title: title)
@@ -96,20 +98,18 @@ private extension ContainerPresenter {
         let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
         let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
         let startingSpaces = calendarHelper.weekDay(date: firstDayOfMonth)
-
-        // TODO: - убрать магические числа. Count - startElement, 42 - колличество элементов. Вынести в enum константы И сделать satic let чего то там аха, крч по уму)
         
-        var count: Int = 1
+        var startElement = CalendarElements.startElement
 
-        while count <= 42 {
-            if count <= startingSpaces || count - startingSpaces > daysInMonth {
+        while startElement <= CalendarElements.numberOfElements {
+            if startElement <= startingSpaces || startElement - startingSpaces > daysInMonth {
                 daysOfMonth.append(nil)
             } else {
-                let value = count - startingSpaces
+                let value = startElement - startingSpaces
                 let date = Calendar.current.date(byAdding: .day, value: value, to: firstDayOfMonth)
                 daysOfMonth.append(date)
             }
-            count += 1
+            startElement += 1
         }
     }
 }

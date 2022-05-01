@@ -5,7 +5,7 @@
 //  Created by Сергей Штейман on 22.04.2022.
 //
 
-import UIKit
+import Foundation
 
 // MARK: - protocol CalendarHelperProtocol {
 protocol CalendarHelperProtocol {
