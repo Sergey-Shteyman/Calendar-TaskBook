@@ -56,6 +56,7 @@ extension CalendarHelper: CalendarHelperProtocol {
 
     func daysInMonth(date: Date) -> Int {
         let range = calendar.range(of: .day, in: .month, for: date)
+        
         guard let range = range else {
             return Int()
         }

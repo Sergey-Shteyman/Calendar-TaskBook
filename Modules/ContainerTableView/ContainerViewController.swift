@@ -96,6 +96,13 @@ extension ContainerViewController: CalendarViewCellDelegate {
     func calendarViewDidTapItem(index: Int) {
         presenter?.didTapDay(index: index)
     }
+    
+    func searchWeekend(indexPath: IndexPath) -> Bool {
+        guard let isWeekend = presenter?.isWeekend(indexPath: indexPath) else {
+            return Bool()
+        }
+        return isWeekend
+    }
 }
 
 // MARK: - Private Methods

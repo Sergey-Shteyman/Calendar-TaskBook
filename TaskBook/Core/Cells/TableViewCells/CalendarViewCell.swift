@@ -12,6 +12,7 @@ protocol CalendarViewCellDelegate: AnyObject {
     func calendarViewDidTapNextMonthButton()
     func calendarViewDidTapPreviousMonthButton()
     func calendarViewDidTapItem(index: Int)
+    func searchWeekend(indexPath: IndexPath) -> Bool
 }
 
 // MARK: - CalendarViewCell
@@ -20,6 +21,7 @@ final class CalendarViewCell: UITableViewCell {
     weak var delegate: CalendarViewCellDelegate?
     
     private var totalSquares = [String]()
+    
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -112,7 +114,15 @@ extension CalendarViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CollectionViewCell.self, indePath: indexPath)
-        myCell.setupCell(with: totalSquares[indexPath.item], color: .black)
+        
+        guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
+            return UICollectionViewCell()
+        }
+        if isDayWeekend {
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .red)
+        } else {
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .black)
+        }
         return myCell
     }
 }

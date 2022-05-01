@@ -13,6 +13,7 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didTapNextMonthButton()
     func didTapPreviousMonthButton()
     func didTapDay(index: Int)
+    func isWeekend(indexPath: IndexPath) -> Bool
 }
 
 // MARK: - ContainerPresenter
@@ -36,6 +37,13 @@ final class ContainerPresenter {
 
 // MARK: - ContainerPresenterProtocol Impl
 extension ContainerPresenter: ContainerPresenterProtocol {
+    
+    func isWeekend(indexPath: IndexPath) -> Bool {
+        if Weekends.arrayWekends.contains(indexPath.row) {
+            return true
+        }
+        return false
+    }
     
     func viewIsReady() {
         let calendarViewModel = fetchCalendarViewModel()
