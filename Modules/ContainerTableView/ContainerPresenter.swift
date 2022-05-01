@@ -21,7 +21,6 @@ final class ContainerPresenter {
     var viewController: ContainerViewControllerProtocol?
     private var moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
-    private var totalSquares = [String]()
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
     
@@ -59,7 +58,10 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     }
     
     func didTapDay(index: Int) {
-        print(index)
+        guard let date = daysOfMonth[index] else {
+            return
+        }
+        print(date)
     }
 }
 
@@ -67,46 +69,47 @@ extension ContainerPresenter: ContainerPresenterProtocol {
 private extension ContainerPresenter {
     
     func fetchCalendarViewModel() -> CalendarViewModel {
-        totalSquares.removeAll()
+        fetchDaysOfMonth()
+        let month = calendarHelper.monthString(date: selectedDate)
+        let year = calendarHelper.yearString(date: selectedDate)
+        let title = month + " " + year
+        let squares = daysOfMonth.map { date -> String in
+            guard let date = date else {
+                return ""
+            }
+            // ---------
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "d"
+            dateFormatter.locale = Locale(identifier: "ru_RU")
+            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            // ---------
+            let dateString = dateFormatter.string(from: date)
+            return dateString
+        }
+        let viewModel = CalendarViewModel(squares: squares, title: title)
+        return viewModel
+    }
+    
+    func fetchDaysOfMonth() {
+
+        daysOfMonth.removeAll()
         let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
         let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
         let startingSpaces = calendarHelper.weekDay(date: firstDayOfMonth)
 
+        // TODO: - убрать магические числа. Count - startElement, 42 - колличество элементов. Вынести в enum константы И сделать satic let чего то там аха, крч по уму)
+        
         var count: Int = 1
 
         while count <= 42 {
             if count <= startingSpaces || count - startingSpaces > daysInMonth {
-                totalSquares.append("")
+                daysOfMonth.append(nil)
             } else {
-                totalSquares.append(String(count - startingSpaces))
+                let value = count - startingSpaces
+                let date = Calendar.current.date(byAdding: .day, value: value, to: firstDayOfMonth)
+                daysOfMonth.append(date)
             }
             count += 1
         }
-        let dateString = calendarHelper.monthString(date: selectedDate) + " " + calendarHelper.yearString(date: selectedDate)
-        let result = CalendarViewModel(squares: totalSquares, title: dateString)
-        return result
     }
-    
-//    func fetchCalendarViewModelWithDate() -> CalendarViewModel {
-//        
-//        daysOfMonth.removeAll()
-//        let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
-//        let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
-//        let startingSpaces = calendarHelper.weekDay(date: firstDayOfMonth)
-//        
-//        var count: Int = 1
-//
-//        while count <= 42 {
-//            if count <= startingSpaces || count - startingSpaces > daysInMonth {
-//                totalSquares.append("")
-//            } else {
-//                totalSquares.append(String(count - startingSpaces))
-//            }
-//            count += 1
-//        }
-//        
-//        let dateString = calendarHelper.monthString(date: selectedDate) + " " + calendarHelper.yearString(date: selectedDate)
-//        let result = CalendarViewModel(squares: totalSquares, title: dateString)
-//        return result
-//    }
 }

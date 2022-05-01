@@ -45,11 +45,9 @@ extension ContainerViewController: ContainerViewControllerProtocol {
 
 // MARK: - UITableViewDelegate
 extension ContainerViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            tableView.allowsSelection = false
-        }
+
     }
 }
 
@@ -72,6 +70,7 @@ extension ContainerViewController: UITableViewDataSource {
         switch type {
         case .calendar(let viewModel):
             let cell = tableView.myDequeueReusableCell(type: CalendarViewCell.self, indePath: indexPath)
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.delegate = self
             cell.setupCellConfiguration(viewModel: viewModel)
             return cell
