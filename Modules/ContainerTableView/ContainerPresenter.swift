@@ -83,6 +83,8 @@ private extension ContainerPresenter {
         fetchDaysOfMonth()
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
+        let day = calendarHelper.dayString(date: selectedDate)
+        print("Yor day is \(day) \(month)")
         let dayFormat = DateHelperElements.dayFormatToOneDay
         let localeIdentifire = DateHelperElements.localeIdentifireRU
         let title = month + " " + year

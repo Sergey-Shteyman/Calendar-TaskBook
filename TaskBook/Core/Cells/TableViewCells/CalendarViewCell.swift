@@ -119,7 +119,7 @@ extension CalendarViewCell: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         if isDayWeekend {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .red)
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .gray)
         } else {
             myCell.setupCell(with: totalSquares[indexPath.item], color: .black)
         }
@@ -154,10 +154,16 @@ private extension CalendarViewCell {
             WeekDay.wednesday, WeekDay.thursday, WeekDay.friday,
             WeekDay.saturday, WeekDay.sunday
         ]
+        
+        var countDays = 0
         for day in weekDay {
             let label = UILabel()
             label.text = day.rawValue
             label.textAlignment = .center
+            if countDays > 4 {
+                label.textColor = .gray
+            }
+            countDays += 1
             stackView.addArrangedSubview(label)
         }
     }

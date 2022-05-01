@@ -12,6 +12,7 @@ protocol CalendarHelperProtocol {
     func plusMonth(date: Date) -> Date
     func minusMonth(date: Date) -> Date
     func monthString(date: Date) -> String
+    func dayString(date: Date) -> String
     func yearString(date: Date) -> String
     func daysInMonth(date: Date) -> Int
     func daysOfMonth(date: Date) -> Int
@@ -22,7 +23,8 @@ protocol CalendarHelperProtocol {
 // MARK: - CalendarHelper
 final class CalendarHelper {
 
-    let calendar = Calendar.current
+    private let calendar = Calendar.current
+    private let dateFormater = DateFormatter()
 }
 
 // MARK: - CalendarHelperProtocol Impl
@@ -43,14 +45,17 @@ extension CalendarHelper: CalendarHelperProtocol {
     }
 
     func monthString(date: Date) -> String {
-        let dateFormater = DateFormatter()
         dateFormater.dateFormat = "LLLL"
         return dateFormater.string(from: date)
     }
 
     func yearString(date: Date) -> String {
-        let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy"
+        return dateFormater.string(from: date)
+    }
+    
+    func dayString(date: Date) -> String {
+        dateFormater.dateFormat = "d"
         return dateFormater.string(from: date)
     }
 
