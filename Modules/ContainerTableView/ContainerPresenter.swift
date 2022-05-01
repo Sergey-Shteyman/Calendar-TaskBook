@@ -14,6 +14,7 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didTapPreviousMonthButton()
     func didTapDay(index: Int)
     func isWeekend(indexPath: IndexPath) -> Bool
+    func currentDay() -> Int
 }
 
 // MARK: - ContainerPresenter
@@ -37,6 +38,28 @@ final class ContainerPresenter {
 
 // MARK: - ContainerPresenterProtocol Impl
 extension ContainerPresenter: ContainerPresenterProtocol {
+    
+    func currentDay() -> Int {
+        let dayFormat = DateHelperElements.dayFormateFulDate
+        let localeIdentifire = DateHelperElements.localeIdentifireRU
+        let squares = daysOfMonth.map { date -> String in
+            guard let date = date else {
+                return ""
+            }
+            let dateString = dateHelper.formateDateToString(dateFormat: dayFormat,
+                                                            localeIdentifire: localeIdentifire,
+                                                            timeZoneSeconds: 0,
+                                                            date: date)
+            return dateString
+        }
+        
+        let today = calendarHelper.currentDateString(date: calendarHelper.currentDate())
+        let currentDay = squares.firstIndex(of: today)
+        guard let currentDay = currentDay else {
+            return Int()
+        }
+        return currentDay
+    }
     
     func isWeekend(indexPath: IndexPath) -> Bool {
         if Weekends.arrayWekends.contains(indexPath.row) {
@@ -81,10 +104,9 @@ private extension ContainerPresenter {
     
     func fetchCalendarViewModel() -> CalendarViewModel {
         fetchDaysOfMonth()
+        
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
-        let day = calendarHelper.dayString(date: selectedDate)
-        print("Yor day is \(day) \(month)")
         let dayFormat = DateHelperElements.dayFormatToOneDay
         let localeIdentifire = DateHelperElements.localeIdentifireRU
         let title = month + " " + year

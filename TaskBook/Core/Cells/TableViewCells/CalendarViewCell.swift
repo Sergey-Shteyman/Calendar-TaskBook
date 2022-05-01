@@ -13,6 +13,8 @@ protocol CalendarViewCellDelegate: AnyObject {
     func calendarViewDidTapPreviousMonthButton()
     func calendarViewDidTapItem(index: Int)
     func searchWeekend(indexPath: IndexPath) -> Bool
+    func currentDay() -> Int
+//    func selectedSquere(with numberOfMoth: Int)
 }
 
 // MARK: - CalendarViewCell
@@ -21,6 +23,8 @@ final class CalendarViewCell: UITableViewCell {
     weak var delegate: CalendarViewCellDelegate?
     
     private var totalSquares = [String]()
+    
+    private let currentDay = ""
     
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
@@ -70,6 +74,11 @@ final class CalendarViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .white
         setupCell()
+//        guard let currentDay = delegate?.currentDay() else {
+//            return
+//        }
+//        delegate?.selectedSquere(with: currentDay)
+
     }
     
     required init?(coder: NSCoder) {
@@ -118,10 +127,18 @@ extension CalendarViewCell: UICollectionViewDataSource {
         guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
             return UICollectionViewCell()
         }
+        guard let today = delegate?.currentDay() else {
+            return UICollectionViewCell()
+        }
+        
         if isDayWeekend {
             myCell.setupCell(with: totalSquares[indexPath.item], color: .gray)
         } else {
             myCell.setupCell(with: totalSquares[indexPath.item], color: .black)
+        }
+        if indexPath.row == today {
+            print(delegate?.currentDay())
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .red)
         }
         return myCell
     }

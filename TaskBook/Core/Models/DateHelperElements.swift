@@ -7,7 +7,8 @@
 
 // MARK: - DateHelperElements
 enum DateHelperElements {
-    
     static let localeIdentifireRU = "ru_RU"
     static let dayFormatToOneDay = "d"
+    static let dayFormateFulDate = "yyyy-MM-dd"
+    
 }

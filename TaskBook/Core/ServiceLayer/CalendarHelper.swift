@@ -18,6 +18,8 @@ protocol CalendarHelperProtocol {
     func daysOfMonth(date: Date) -> Int
     func firstOfMonth(date: Date) -> Date
     func weekDay(date: Date) -> Int
+    func currentDate() -> Date
+    func currentDateString(date: Date) -> String
 }
 
 // MARK: - CalendarHelper
@@ -57,6 +59,19 @@ extension CalendarHelper: CalendarHelperProtocol {
     func dayString(date: Date) -> String {
         dateFormater.dateFormat = "d"
         return dateFormater.string(from: date)
+    }
+    
+    func currentDateString(date: Date) -> String {
+        dateFormater.dateFormat = "yyyy-MM-dd"
+        return dateFormater.string(from: date)
+    }
+    
+    func currentDate() -> Date {
+        let date = Date()
+        guard let date = calendar.dateComponents([.year, .month, .day], from: date).date else {
+            return Date()
+        }
+        return date
     }
 
     func daysInMonth(date: Date) -> Int {
