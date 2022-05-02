@@ -16,9 +16,11 @@ protocol Buildable {
 final class ModuleBuilder {
 
     private let calendarHelper: CalendarHelperProtocol
+    private let dateHelper: DateHelperProtocol
 
     init() {
         calendarHelper = CalendarHelper()
+        dateHelper = DateHelper()
     }
 }
 
@@ -27,7 +29,9 @@ extension ModuleBuilder: Buildable {
 
     func buildContainerModule() -> ContainerViewController {
         let viewController = ContainerViewController()
-        let presenter = ContainerPresenter(moduleBuilder: self, calendarHelper: calendarHelper)
+        let presenter = ContainerPresenter(moduleBuilder: self,
+                                           calendarHelper: calendarHelper,
+                                           dateHelper: dateHelper)
         viewController.presenter = presenter
         presenter.viewController = viewController
         return viewController

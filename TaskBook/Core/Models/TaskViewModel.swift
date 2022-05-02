@@ -5,6 +5,8 @@
 //  Created by Сергей Штейман on 28.04.2022.
 //
 
+// MARK: - TaskViewModel
 struct TaskViewModel {
     
+    let title: String
 }

@@ -5,24 +5,28 @@
 //  Created by Сергей Штейман on 22.04.2022.
 //
 
-import UIKit
+import Foundation
 
 // MARK: - protocol CalendarHelperProtocol {
 protocol CalendarHelperProtocol {
     func plusMonth(date: Date) -> Date
     func minusMonth(date: Date) -> Date
     func monthString(date: Date) -> String
+    func dayString(date: Date) -> String
     func yearString(date: Date) -> String
     func daysInMonth(date: Date) -> Int
     func daysOfMonth(date: Date) -> Int
     func firstOfMonth(date: Date) -> Date
     func weekDay(date: Date) -> Int
+    func currentDate() -> Date
+    func currentDateString(date: Date) -> String
 }
 
 // MARK: - CalendarHelper
 final class CalendarHelper {
 
-    let calendar = Calendar.current
+    private let calendar = Calendar.current
+    private let dateFormater = DateFormatter()
 }
 
 // MARK: - CalendarHelperProtocol Impl
@@ -43,19 +47,36 @@ extension CalendarHelper: CalendarHelperProtocol {
     }
 
     func monthString(date: Date) -> String {
-        let dateFormater = DateFormatter()
         dateFormater.dateFormat = "LLLL"
         return dateFormater.string(from: date)
     }
 
     func yearString(date: Date) -> String {
-        let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy"
         return dateFormater.string(from: date)
+    }
+    
+    func dayString(date: Date) -> String {
+        dateFormater.dateFormat = "d"
+        return dateFormater.string(from: date)
+    }
+    
+    func currentDateString(date: Date) -> String {
+        dateFormater.dateFormat = "yyyy-MM-dd"
+        return dateFormater.string(from: date)
+    }
+    
+    func currentDate() -> Date {
+        let date = Date()
+        guard let date = calendar.dateComponents([.year, .month, .day], from: date).date else {
+            return Date()
+        }
+        return date
     }
 
     func daysInMonth(date: Date) -> Int {
         let range = calendar.range(of: .day, in: .month, for: date)
+        
         guard let range = range else {
             return Int()
         }

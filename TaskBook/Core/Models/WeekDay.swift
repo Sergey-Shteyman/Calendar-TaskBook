@@ -5,6 +5,7 @@
 //  Created by Сергей Штейман on 21.04.2022.
 //
 
+// MARK: - WeekDay
 enum WeekDay: String {
     case monday = "Mon"
     case tuesday = "Tue"

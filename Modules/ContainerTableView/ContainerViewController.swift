@@ -24,7 +24,7 @@ final class ContainerViewController: UIViewController {
         tableView.myRegister(CalendarViewCell.self)
         tableView.myRegister(TaskCell.self)
         tableView.dataSource = self
-        tableView.allowsSelection = false
+        tableView.delegate = self
         return tableView
     }()
     
@@ -40,6 +40,14 @@ extension ContainerViewController: ContainerViewControllerProtocol {
     func updateTableView(sections: [Section]) {
         self.sections = sections
         tableView.reloadData()
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension ContainerViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
     }
 }
 
@@ -62,6 +70,7 @@ extension ContainerViewController: UITableViewDataSource {
         switch type {
         case .calendar(let viewModel):
             let cell = tableView.myDequeueReusableCell(type: CalendarViewCell.self, indePath: indexPath)
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.delegate = self
             cell.setupCellConfiguration(viewModel: viewModel)
             return cell
@@ -76,12 +85,34 @@ extension ContainerViewController: UITableViewDataSource {
 // MARK: - CalendarViewCellDelegate Impl
 extension ContainerViewController: CalendarViewCellDelegate {
     
+    func selectedSquere(numberOfSqueres: Int) {
+        presenter?.selectedSquere(index: numberOfSqueres)
+    }
+    
+    func currentSquere() -> Int? {
+        guard let currentDay = presenter?.currentDay() else {
+            return nil
+        }
+        return currentDay
+    }
+
     func calendarViewDidTapNextMonthButton() {
         presenter?.didTapNextMonthButton()
     }
     
     func calendarViewDidTapPreviousMonthButton() {
         presenter?.didTapPreviousMonthButton()
+    }
+    
+    func calendarViewDidTapItem(index: Int) {
+        presenter?.didTapDay(index: index)
+    }
+    
+    func searchWeekend(indexPath: IndexPath) -> Bool {
+        guard let isWeekend = presenter?.isWeekend(indexPath: indexPath) else {
+            return Bool()
+        }
+        return isWeekend
     }
 }
 

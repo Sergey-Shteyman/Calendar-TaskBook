@@ -10,9 +10,8 @@ import UIKit
 // MARK: - TaskViewCell
 final class TaskCell: UITableViewCell {
     
-    private lazy var label: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "1"
         label.font = .boldSystemFont(ofSize: 17)
         return label
     }()
@@ -30,7 +29,7 @@ final class TaskCell: UITableViewCell {
 // MARK: - Publick Methods
 extension TaskCell {
     func setupCellConfiguration(_ viewModel: TaskViewModel) {
-        
+        titleLabel.text = viewModel.title
     }
 }
 
@@ -42,14 +41,15 @@ private extension TaskCell {
     }
     
     func addSubViews() {
-        let arraySubViews = [label]
-        contentView.myAddSubViews(from: arraySubViews)
+        let arraySubViews = [titleLabel]
+        myAddSubViews(from: arraySubViews)
+
     }
     
     func addConstraints() {
         NSLayoutConstraint.activate([
-            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20)
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 }

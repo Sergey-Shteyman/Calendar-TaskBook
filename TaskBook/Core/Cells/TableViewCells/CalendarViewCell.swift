@@ -7,9 +7,14 @@
 
 import UIKit
 
+// MARK: - CalendarViewCellDelegate
 protocol CalendarViewCellDelegate: AnyObject {
     func calendarViewDidTapNextMonthButton()
     func calendarViewDidTapPreviousMonthButton()
+    func calendarViewDidTapItem(index: Int)
+    func searchWeekend(indexPath: IndexPath) -> Bool
+    func currentSquere() -> Int?
+    func selectedSquere(numberOfSqueres: Int)
 }
 
 // MARK: - CalendarViewCell
@@ -18,6 +23,8 @@ final class CalendarViewCell: UITableViewCell {
     weak var delegate: CalendarViewCellDelegate?
     
     private var totalSquares = [String]()
+    private var selectedDate: Int?
+        
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -94,6 +101,12 @@ extension CalendarViewCell {
 // MARK: - UICollectionViewDelegate Impl
 extension CalendarViewCell: UICollectionViewDelegate {
 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let index = indexPath.item
+        delegate?.calendarViewDidTapItem(index: index)
+        delegate?.selectedSquere(numberOfSqueres: index)
+        collectionView.reloadData()
+    }
 }
 
 // MARK: - UICollectionViewDataSource Impl
@@ -106,7 +119,22 @@ extension CalendarViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CollectionViewCell.self, indePath: indexPath)
-        myCell.setupCell(with: totalSquares[indexPath.item])
+        
+        guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
+            return UICollectionViewCell()
+        }
+        let currentSquere = delegate?.currentSquere()
+        
+        selectedDate = currentSquere
+        
+        if isDayWeekend {
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .gray, isSelected: false)
+        } else {
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .black, isSelected: false)
+        }
+        if indexPath.row == selectedDate {
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .white, isSelected: true)
+        }
         return myCell
     }
 }
@@ -138,10 +166,17 @@ private extension CalendarViewCell {
             WeekDay.wednesday, WeekDay.thursday, WeekDay.friday,
             WeekDay.saturday, WeekDay.sunday
         ]
+        
+        var countDays = 0
         for day in weekDay {
             let label = UILabel()
             label.text = day.rawValue
+            label.font = .systemFont(ofSize: 19)
             label.textAlignment = .center
+            if countDays > 4 {
+                label.textColor = .gray
+            }
+            countDays += 1
             stackView.addArrangedSubview(label)
         }
     }
