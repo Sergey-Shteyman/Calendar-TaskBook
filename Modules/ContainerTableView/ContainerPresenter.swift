@@ -15,6 +15,7 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didTapDay(index: Int)
     func isWeekend(indexPath: IndexPath) -> Bool
     func currentDay() -> Int
+    func selectedSquere(index: Int)
 }
 
 // MARK: - ContainerPresenter
@@ -24,25 +25,33 @@ final class ContainerPresenter {
     private let moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
+    private var today: String
     
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
+    private var squares = [String]()
     
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
         self.moduleBuilder = moduleBuilder
         self.calendarHelper = calendarHelper
         self.dateHelper = dateHelper
+        today = calendarHelper.currentDateString(date: calendarHelper.currentDate())
     }
 }
 
 // MARK: - ContainerPresenterProtocol Impl
 extension ContainerPresenter: ContainerPresenterProtocol {
     
+    func selectedSquere(index: Int) {
+        self.today = squares[index]
+        print(today)
+    }
+    
     func currentDay() -> Int {
         let dayFormat = DateHelperElements.dayFormateFulDate
         let localeIdentifire = DateHelperElements.localeIdentifireRU
-        let squares = daysOfMonth.map { date -> String in
+        self.squares = daysOfMonth.map { date -> String in
             guard let date = date else {
                 return ""
             }
@@ -53,7 +62,6 @@ extension ContainerPresenter: ContainerPresenterProtocol {
             return dateString
         }
         
-        let today = calendarHelper.currentDateString(date: calendarHelper.currentDate())
         let currentDay = squares.firstIndex(of: today)
         guard let currentDay = currentDay else {
             return Int()

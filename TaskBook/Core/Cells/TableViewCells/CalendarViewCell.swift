@@ -13,8 +13,9 @@ protocol CalendarViewCellDelegate: AnyObject {
     func calendarViewDidTapPreviousMonthButton()
     func calendarViewDidTapItem(index: Int)
     func searchWeekend(indexPath: IndexPath) -> Bool
-    func currentDay() -> Int
-//    func selectedSquere(with numberOfMoth: Int)
+    func currentSquere() -> Int
+    func selectedSquere(numberOfSqueres: Int)
+//    func selectedSquere(numberOfSqueres: IndexPath, collectionView: UICollectionView)
 }
 
 // MARK: - CalendarViewCell
@@ -23,9 +24,8 @@ final class CalendarViewCell: UITableViewCell {
     weak var delegate: CalendarViewCellDelegate?
     
     private var totalSquares = [String]()
-    
-    private let currentDay = ""
-    
+    private var selectedDate: Int?
+        
     private lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -74,11 +74,6 @@ final class CalendarViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = .white
         setupCell()
-//        guard let currentDay = delegate?.currentDay() else {
-//            return
-//        }
-//        delegate?.selectedSquere(with: currentDay)
-
     }
     
     required init?(coder: NSCoder) {
@@ -87,10 +82,12 @@ final class CalendarViewCell: UITableViewCell {
     
     @objc func changeToNextMonth() {
         delegate?.calendarViewDidTapNextMonthButton()
+        collectionView.reloadData()
     }
 
     @objc func changeToPreviousMonth() {
         delegate?.calendarViewDidTapPreviousMonthButton()
+        collectionView.reloadData()
     }
 }
 
@@ -110,6 +107,8 @@ extension CalendarViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let index = indexPath.item
         delegate?.calendarViewDidTapItem(index: index)
+        delegate?.selectedSquere(numberOfSqueres: index)
+        collectionView.reloadData()
     }
 }
 
@@ -127,18 +126,21 @@ extension CalendarViewCell: UICollectionViewDataSource {
         guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
             return UICollectionViewCell()
         }
-        guard let today = delegate?.currentDay() else {
+        guard let currentSquere = delegate?.currentSquere() else {
             return UICollectionViewCell()
         }
+        selectedDate = currentSquere
         
         if isDayWeekend {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .gray)
+            myCell.setupCell(with: totalSquares[indexPath.item])
+            myCell.selectedCell(with: .gray)
         } else {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .black)
+            myCell.setupCell(with: totalSquares[indexPath.item])
+            myCell.selectedCell(with: .black)
         }
-        if indexPath.row == today {
-            print(delegate?.currentDay())
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .red)
+        if indexPath.row == selectedDate {
+            myCell.setupCell(with: totalSquares[indexPath.item])
+            myCell.selectedCell(with: .red)
         }
         return myCell
     }

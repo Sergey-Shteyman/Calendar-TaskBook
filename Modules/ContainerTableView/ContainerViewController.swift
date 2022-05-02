@@ -85,15 +85,15 @@ extension ContainerViewController: UITableViewDataSource {
 // MARK: - CalendarViewCellDelegate Impl
 extension ContainerViewController: CalendarViewCellDelegate {
     
-    func currentDay() -> Int {
+    func selectedSquere(numberOfSqueres: Int) {
+        presenter?.selectedSquere(index: numberOfSqueres)
+    }
+    
+    func currentSquere() -> Int {
         guard let currentDay = presenter?.currentDay() else {
             return Int()
         }
         return currentDay
-    }
-    
-    func selectedSquere() {
-        
     }
 
     func calendarViewDidTapNextMonthButton() {

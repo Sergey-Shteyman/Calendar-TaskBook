@@ -21,10 +21,13 @@ final class CollectionViewCell: UICollectionViewCell {
 // MARK: - publick Methods
 extension CollectionViewCell {
 
-    func setupCell(with dayOfMonth: String, color: UIColor) {
+    func setupCell(with dayOfMonth: String) {
         self.dayOfMonth.text = dayOfMonth
-        self.dayOfMonth.textColor = color
         setupCellConfiguration()
+    }
+    
+    func selectedCell(with color: UIColor) {
+        self.dayOfMonth.textColor = color
     }
 }
 
