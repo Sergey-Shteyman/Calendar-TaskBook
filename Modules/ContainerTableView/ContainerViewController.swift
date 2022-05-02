@@ -89,9 +89,9 @@ extension ContainerViewController: CalendarViewCellDelegate {
         presenter?.selectedSquere(index: numberOfSqueres)
     }
     
-    func currentSquere() -> Int {
+    func currentSquere() -> Int? {
         guard let currentDay = presenter?.currentDay() else {
-            return Int()
+            return nil
         }
         return currentDay
     }

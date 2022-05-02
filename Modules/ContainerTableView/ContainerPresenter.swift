@@ -14,7 +14,7 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didTapPreviousMonthButton()
     func didTapDay(index: Int)
     func isWeekend(indexPath: IndexPath) -> Bool
-    func currentDay() -> Int
+    func currentDay() -> Int?
     func selectedSquere(index: Int)
 }
 
@@ -44,17 +44,19 @@ final class ContainerPresenter {
 extension ContainerPresenter: ContainerPresenterProtocol {
     
     func selectedSquere(index: Int) {
-        self.today = squares[index]
+        if squares[index] != "" {
+            self.today = squares[index]
+        }
     }
     
-    func currentDay() -> Int {
+    func currentDay() -> Int? {
         self.squares = fetchArrayDateString(daysOfMonth: daysOfMonth,
                                             dayFormat: .dayFormateFulDate,
                                             localIdentifire: .localeIdentifireRU,
                                             timeZoneSeconds: 0)
         let currentDay = squares.firstIndex(of: today)
         guard let currentDay = currentDay else {
-            return Int()
+            return nil
         }
         return currentDay
     }

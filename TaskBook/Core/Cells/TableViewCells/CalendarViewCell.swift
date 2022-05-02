@@ -13,7 +13,7 @@ protocol CalendarViewCellDelegate: AnyObject {
     func calendarViewDidTapPreviousMonthButton()
     func calendarViewDidTapItem(index: Int)
     func searchWeekend(indexPath: IndexPath) -> Bool
-    func currentSquere() -> Int
+    func currentSquere() -> Int?
     func selectedSquere(numberOfSqueres: Int)
 }
 
@@ -123,9 +123,8 @@ extension CalendarViewCell: UICollectionViewDataSource {
         guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
             return UICollectionViewCell()
         }
-        guard let currentSquere = delegate?.currentSquere() else {
-            return UICollectionViewCell()
-        }
+        let currentSquere = delegate?.currentSquere()
+        
         selectedDate = currentSquere
         
         if isDayWeekend {
