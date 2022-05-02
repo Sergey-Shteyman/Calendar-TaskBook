@@ -12,7 +12,7 @@ final class CollectionViewCell: UICollectionViewCell {
     
     private lazy var dayOfMonth: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 21)
         label.textAlignment = .center
         return label
     }()
@@ -21,13 +21,16 @@ final class CollectionViewCell: UICollectionViewCell {
 // MARK: - publick Methods
 extension CollectionViewCell {
 
-    func setupCell(with dayOfMonth: String) {
+    func setupCell(with dayOfMonth: String, color: UIColor, isSelected: Bool) {
         self.dayOfMonth.text = dayOfMonth
-        setupCellConfiguration()
-    }
-    
-    func selectedCell(with color: UIColor) {
         self.dayOfMonth.textColor = color
+        if isSelected {
+            setupLayer()
+            self.backgroundColor = .red
+        } else {
+            self.backgroundColor = .white
+        }
+        setupCellConfiguration()
     }
 }
 
@@ -38,17 +41,22 @@ private extension CollectionViewCell {
         addSubViews()
         addConstraints()
     }
+    
+    func setupLayer() {
+        self.layer.cornerRadius = 23
+        self.layer.borderColor = UIColor.white.cgColor
+        self.layer.borderWidth = 7
+        self.layer.masksToBounds = true
+    }
 
     func addSubViews() {
         contentView.myAddSubView(dayOfMonth)
     }
 
     func addConstraints() {
-        let frameHeight = frame.height
-        let padding = frameHeight * 0.25
         NSLayoutConstraint.activate([
             dayOfMonth.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            dayOfMonth.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -padding)
+            dayOfMonth.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 }

@@ -128,15 +128,12 @@ extension CalendarViewCell: UICollectionViewDataSource {
         selectedDate = currentSquere
         
         if isDayWeekend {
-            myCell.setupCell(with: totalSquares[indexPath.item])
-            myCell.selectedCell(with: .gray)
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .gray, isSelected: false)
         } else {
-            myCell.setupCell(with: totalSquares[indexPath.item])
-            myCell.selectedCell(with: .black)
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .black, isSelected: false)
         }
         if indexPath.row == selectedDate {
-            myCell.setupCell(with: totalSquares[indexPath.item])
-            myCell.selectedCell(with: .red)
+            myCell.setupCell(with: totalSquares[indexPath.item], color: .white, isSelected: true)
         }
         return myCell
     }
@@ -174,6 +171,7 @@ private extension CalendarViewCell {
         for day in weekDay {
             let label = UILabel()
             label.text = day.rawValue
+            label.font = .systemFont(ofSize: 19)
             label.textAlignment = .center
             if countDays > 4 {
                 label.textColor = .gray
