@@ -15,7 +15,6 @@ protocol CalendarViewCellDelegate: AnyObject {
     func searchWeekend(indexPath: IndexPath) -> Bool
     func currentSquere() -> Int
     func selectedSquere(numberOfSqueres: Int)
-//    func selectedSquere(numberOfSqueres: IndexPath, collectionView: UICollectionView)
 }
 
 // MARK: - CalendarViewCell
@@ -82,12 +81,10 @@ final class CalendarViewCell: UITableViewCell {
     
     @objc func changeToNextMonth() {
         delegate?.calendarViewDidTapNextMonthButton()
-        collectionView.reloadData()
     }
 
     @objc func changeToPreviousMonth() {
         delegate?.calendarViewDidTapPreviousMonthButton()
-        collectionView.reloadData()
     }
 }
 

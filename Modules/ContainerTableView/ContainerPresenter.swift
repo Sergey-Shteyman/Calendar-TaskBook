@@ -36,7 +36,7 @@ final class ContainerPresenter {
         self.moduleBuilder = moduleBuilder
         self.calendarHelper = calendarHelper
         self.dateHelper = dateHelper
-        today = calendarHelper.currentDateString(date: calendarHelper.currentDate())
+        self.today = calendarHelper.currentDateString(date: calendarHelper.currentDate())
     }
 }
 
@@ -45,23 +45,13 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     
     func selectedSquere(index: Int) {
         self.today = squares[index]
-        print(today)
     }
     
     func currentDay() -> Int {
-        let dayFormat = DateHelperElements.dayFormateFulDate
-        let localeIdentifire = DateHelperElements.localeIdentifireRU
-        self.squares = daysOfMonth.map { date -> String in
-            guard let date = date else {
-                return ""
-            }
-            let dateString = dateHelper.formateDateToString(dateFormat: dayFormat,
-                                                            localeIdentifire: localeIdentifire,
-                                                            timeZoneSeconds: 0,
-                                                            date: date)
-            return dateString
-        }
-        
+        self.squares = fetchArrayDateString(daysOfMonth: daysOfMonth,
+                                            dayFormat: .dayFormateFulDate,
+                                            localIdentifire: .localeIdentifireRU,
+                                            timeZoneSeconds: 0)
         let currentDay = squares.firstIndex(of: today)
         guard let currentDay = currentDay else {
             return Int()
@@ -112,28 +102,18 @@ private extension ContainerPresenter {
     
     func fetchCalendarViewModel() -> CalendarViewModel {
         fetchDaysOfMonth()
-        
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
-        let dayFormat = DateHelperElements.dayFormatToOneDay
-        let localeIdentifire = DateHelperElements.localeIdentifireRU
         let title = month + " " + year
-        let squares = daysOfMonth.map { date -> String in
-            guard let date = date else {
-                return ""
-            }
-            let dateString = dateHelper.formateDateToString(dateFormat: dayFormat,
-                                                            localeIdentifire: localeIdentifire,
-                                                            timeZoneSeconds: 0,
-                                                            date: date)
-            return dateString
-        }
+        self.squares = fetchArrayDateString(daysOfMonth: daysOfMonth,
+                                            dayFormat: .dayFormatToOneDay,
+                                            localIdentifire: .localeIdentifireRU,
+                                            timeZoneSeconds: 0)
         let viewModel = CalendarViewModel(squares: squares, title: title)
         return viewModel
     }
     
     func fetchDaysOfMonth() {
-
         daysOfMonth.removeAll()
         let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
         let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
@@ -151,5 +131,20 @@ private extension ContainerPresenter {
             }
             startElement += 1
         }
+    }
+    
+    func fetchArrayDateString(daysOfMonth: [Date?], dayFormat: DateHelperElements,
+                              localIdentifire: DateHelperElements, timeZoneSeconds: Int) -> [String] {
+        let squares = daysOfMonth.map { date -> String in
+            guard let date = date else {
+                return ""
+            }
+            let dateString = dateHelper.formateDateToString(dateFormat: dayFormat.rawValue,
+                                                            localeIdentifire: localIdentifire.rawValue,
+                                                            timeZoneSeconds: timeZoneSeconds,
+                                                            date: date)
+            return dateString
+        }
+        return squares
     }
 }
