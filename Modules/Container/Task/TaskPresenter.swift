@@ -25,7 +25,7 @@ final class TaskPresenter {
 
 // MARK: - TaskPresenterProtocol Impl
 extension TaskPresenter: TaskPresenterProtocol {
-   
+    
 }
 
 // MARK: - Private Methods

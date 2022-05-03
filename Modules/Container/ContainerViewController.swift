@@ -10,6 +10,7 @@ import UIKit
 // MARK: - ContainerViewControllerProtocol
 protocol ContainerViewControllerProtocol: AnyObject {
     func updateTableView (sections: [Section])
+    func routeTo(_ viewController: UIViewController)
 }
 
 // MARK: - ContainerViewController
@@ -37,6 +38,10 @@ final class ContainerViewController: UIViewController {
 // MARK: - ContainerViewControllerProtocol Impl
 extension ContainerViewController: ContainerViewControllerProtocol {
     
+    func routeTo(_ viewController: UIViewController) {
+        present(viewController, animated: true)
+    }
+    
     func updateTableView(sections: [Section]) {
         self.sections = sections
         tableView.reloadData()
@@ -48,7 +53,9 @@ extension ContainerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        if indexPath.section > 0 {
+            presenter?.fetchTaskViewController(with: indexPath)
+        }
     }
 }
 

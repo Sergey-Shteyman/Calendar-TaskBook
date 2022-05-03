@@ -32,7 +32,6 @@ extension TaskViewController: TaskViewControllerProtocol {
 private extension TaskViewController {
     
     func setupViewController() {
-        view.backgroundColor = .white
-        
+        view.backgroundColor = .green
     }
 }
