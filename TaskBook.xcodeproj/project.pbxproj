@@ -37,6 +37,8 @@
 		5E99A831281EE60300676A2A /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A830281EE60300676A2A /* DateHelper.swift */; };
 		5E99A833281EEADF00676A2A /* DateHelperElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A832281EEADF00676A2A /* DateHelperElements.swift */; };
 		5E99A835281F006C00676A2A /* Weekends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A834281F006C00676A2A /* Weekends.swift */; };
+		5E99A8382821390800676A2A /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A8372821390800676A2A /* TaskViewController.swift */; };
+		5E99A83A2821391D00676A2A /* TaskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A8392821391D00676A2A /* TaskPresenter.swift */; };
 		DEF0BB670C13A8A6437AE51A /* Pods_TaskBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B0D0D72EF6E9835BC9363D /* Pods_TaskBook.framework */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +97,8 @@
 		5E99A830281EE60300676A2A /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		5E99A832281EEADF00676A2A /* DateHelperElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelperElements.swift; sourceTree = "<group>"; };
 		5E99A834281F006C00676A2A /* Weekends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekends.swift; sourceTree = "<group>"; };
+		5E99A8372821390800676A2A /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
+		5E99A8392821391D00676A2A /* TaskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPresenter.swift; sourceTree = "<group>"; };
 		AAE7A5DB3D68798D596C118A /* Pods-TaskBookTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskBookTests.debug.xcconfig"; path = "Target Support Files/Pods-TaskBookTests/Pods-TaskBookTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BC21F2CF7DC5D63512A85FC6 /* Pods-TaskBookTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskBookTests.release.xcconfig"; path = "Target Support Files/Pods-TaskBookTests/Pods-TaskBookTests.release.xcconfig"; sourceTree = "<group>"; };
 		C3103CCCF6483726B585EF92 /* Pods-TaskBook-TaskBookUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskBook-TaskBookUITests.debug.xcconfig"; path = "Target Support Files/Pods-TaskBook-TaskBookUITests/Pods-TaskBook-TaskBookUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -222,7 +226,7 @@
 		5E83E7ED2810874300160AA8 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				5E99A8182817DF8700676A2A /* ContainerTableView */,
+				5E99A8182817DF8700676A2A /* Container */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -263,13 +267,14 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		5E99A8182817DF8700676A2A /* ContainerTableView */ = {
+		5E99A8182817DF8700676A2A /* Container */ = {
 			isa = PBXGroup;
 			children = (
 				5E99A8192817DFA800676A2A /* ContainerViewController.swift */,
 				5E99A8222817E91D00676A2A /* ContainerPresenter.swift */,
+				5E99A8362821387900676A2A /* Task */,
 			);
-			path = ContainerTableView;
+			path = Container;
 			sourceTree = "<group>";
 		};
 		5E99A82A281AF44300676A2A /* CollectionViewCells */ = {
@@ -287,6 +292,15 @@
 				5E99A82428192B4D00676A2A /* TaskCell.swift */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		5E99A8362821387900676A2A /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				5E99A8372821390800676A2A /* TaskViewController.swift */,
+				5E99A8392821391D00676A2A /* TaskPresenter.swift */,
+			);
+			path = Task;
 			sourceTree = "<group>";
 		};
 		60C665D51D670A4DF73A9924 /* Frameworks */ = {
@@ -571,8 +585,10 @@
 				5E99A82D281AF7FD00676A2A /* ContainerViewModel.swift in Sources */,
 				5E83E800281297D300160AA8 /* CollectionViewCell.swift in Sources */,
 				5E99A829281AADEE00676A2A /* TaskViewModel.swift in Sources */,
+				5E99A83A2821391D00676A2A /* TaskPresenter.swift in Sources */,
 				5E83E7FB281296BE00160AA8 /* UICollectionView.swift in Sources */,
 				5E99A81A2817DFA800676A2A /* ContainerViewController.swift in Sources */,
+				5E99A8382821390800676A2A /* TaskViewController.swift in Sources */,
 				5E99A827281AAA6500676A2A /* CalendarViewModel.swift in Sources */,
 				5E99A82F281EE2A900676A2A /* CalendarElemets.swift in Sources */,
 				5E99A835281F006C00676A2A /* Weekends.swift in Sources */,

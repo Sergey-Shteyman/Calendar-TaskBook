@@ -21,12 +21,13 @@ protocol ContainerPresenterProtocol: AnyObject {
 // MARK: - ContainerPresenter
 final class ContainerPresenter {
     
-    var viewController: ContainerViewControllerProtocol?
+    weak var viewController: ContainerViewControllerProtocol?
+    
     private let moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
-    private var today: String
     
+    private var today: String
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
     private var squares = [String]()
@@ -73,9 +74,14 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         let sections: [Section] = [
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
             .init(type: .tasks, rows: [
-                .task(viewModel: .init(title: "Task1")),
-                .task(viewModel: .init(title: "Task2")),
-                .task(viewModel: .init(title: "Task3"))
+                .task(viewModel: .init(title: "Task1",
+                                       time: "22-00-00",
+                                       date: "3-мая-2022",
+                                       description: "Some Desctription")),
+                .task(viewModel: .init(title: "Task2",
+                                       time: "11-00-00",
+                                       date: "3-мая-2022",
+                                       description: "Some New Desctription"))
             ])
         ]
         viewController?.updateTableView(sections: sections)
