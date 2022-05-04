@@ -8,5 +8,4 @@
 // MARK: - CalendarViewModel
 struct CalendarViewModel {
     let squares: [String]
-    let title: String
 }

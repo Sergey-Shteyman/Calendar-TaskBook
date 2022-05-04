@@ -74,14 +74,13 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     
     func viewIsReady() {
         let calendarViewModel = fetchCalendarViewModel()
-//        Section(type: .tasks, rows: [.calendar(viewModel: CalendarViewModel)])
         let sections: [Section] = [
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
             .init(type: .tasks, rows: [
                 .task(viewModel: .init(title: "N E W  T A S K",
                                        time: "22-00-00",
                                        date: "3-мая-2022",
-                                       description: "Some Desctription")),
+                                       description: "Some Desctription"))
 //                .task(viewModel: .init(title: "Task2",
 //                                       time: "11-00-00",
 //                                       date: "3-мая-2022",
@@ -117,8 +116,9 @@ private extension ContainerPresenter {
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
         let title = month + " " + year
+        viewController?.updateDateLabel(with: title)
         self.squares = fetchArrayDateString(daysOfMonth, .dayFormatToOneDay, .localeIdentifireRU, 0)
-        let viewModel = CalendarViewModel(squares: squares, title: title)
+        let viewModel = CalendarViewModel(squares: squares)
         return viewModel
     }
     
