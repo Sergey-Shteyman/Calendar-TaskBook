@@ -39,6 +39,7 @@
 		5E99A835281F006C00676A2A /* Weekends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A834281F006C00676A2A /* Weekends.swift */; };
 		5E99A8382821390800676A2A /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A8372821390800676A2A /* TaskViewController.swift */; };
 		5E99A83A2821391D00676A2A /* TaskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A8392821391D00676A2A /* TaskPresenter.swift */; };
+		5E99A83E2822EBA900676A2A /* NewTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E99A83D2822EBA900676A2A /* NewTaskCell.swift */; };
 		DEF0BB670C13A8A6437AE51A /* Pods_TaskBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B0D0D72EF6E9835BC9363D /* Pods_TaskBook.framework */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +100,7 @@
 		5E99A834281F006C00676A2A /* Weekends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weekends.swift; sourceTree = "<group>"; };
 		5E99A8372821390800676A2A /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		5E99A8392821391D00676A2A /* TaskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPresenter.swift; sourceTree = "<group>"; };
+		5E99A83D2822EBA900676A2A /* NewTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskCell.swift; sourceTree = "<group>"; };
 		AAE7A5DB3D68798D596C118A /* Pods-TaskBookTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskBookTests.debug.xcconfig"; path = "Target Support Files/Pods-TaskBookTests/Pods-TaskBookTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BC21F2CF7DC5D63512A85FC6 /* Pods-TaskBookTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskBookTests.release.xcconfig"; path = "Target Support Files/Pods-TaskBookTests/Pods-TaskBookTests.release.xcconfig"; sourceTree = "<group>"; };
 		C3103CCCF6483726B585EF92 /* Pods-TaskBook-TaskBookUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskBook-TaskBookUITests.debug.xcconfig"; path = "Target Support Files/Pods-TaskBook-TaskBookUITests/Pods-TaskBook-TaskBookUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 			children = (
 				5E4E97EE280F1C6500ED5D15 /* CalendarViewCell.swift */,
 				5E99A82428192B4D00676A2A /* TaskCell.swift */,
+				5E99A83D2822EBA900676A2A /* NewTaskCell.swift */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -599,6 +602,7 @@
 				5E4E97EB280F1C6500ED5D15 /* AppDelegate.swift in Sources */,
 				5E99A831281EE60300676A2A /* DateHelper.swift in Sources */,
 				5E4E97ED280F1C6500ED5D15 /* SceneDelegate.swift in Sources */,
+				5E99A83E2822EBA900676A2A /* NewTaskCell.swift in Sources */,
 				5E83E7FD281296CC00160AA8 /* UICollectionViewCell.swift in Sources */,
 				5E83E7F4281147E800160AA8 /* UITableView.swift in Sources */,
 				5E83E7EC2810873D00160AA8 /* ModuleBuilder.swift in Sources */,

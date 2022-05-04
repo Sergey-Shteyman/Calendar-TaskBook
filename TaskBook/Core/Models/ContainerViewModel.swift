@@ -14,11 +14,13 @@ struct Section {
 // MARK: - SectionType
 enum SectionType {
     case calendar
+    case newTask
     case tasks
 }
 
 // MARK: - RowType
 enum RowType {
     case calendar(viewModel: CalendarViewModel)
+    case newTask
     case task(viewModel: TaskViewModel)
 }

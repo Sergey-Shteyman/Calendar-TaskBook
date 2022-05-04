@@ -49,6 +49,7 @@ final class ContainerViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.myRegister(CalendarViewCell.self)
+        tableView.myRegister(NewTaskCell.self)
         tableView.myRegister(TaskCell.self)
         tableView.dataSource = self
         tableView.delegate = self
@@ -91,7 +92,10 @@ extension ContainerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section > 0 {
+        if indexPath.section == 1 {
+            // Pop new Task Cell
+        }
+        if indexPath.section > 1 {
             presenter?.fetchTaskViewController(with: indexPath)
         }
     }
@@ -119,6 +123,10 @@ extension ContainerViewController: UITableViewDataSource {
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.delegate = self
             cell.setupCellConfiguration(viewModel: viewModel)
+            return cell
+        case .newTask:
+            let cell = tableView.myDequeueReusableCell(type: NewTaskCell.self, indePath: indexPath)
+            cell.setupCellConfiguration()
             return cell
         case .task(let viewModel):
             let cell = tableView.myDequeueReusableCell(type: TaskCell.self, indePath: indexPath)
