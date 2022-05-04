@@ -34,6 +34,7 @@ final class CalendarViewCell: UITableViewCell {
 
     private lazy var rightButton: UIButton = {
         var button = UIButton()
+        button.tintColor = .red
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: Arrow.right.rawValue, withConfiguration: boldConfiguration), for: .normal)
         button.addTarget(self, action: #selector(changeToNextMonth), for: .touchUpInside)
@@ -42,6 +43,7 @@ final class CalendarViewCell: UITableViewCell {
     
     private lazy var leftButton: UIButton = {
         let button = UIButton()
+        button.tintColor = .red
         let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
         button.setImage(UIImage(systemName: Arrow.left.rawValue, withConfiguration: boldConfiguration), for: .normal)
         button.addTarget(self, action: #selector(changeToPreviousMonth), for: .touchUpInside)

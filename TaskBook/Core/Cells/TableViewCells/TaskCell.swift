@@ -12,7 +12,9 @@ final class TaskCell: UITableViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 17)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 22)
         return label
     }()
     
@@ -36,6 +38,7 @@ extension TaskCell {
 // MARK: - Private Methods
 private extension TaskCell {
     func setupCell() {
+        backgroundColor = .systemRed
         addSubViews()
         addConstraints()
     }
@@ -48,7 +51,8 @@ private extension TaskCell {
     
     func addConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+//            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }

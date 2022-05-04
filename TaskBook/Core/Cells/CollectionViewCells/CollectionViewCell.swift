@@ -26,7 +26,7 @@ extension CollectionViewCell {
         self.dayOfMonth.textColor = color
         if isSelected {
             setupLayer()
-            self.backgroundColor = .red
+            self.backgroundColor = .systemRed
         } else {
             self.backgroundColor = .white
         }
