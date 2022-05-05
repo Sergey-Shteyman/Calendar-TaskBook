@@ -21,8 +21,9 @@ final class TaskViewController: UIViewController {
         let textField = UITextField()
         textField.font = .boldSystemFont(ofSize: 30)
         textField.textAlignment = .center
-        textField.placeholder = "New task"
-        textField.text = "Task 1"
+        textField.placeholder = "N A M E  T A S K"  // to Enum
+        textField.tintColor = .black
+        textField.delegate = self
         return textField
     }()
     
@@ -40,6 +41,21 @@ final class TaskViewController: UIViewController {
 // MARK: - TaskViewControllerProtocol Impl
 extension TaskViewController: TaskViewControllerProtocol {
 
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        guard let textFieldText = titleTextField.text,
+              let rangeOfTextToReplace = Range(range, in: textFieldText) else {
+                    return false
+            }
+        let substringToReplace = textFieldText[rangeOfTextToReplace]
+        let count = textFieldText.count - substringToReplace.count + string.count
+        return count <= 15 // To Enum
+    }
+}
+
+extension TaskViewController: UITextFieldDelegate {
+    
 }
 
 // MARK: Private Methods

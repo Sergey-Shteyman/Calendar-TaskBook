@@ -229,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				5E99A8182817DF8700676A2A /* Container */,
+				5E99A8362821387900676A2A /* Task */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -274,7 +275,6 @@
 			children = (
 				5E99A8192817DFA800676A2A /* ContainerViewController.swift */,
 				5E99A8222817E91D00676A2A /* ContainerPresenter.swift */,
-				5E99A8362821387900676A2A /* Task */,
 			);
 			path = Container;
 			sourceTree = "<group>";

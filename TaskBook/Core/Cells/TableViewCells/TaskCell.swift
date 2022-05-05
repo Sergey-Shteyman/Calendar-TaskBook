@@ -38,6 +38,7 @@ extension TaskCell {
 // MARK: - Private Methods
 private extension TaskCell {
     func setupCell() {
+        backgroundColor = .white
         addSubViews()
         addConstraints()
     }
