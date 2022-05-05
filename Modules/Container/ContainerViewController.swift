@@ -92,10 +92,10 @@ extension ContainerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-//        if indexPath.section == 1 {
-//            // Pop new Task Cell
-//        }
-        if indexPath.section > 0 {
+        if indexPath.section == 1 {
+            presenter?.firstFetchTaskViewController(with: indexPath)
+        }
+        if indexPath.section > 1 {
             presenter?.fetchTaskViewController(with: indexPath)
         }
     }

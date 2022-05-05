@@ -17,6 +17,7 @@ protocol ContainerPresenterProtocol: AnyObject {
     func currentDay() -> Int?
     func selectedSquere(index: Int)
     func fetchTaskViewController(with indexPath: IndexPath)
+    func firstFetchTaskViewController(with indexPath: IndexPath)
 }
 
 // MARK: - ContainerPresenter
@@ -44,6 +45,11 @@ final class ContainerPresenter {
 
 // MARK: - ContainerPresenterProtocol Impl
 extension ContainerPresenter: ContainerPresenterProtocol {
+    func firstFetchTaskViewController(with indexPath: IndexPath) {
+        let taskViewController = moduleBuilder.buildTaskModule()
+        viewController?.routeTo(taskViewController)
+        taskViewController.presenter?.firstOpen()
+    }
     
     func fetchTaskViewController(with indexPath: IndexPath) {
         let taskViewController = moduleBuilder.buildTaskModule()

@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - TaskViewControllerProtocol
 protocol TaskViewControllerProtocol: AnyObject {
-
+    func becomeResponder()
 }
 
 // MARK: - TaskViewController
@@ -31,7 +31,7 @@ final class TaskViewController: UIViewController {
         let dataPicker = UIDatePicker()
         return dataPicker
     }()
-        
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
@@ -40,7 +40,15 @@ final class TaskViewController: UIViewController {
 
 // MARK: - TaskViewControllerProtocol Impl
 extension TaskViewController: TaskViewControllerProtocol {
+    
+    func becomeResponder() {
+        titleTextField.becomeFirstResponder()
+    }
+}
 
+// MARK: - UITextFieldDelegate Impl
+extension TaskViewController: UITextFieldDelegate {
+    
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -52,10 +60,11 @@ extension TaskViewController: TaskViewControllerProtocol {
         let count = textFieldText.count - substringToReplace.count + string.count
         return count <= 15 // To Enum
     }
-}
-
-extension TaskViewController: UITextFieldDelegate {
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        titleTextField.resignFirstResponder()
+        return true
+    }
 }
 
 // MARK: Private Methods

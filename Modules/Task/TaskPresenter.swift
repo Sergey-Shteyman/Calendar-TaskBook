@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - TaskPresenterProtocol
 protocol TaskPresenterProtocol: AnyObject {
-    
+    func firstOpen()
 }
 
 // MARK: - TaskPresenter
@@ -26,6 +26,9 @@ final class TaskPresenter {
 // MARK: - TaskPresenterProtocol Impl
 extension TaskPresenter: TaskPresenterProtocol {
     
+    func firstOpen() {
+        viewController?.becomeResponder()
+    }
 }
 
 // MARK: - Private Methods
