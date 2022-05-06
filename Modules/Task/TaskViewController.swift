@@ -50,6 +50,17 @@ final class TaskViewController: UIViewController {
         datePicker.addTarget(self, action: #selector(stringTime), for: .valueChanged)
         return datePicker
     }()
+    
+    private lazy var label: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.font = .boldSystemFont(ofSize: 130)
+        label.textAlignment = .center
+        label.text = "LET'S  MOVE  OUT"
+        label.lineBreakMode = .byWordWrapping
+        label.textColor = .white
+        return label
+    }()
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,7 +117,7 @@ private extension TaskViewController {
         view.backgroundColor = .systemGray6
         view.addTapGestureToHideKeyboard()
         inputViewDataPicker()
-//        setupDoneButtonForDataPicker()
+        setupDoneButtonForDataPicker()
         addSubViews()
         addConstraints()
     }
@@ -117,8 +128,10 @@ private extension TaskViewController {
     
     func setupDoneButtonForDataPicker() {
         let toolBar = UIToolbar()
+        toolBar.sizeToFit()
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
                                                  target: self, action: #selector(doneAction))
+        doneButton.customView?.sizeToFit()
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         doneButton.tintColor = .systemRed
         toolBar.setItems([flexSpace, doneButton], animated: true)
@@ -126,12 +139,17 @@ private extension TaskViewController {
     }
     
     func addSubViews() {
-        let arraySubViews = [titleTextField, containerTextField]
+        let arraySubViews = [label, titleTextField, containerTextField]
         view.myAddSubViews(from: arraySubViews)
     }
     
     func addConstraints() {
         NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: view.topAnchor),
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            label.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
             titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
             titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
