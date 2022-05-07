@@ -17,13 +17,18 @@ final class TaskViewController: UIViewController {
     
     var presenter: TaskPresenter?
     
+    private let localeId = DateHelperElements.localeIdentifireRU.rawValue
+    private let placeholderTitle = TaskElements.placeholderTitle
+    private let timeTitle = TaskElements.timeTitle
+    private let moveTitle = TaskElements.moveTitle
+    private let descriptionTitle = TaskElements.descriptionTitle
+    
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
         textField.font = .boldSystemFont(ofSize: 30)
         textField.textAlignment = .center
-        textField.placeholder = "N A M E  T A S K"  // To Enum
+        textField.placeholder = placeholderTitle
         textField.textColor = .black
-//        textField.text = "N A M E  T A S K"
         textField.tintColor = .red
         textField.keyboardType = .default
         textField.backgroundColor = .clear
@@ -35,20 +40,18 @@ final class TaskViewController: UIViewController {
         let textField = UITextField()
         textField.textAlignment = .center
         textField.layer.borderWidth = 2
-        textField.text = "YOR:TIME"                 // To Enum
+        textField.text = timeTitle
         textField.textColor = .systemRed
         textField.font = .boldSystemFont(ofSize: 25)
         textField.layer.cornerRadius = 10
-//        textField.layer.borderColor = UIColor.lightGray.cgColor
         textField.layer.borderColor = UIColor.darkGray.cgColor
         return textField
     }()
     
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
-        let localeIdentifire = DateHelperElements.localeIdentifireRU.rawValue
         datePicker.datePickerMode = .time
-        datePicker.locale = Locale(identifier: localeIdentifire)
+        datePicker.locale = Locale(identifier: localeId)
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.addTarget(self, action: #selector(stringTime), for: .valueChanged)
         return datePicker
@@ -59,7 +62,7 @@ final class TaskViewController: UIViewController {
         label.numberOfLines = 0
         label.font = .boldSystemFont(ofSize: 120)
         label.textAlignment = .center
-        label.text = "LET'S  MOVE"
+        label.text = moveTitle
         label.lineBreakMode = .byWordWrapping
         label.textColor = .white
         return label
@@ -69,13 +72,13 @@ final class TaskViewController: UIViewController {
         let textView = UITextView()
         textView.tintColor = .red
         textView.keyboardType = .default
-        textView.backgroundColor = .clear
+        textView.backgroundColor = .systemGray6
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 20
         textView.textColor = .systemRed
         textView.font = .boldSystemFont(ofSize: 30)
         textView.textAlignment = .center
-        textView.text = "\nY O U R  \nD E S C R I P T I O N" //  To Enum
+        textView.text = descriptionTitle
         textView.delegate = self
         return textView
     }()
@@ -89,11 +92,12 @@ final class TaskViewController: UIViewController {
         containerTextField.resignFirstResponder()
     }
     
+    // TODO: - Extract to function
     @objc func stringTime() {
         let dateFormater = DateFormatter()
         dateFormater.timeStyle = .short
         dateFormater.dateStyle = .none
-        dateFormater.locale = Locale(identifier: "ru_RU") // To model
+        dateFormater.locale = Locale(identifier: localeId)
         let stringTime = dateFormater.string(from: datePicker.date)
         containerTextField.text = stringTime
     }
@@ -113,13 +117,14 @@ extension TaskViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
+        // TODO: - Presenter
         guard let textFieldText = titleTextField.text,
               let rangeOfTextToReplace = Range(range, in: textFieldText) else {
                     return false
             }
         let substringToReplace = textFieldText[rangeOfTextToReplace]
         let count = textFieldText.count - substringToReplace.count + string.count
-        return count <= 15                                // To Enum
+        return count <= TaskElements.limitChars
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -132,7 +137,9 @@ extension TaskViewController: UITextFieldDelegate {
 extension TaskViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if descriptionTextView.text == "\nY O U R  \nD E S C R I P T I O N" {
+        
+        // TODO: - Extract to method
+        if descriptionTextView.text == descriptionTitle {
             descriptionTextView.text = ""
             descriptionTextView.textColor = .black
             descriptionTextView.font = .boldSystemFont(ofSize: 20)
@@ -145,7 +152,7 @@ extension TaskViewController: UITextViewDelegate {
             descriptionTextView.textColor = .systemRed
             descriptionTextView.font = .boldSystemFont(ofSize: 30)
             descriptionTextView.textAlignment = .center
-            descriptionTextView.text = "\nY O U R  \nD E S C R I P T I O N"
+            descriptionTextView.text = descriptionTitle
         }
     }
 }
@@ -170,9 +177,10 @@ private extension TaskViewController {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                                 target: self, action: #selector(doneAction))
+                                         target: self, action: #selector(doneAction))
         doneButton.customView?.sizeToFit()
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                        target: nil, action: nil)
         doneButton.tintColor = .systemRed
         toolBar.setItems([flexSpace, doneButton], animated: true)
         containerTextField.inputAccessoryView = toolBar
@@ -200,10 +208,10 @@ private extension TaskViewController {
             containerTextField.widthAnchor.constraint(equalToConstant: 120),
             containerTextField.heightAnchor.constraint(equalToConstant: 80),
             
-            descriptionTextView.topAnchor.constraint(equalTo: view.centerYAnchor, constant: 90),
+            descriptionTextView.topAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -200),
             descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.bottomAnchor, constant: -30)
+            descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
         ])
     }
 }
