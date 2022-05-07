@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: - DateHelperProtocol
 protocol DateHelperProtocol: AnyObject {
-    func formateDateToString(dateFormat: String,
-                             localeIdentifire: String,
-                             timeZoneSeconds: Int, date: Date) -> String
+    func formateDateToString(_ dateFormat: String,
+                             _ localeIdentifire: String,
+                             _ timeZoneSeconds: Int, _ date: Date) -> String
 }
 
 // MARK: - DateHelper
@@ -23,9 +23,9 @@ final class DateHelper {
 // MARK: - DateHelperProtocol Impl
 extension DateHelper: DateHelperProtocol {
     
-    func formateDateToString(dateFormat: String,
-                             localeIdentifire: String,
-                             timeZoneSeconds: Int, date: Date) -> String {
+    func formateDateToString(_ dateFormat: String,
+                             _ localeIdentifire: String,
+                             _ timeZoneSeconds: Int, _ date: Date) -> String {
         dateFormater.dateFormat = dateFormat
         dateFormater.locale = Locale(identifier: localeIdentifire)
         dateFormater.timeZone = TimeZone(secondsFromGMT: timeZoneSeconds)

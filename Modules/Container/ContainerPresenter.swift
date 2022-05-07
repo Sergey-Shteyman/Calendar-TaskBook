@@ -16,17 +16,20 @@ protocol ContainerPresenterProtocol: AnyObject {
     func isWeekend(indexPath: IndexPath) -> Bool
     func currentDay() -> Int?
     func selectedSquere(index: Int)
+    func fetchTaskViewController(with indexPath: IndexPath)
+    func firstFetchTaskViewController(with indexPath: IndexPath)
 }
 
 // MARK: - ContainerPresenter
 final class ContainerPresenter {
     
-    var viewController: ContainerViewControllerProtocol?
+    weak var viewController: ContainerViewControllerProtocol?
+    
     private let moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
-    private var today: String
     
+    private var today: String
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
     private var squares = [String]()
@@ -42,6 +45,16 @@ final class ContainerPresenter {
 
 // MARK: - ContainerPresenterProtocol Impl
 extension ContainerPresenter: ContainerPresenterProtocol {
+    func firstFetchTaskViewController(with indexPath: IndexPath) {
+        let taskViewController = moduleBuilder.buildTaskModule()
+        viewController?.routeTo(taskViewController)
+        taskViewController.presenter?.firstOpen()
+    }
+    
+    func fetchTaskViewController(with indexPath: IndexPath) {
+        let taskViewController = moduleBuilder.buildTaskModule()
+        viewController?.routeTo(taskViewController)
+    }
     
     func selectedSquere(index: Int) {
         if squares[index] != "" {
@@ -50,10 +63,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     }
     
     func currentDay() -> Int? {
-        self.squares = fetchArrayDateString(daysOfMonth: daysOfMonth,
-                                            dayFormat: .dayFormateFulDate,
-                                            localIdentifire: .localeIdentifireRU,
-                                            timeZoneSeconds: 0)
+        self.squares = fetchArrayDateString(daysOfMonth, .dayFormateFulDate, .localeIdentifireRU, 0)
         let currentDay = squares.firstIndex(of: today)
         guard let currentDay = currentDay else {
             return nil
@@ -72,10 +82,16 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         let calendarViewModel = fetchCalendarViewModel()
         let sections: [Section] = [
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
+            .init(type: .newTask, rows: [.newTask]),
             .init(type: .tasks, rows: [
-                .task(viewModel: .init(title: "Task1")),
-                .task(viewModel: .init(title: "Task2")),
-                .task(viewModel: .init(title: "Task3"))
+                .task(viewModel: .init(title: "N E W  T A S K",
+                                       time: "22-00-00",
+                                       date: "3-мая-2022",
+                                       description: "Some Desctription"))
+//                .task(viewModel: .init(title: "Task2",
+//                                       time: "11-00-00",
+//                                       date: "3-мая-2022",
+//                                       description: "Some New Desctription"))
             ])
         ]
         viewController?.updateTableView(sections: sections)
@@ -107,11 +123,9 @@ private extension ContainerPresenter {
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
         let title = month + " " + year
-        self.squares = fetchArrayDateString(daysOfMonth: daysOfMonth,
-                                            dayFormat: .dayFormatToOneDay,
-                                            localIdentifire: .localeIdentifireRU,
-                                            timeZoneSeconds: 0)
-        let viewModel = CalendarViewModel(squares: squares, title: title)
+        viewController?.updateDateLabel(with: title)
+        self.squares = fetchArrayDateString(daysOfMonth, .dayFormatToOneDay, .localeIdentifireRU, 0)
+        let viewModel = CalendarViewModel(squares: squares)
         return viewModel
     }
     
@@ -135,16 +149,16 @@ private extension ContainerPresenter {
         }
     }
     
-    func fetchArrayDateString(daysOfMonth: [Date?], dayFormat: DateHelperElements,
-                              localIdentifire: DateHelperElements, timeZoneSeconds: Int) -> [String] {
+    func fetchArrayDateString(_ daysOfMonth: [Date?], _ dayFormat: DateHelperElements,
+                              _ localIdentifire: DateHelperElements, _ timeZoneSeconds: Int) -> [String] {
         let squares = daysOfMonth.map { date -> String in
             guard let date = date else {
                 return ""
             }
-            let dateString = dateHelper.formateDateToString(dateFormat: dayFormat.rawValue,
-                                                            localeIdentifire: localIdentifire.rawValue,
-                                                            timeZoneSeconds: timeZoneSeconds,
-                                                            date: date)
+            let dateString = dateHelper.formateDateToString(dayFormat.rawValue,
+                                                            localIdentifire.rawValue,
+                                                            timeZoneSeconds,
+                                                            date)
             return dateString
         }
         return squares

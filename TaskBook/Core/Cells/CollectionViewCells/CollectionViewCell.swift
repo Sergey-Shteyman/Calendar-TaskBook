@@ -26,7 +26,7 @@ extension CollectionViewCell {
         self.dayOfMonth.textColor = color
         if isSelected {
             setupLayer()
-            self.backgroundColor = .red
+            self.backgroundColor = .systemRed
         } else {
             self.backgroundColor = .white
         }
@@ -43,7 +43,8 @@ private extension CollectionViewCell {
     }
     
     func setupLayer() {
-        self.layer.cornerRadius = 23
+        let cornerMultiplire: CGFloat = 2
+        self.layer.cornerRadius = frame.width / cornerMultiplire
         self.layer.borderColor = UIColor.white.cgColor
         self.layer.borderWidth = 7
         self.layer.masksToBounds = true

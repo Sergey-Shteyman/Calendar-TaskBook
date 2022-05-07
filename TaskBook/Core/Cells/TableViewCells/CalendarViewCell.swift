@@ -9,8 +9,6 @@ import UIKit
 
 // MARK: - CalendarViewCellDelegate
 protocol CalendarViewCellDelegate: AnyObject {
-    func calendarViewDidTapNextMonthButton()
-    func calendarViewDidTapPreviousMonthButton()
     func calendarViewDidTapItem(index: Int)
     func searchWeekend(indexPath: IndexPath) -> Bool
     func currentSquere() -> Int?
@@ -24,29 +22,6 @@ final class CalendarViewCell: UITableViewCell {
     
     private var totalSquares = [String]()
     private var selectedDate: Int?
-        
-    private lazy var dateLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 26)
-        return label
-    }()
-
-    private lazy var rightButton: UIButton = {
-        var button = UIButton()
-        let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
-        button.setImage(UIImage(systemName: Arrow.right.rawValue, withConfiguration: boldConfiguration), for: .normal)
-        button.addTarget(self, action: #selector(changeToNextMonth), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var leftButton: UIButton = {
-        let button = UIButton()
-        let boldConfiguration = UIImage.SymbolConfiguration(scale: .large)
-        button.setImage(UIImage(systemName: Arrow.left.rawValue, withConfiguration: boldConfiguration), for: .normal)
-        button.addTarget(self, action: #selector(changeToPreviousMonth), for: .touchUpInside)
-        return button
-    }()
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -78,21 +53,13 @@ final class CalendarViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    @objc func changeToNextMonth() {
-        delegate?.calendarViewDidTapNextMonthButton()
-    }
-
-    @objc func changeToPreviousMonth() {
-        delegate?.calendarViewDidTapPreviousMonthButton()
-    }
 }
 
 // MARK: - Public Methods
 extension CalendarViewCell {
     
     func setupCellConfiguration(viewModel: CalendarViewModel) {
-        dateLabel.text = viewModel.title
+//        dateLabel.text = viewModel.title
         totalSquares = viewModel.squares
         collectionView.reloadData()
     }
@@ -182,8 +149,7 @@ private extension CalendarViewCell {
     }
 
     func addSubViews() {
-        let arraySubViews = [leftButton, dateLabel,
-                             rightButton, stackView, collectionView]
+        let arraySubViews = [stackView, collectionView]
         contentView.myAddSubViews(from: arraySubViews)
     }
     
@@ -197,17 +163,8 @@ private extension CalendarViewCell {
     func addConstraints() {
         
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-            dateLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            dateLabel.widthAnchor.constraint(equalToConstant: 200),
 
-            leftButton.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
-            leftButton.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -7),
-
-            rightButton.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
-            rightButton.leadingAnchor.constraint(equalTo: dateLabel.trailingAnchor, constant: 7),
-
-            stackView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 20),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
 
