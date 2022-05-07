@@ -22,6 +22,7 @@ final class TaskViewController: UIViewController {
     private let timeTitle = TaskElements.timeTitle
     private let moveTitle = TaskElements.moveTitle
     private let descriptionTitle = TaskElements.descriptionTitle
+    private let limitChars = TaskElements.limitChars
     
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
@@ -92,13 +93,8 @@ final class TaskViewController: UIViewController {
         containerTextField.resignFirstResponder()
     }
     
-    // TODO: - Extract to function
     @objc func stringTime() {
-        let dateFormater = DateFormatter()
-        dateFormater.timeStyle = .short
-        dateFormater.dateStyle = .none
-        dateFormater.locale = Locale(identifier: localeId)
-        let stringTime = dateFormater.string(from: datePicker.date)
+        let stringTime = presenter?.fetchStringTime(localeId, datePicker.date)
         containerTextField.text = stringTime
     }
 }
@@ -117,14 +113,14 @@ extension TaskViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        // TODO: - Presenter
-        guard let textFieldText = titleTextField.text,
-              let rangeOfTextToReplace = Range(range, in: textFieldText) else {
-                    return false
-            }
-        let substringToReplace = textFieldText[rangeOfTextToReplace]
-        let count = textFieldText.count - substringToReplace.count + string.count
-        return count <= TaskElements.limitChars
+        let text = titleTextField.text
+        guard let limit = presenter?.limitChars(textInput: text,
+                                                shouldChangeCharactersIn: range,
+                                                replacementString: string,
+                                                limit: limitChars) else {
+            return Bool()
+        }
+        return limit
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -138,21 +134,14 @@ extension TaskViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
-        // TODO: - Extract to method
         if descriptionTextView.text == descriptionTitle {
-            descriptionTextView.text = ""
-            descriptionTextView.textColor = .black
-            descriptionTextView.font = .boldSystemFont(ofSize: 20)
-            descriptionTextView.textAlignment = .left
+            setupPlaceHolderForTextView("", .black, 20, .left)
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if descriptionTextView.text.isEmpty {
-            descriptionTextView.textColor = .systemRed
-            descriptionTextView.font = .boldSystemFont(ofSize: 30)
-            descriptionTextView.textAlignment = .center
-            descriptionTextView.text = descriptionTitle
+            setupPlaceHolderForTextView(descriptionTitle, .systemRed, 30, .center)
         }
     }
 }
@@ -167,6 +156,16 @@ private extension TaskViewController {
         setupDoneButtonForDataPicker()
         addSubViews()
         addConstraints()
+    }
+    
+    func setupPlaceHolderForTextView(_ text: String,
+                                     _ textColor: UIColor,
+                                     _ fontSize: CGFloat,
+                                     _ alignment: NSTextAlignment) {
+        descriptionTextView.text = text
+        descriptionTextView.textColor = textColor
+        descriptionTextView.font = .boldSystemFont(ofSize: fontSize)
+        descriptionTextView.textAlignment = alignment
     }
     
     func inputViewDataPicker() {
