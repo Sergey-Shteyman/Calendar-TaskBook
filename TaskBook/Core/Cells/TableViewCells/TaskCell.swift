@@ -31,7 +31,7 @@ final class TaskCell: UITableViewCell {
 // MARK: - Publick Methods
 extension TaskCell {
     func setupCellConfiguration(_ viewModel: TaskViewModel) {
-        titleLabel.text = viewModel.title
+        titleLabel.text = viewModel.nameTask
     }
 }
 

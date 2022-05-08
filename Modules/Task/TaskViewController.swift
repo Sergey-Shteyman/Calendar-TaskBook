@@ -89,6 +89,13 @@ final class TaskViewController: UIViewController {
         setupViewController()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if isBeingDismissed {
+            print(#function)
+        }
+    }
+
     @objc func doneAction() {
         containerTextField.resignFirstResponder()
     }
@@ -133,7 +140,6 @@ extension TaskViewController: UITextFieldDelegate {
 extension TaskViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        
         if descriptionTextView.text == descriptionTitle {
             setupPlaceHolderForTextView("", .black, 20, .left)
         }

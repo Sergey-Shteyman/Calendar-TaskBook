@@ -84,7 +84,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
             .init(type: .newTask, rows: [.newTask]),
             .init(type: .tasks, rows: [
-                .task(viewModel: .init(title: "N E W  T A S K",
+                .task(viewModel: .init(nameTask: "N E W  T A S K",
                                        time: "22-00-00",
                                        date: "3-мая-2022",
                                        description: "Some Desctription"))

@@ -18,10 +18,12 @@ final class ModuleBuilder {
 
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
+    private let userDefaults: UserDefaultsManagerProtocol
 
     init() {
         calendarHelper = CalendarHelper()
         dateHelper = DateHelper()
+        userDefaults = UserDefaultsManager()
     }
 }
 
@@ -40,7 +42,7 @@ extension ModuleBuilder: Buildable {
     
     func buildTaskModule() -> TaskViewController {
         let viewController = TaskViewController()
-        let presenter = TaskPresenter(moduleBuilder: self)
+        let presenter = TaskPresenter(moduleBuilder: self, userDefaults: userDefaults)
         viewController.presenter = presenter
         presenter.viewController = viewController
         return viewController

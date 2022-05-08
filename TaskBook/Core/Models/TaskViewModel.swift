@@ -7,7 +7,7 @@
 
 // MARK: - TaskViewModel
 struct TaskViewModel {
-    let title: String
+    let nameTask: String
     let time: String
     let date: String
     let description: String

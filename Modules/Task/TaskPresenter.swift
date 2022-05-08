@@ -23,11 +23,13 @@ final class TaskPresenter {
     weak var viewController: TaskViewController?
     
     private var moduleBuilder: Buildable?
+    private var userDefaults: UserDefaultsManagerProtocol?
     
     private let dateFormater = DateFormatter()
     
-    init(moduleBuilder: Buildable) {
+    init(moduleBuilder: Buildable, userDefaults: UserDefaultsManagerProtocol) {
         self.moduleBuilder = moduleBuilder
+        self.userDefaults = userDefaults
     }
 }
 
