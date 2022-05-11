@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Buildable
 protocol Buildable {
     func buildContainerModule() -> ContainerViewController
-    func buildTaskModule() -> TaskViewController
+    func buildTaskModule(state: TaskViewControllerState, taskViewModel: TaskViewModel?) -> TaskViewController
 }
 
 // MARK: - ModuleBuilder
@@ -40,9 +40,10 @@ extension ModuleBuilder: Buildable {
         return viewController
     }
     
-    func buildTaskModule() -> TaskViewController {
+    func buildTaskModule(state: TaskViewControllerState, taskViewModel: TaskViewModel? = nil) -> TaskViewController {
         let viewController = TaskViewController()
-        let presenter = TaskPresenter(moduleBuilder: self, userDefaults: userDefaults)
+        viewController.setupScreenState(state)
+        let presenter = TaskPresenter(moduleBuilder: self, userDefaults: userDefaults, taskViewModel: taskViewModel)
         viewController.presenter = presenter
         presenter.viewController = viewController
         return viewController

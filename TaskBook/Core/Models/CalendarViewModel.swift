@@ -9,3 +9,13 @@
 struct CalendarViewModel {
     let squares: [String]
 }
+
+struct CalendarViewModel2 {
+    let squares: [CollectionViewCellViewModel]
+}
+
+struct CollectionViewCellViewModel {
+    let value: String
+    let isWeekend: Bool
+    let isSelected: Bool
+}

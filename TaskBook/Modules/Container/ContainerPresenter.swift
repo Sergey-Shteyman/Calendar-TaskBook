@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: - ContainerPresenterProtocol
 protocol ContainerPresenterProtocol: AnyObject {
@@ -33,6 +34,16 @@ final class ContainerPresenter {
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
     private var squares = [String]()
+    private var tasks: [TaskViewModel] = [
+        .init(nameTask: "N E W  T A S K",
+              time: "22-00-00",
+              date: "3-мая-2022",
+              description: "Some Desctription"),
+        .init(nameTask: "Task2",
+              time: "11-00-00",
+              date: "3-мая-2022",
+              description: "Some New Desctription")
+    ]
     
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
@@ -46,16 +57,18 @@ final class ContainerPresenter {
 // MARK: - ContainerPresenterProtocol Impl
 extension ContainerPresenter: ContainerPresenterProtocol {
     func firstFetchTaskViewController(with indexPath: IndexPath) {
-        let taskViewController = moduleBuilder.buildTaskModule()
+        let taskViewController = moduleBuilder.buildTaskModule(state: .create, taskViewModel: nil)
         viewController?.routeTo(taskViewController)
         taskViewController.presenter?.firstOpen()
     }
     
+    // TODO: - indexPath -> index. let index = IndexPath.row
     func fetchTaskViewController(with indexPath: IndexPath) {
-        let taskViewController = moduleBuilder.buildTaskModule()
+        let taskViewModel = tasks[indexPath.row]
+        let taskViewController = moduleBuilder.buildTaskModule(state: .read , taskViewModel: taskViewModel)
         viewController?.routeTo(taskViewController)
     }
-    
+     
     func selectedSquere(index: Int) {
         if squares[index] != "" {
             self.today = squares[index]
@@ -78,22 +91,23 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         return false
     }
     
+    // TODO: -
+    func isWeekend2(index: Int) -> Bool {
+        if Weekends.arrayWekends.contains(index) {
+            return true
+        }
+        return false
+    }
+    
     func viewIsReady() {
         let calendarViewModel = fetchCalendarViewModel()
+        let taskViewModel = fetchTaskViewModel()
         let sections: [Section] = [
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
             .init(type: .newTask, rows: [.newTask]),
-            .init(type: .tasks, rows: [
-                .task(viewModel: .init(nameTask: "N E W  T A S K",
-                                       time: "22-00-00",
-                                       date: "3-мая-2022",
-                                       description: "Some Desctription"))
-//                .task(viewModel: .init(title: "Task2",
-//                                       time: "11-00-00",
-//                                       date: "3-мая-2022",
-//                                       description: "Some New Desctription"))
-            ])
+            .init(type: .tasks, rows: taskViewModel)
         ]
+        
         viewController?.updateTableView(sections: sections)
     }
     
@@ -118,15 +132,38 @@ extension ContainerPresenter: ContainerPresenterProtocol {
 // MARK: - Private Methods
 private extension ContainerPresenter {
     
+    // TODO: - Возвращать другую модель CalendarViewModel2
     func fetchCalendarViewModel() -> CalendarViewModel {
         fetchDaysOfMonth()
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
         let title = month + " " + year
         viewController?.updateDateLabel(with: title)
+        // TODO: - Хранить другую модель ContainerViewModel2
         self.squares = fetchArrayDateString(daysOfMonth, .dayFormatToOneDay, .localeIdentifireRU, 0)
         let viewModel = CalendarViewModel(squares: squares)
+        
+//        let squares2 = squares.enumerated().map{ index, square -> CollectionViewCellViewModel in
+//            let isWeekend = isWeekend2(index: index)
+//            let item = CollectionViewCellViewModel(value: square,
+//                                                   isWeekend: isWeekend,
+//                                                   isSelected: <#Bool#>)
+//            return item
+//        }
+//        
+//        let viewModel2 = CalendarViewModel2(squares: squares2)
+//        return viewModel2
+        
         return viewModel
+    }
+    
+    func fetchTaskViewModel() -> [RowType] {
+        return tasks.map { task -> RowType in
+            let viewModel = ShortTaskViewModel(nameTask: task.nameTask,
+                                               time: task.time)
+            let item = RowType.task(viewModel: viewModel)
+            return item
+        }
     }
     
     func fetchDaysOfMonth() {

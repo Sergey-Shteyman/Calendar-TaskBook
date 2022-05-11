@@ -14,7 +14,10 @@ protocol TaskPresenterProtocol: AnyObject {
                     shouldChangeCharactersIn range: NSRange,
                     replacementString string: String,
                     limit: Int) -> Bool
+    // TODO: -
     func fetchStringTime(_ localeId: String, _ date: Date) -> String
+    // TODO: - rename
+    func method()
 }
 
 // MARK: - TaskPresenter
@@ -22,14 +25,17 @@ final class TaskPresenter {
     
     weak var viewController: TaskViewController?
     
-    private var moduleBuilder: Buildable?
-    private var userDefaults: UserDefaultsManagerProtocol?
-    
+    private let moduleBuilder: Buildable
+    private let userDefaults: UserDefaultsManagerProtocol
+    private let taskViewModel: TaskViewModel?
     private let dateFormater = DateFormatter()
     
-    init(moduleBuilder: Buildable, userDefaults: UserDefaultsManagerProtocol) {
+    init(moduleBuilder: Buildable,
+         userDefaults: UserDefaultsManagerProtocol,
+         taskViewModel: TaskViewModel? = nil) {
         self.moduleBuilder = moduleBuilder
         self.userDefaults = userDefaults
+        self.taskViewModel = taskViewModel
     }
 }
 
@@ -59,6 +65,13 @@ extension TaskPresenter: TaskPresenterProtocol {
         dateFormater.locale = Locale(identifier: localeId)
         let stringTime = dateFormater.string(from: date)
         return stringTime
+    }
+    
+    func method() {
+        guard let viewModel = taskViewModel else {
+            return
+        }
+        viewController?.update(viewModel: viewModel)
     }
 }
 

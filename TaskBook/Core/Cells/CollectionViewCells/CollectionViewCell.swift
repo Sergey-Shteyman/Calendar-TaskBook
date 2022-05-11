@@ -32,6 +32,11 @@ extension CollectionViewCell {
         }
         setupCellConfiguration()
     }
+    
+    // TODO: - Method
+    func setupCellWith(viewModel: CollectionViewCellViewModel) {
+        
+    }
 }
 
 // MARK: - Private Methods

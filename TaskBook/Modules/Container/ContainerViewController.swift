@@ -78,6 +78,9 @@ extension ContainerViewController: ContainerViewControllerProtocol {
     }
     
     func routeTo(_ viewController: UIViewController) {
+        if let viewController = viewController as? TaskViewController {
+            viewController.delegate = self
+        }
         present(viewController, animated: true)
     }
     
@@ -92,7 +95,9 @@ extension ContainerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        // TODO: - Вынести в константы
         if indexPath.section == 1 {
+            // TODO: - Rename
             presenter?.firstFetchTaskViewController(with: indexPath)
         }
         if indexPath.section > 1 {
@@ -143,22 +148,31 @@ extension ContainerViewController: CalendarViewCellDelegate {
         presenter?.selectedSquere(index: numberOfSqueres)
     }
     
+    func calendarViewDidTapItem(index: Int) {
+        presenter?.didTapDay(index: index)
+    }
+    
+    // TODO: - Избавиться 
+    func searchWeekend(indexPath: IndexPath) -> Bool {
+        guard let isWeekend = presenter?.isWeekend(indexPath: indexPath) else {
+            return Bool()
+        }
+        return isWeekend
+    }
+    
     func currentSquere() -> Int? {
         guard let currentDay = presenter?.currentDay() else {
             return nil
         }
         return currentDay
     }
+}
+
+// MARK: - TaskViewControllerDelegate Impl
+extension ContainerViewController: TaskViewControllerDelegate {
     
-    func calendarViewDidTapItem(index: Int) {
-        presenter?.didTapDay(index: index)
-    }
-    
-    func searchWeekend(indexPath: IndexPath) -> Bool {
-        guard let isWeekend = presenter?.isWeekend(indexPath: indexPath) else {
-            return Bool()
-        }
-        return isWeekend
+    func method(viewModel: TaskViewModel) {
+        print(viewModel)
     }
 }
 
@@ -208,5 +222,11 @@ private extension ContainerViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+
+extension ContainerViewController {
+    private enum Constants {
+        static let const = 1
     }
 }

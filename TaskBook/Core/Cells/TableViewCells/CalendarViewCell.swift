@@ -87,6 +87,8 @@ extension CalendarViewCell: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CollectionViewCell.self, indePath: indexPath)
         
+        // TODO: - Убрать всю настройку в метод ячейки
+        // TODO: - Убрать ту делегаты и запаковать все в передачу одной viewModel для этой ячейки чтобы все даннные были в ней
         guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
             return UICollectionViewCell()
         }
