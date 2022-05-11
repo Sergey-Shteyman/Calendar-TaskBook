@@ -84,6 +84,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         return currentDay
     }
     
+    // ----------- Add state cell to model -------------
     func isWeekend(indexPath: IndexPath) -> Bool {
         if Weekends.arrayWekends.contains(indexPath.row) {
             return true
@@ -98,6 +99,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         }
         return false
     }
+    // ----------- Add state cell to model -------------
     
     func viewIsReady() {
         let calendarViewModel = fetchCalendarViewModel()
@@ -133,7 +135,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
 private extension ContainerPresenter {
     
     // TODO: - Возвращать другую модель CalendarViewModel2
-    func fetchCalendarViewModel() -> CalendarViewModel {
+    func fetchCalendarViewModel() -> CalendarViewModel2 {
         fetchDaysOfMonth()
         let month = calendarHelper.monthString(date: selectedDate)
         let year = calendarHelper.yearString(date: selectedDate)
@@ -141,13 +143,22 @@ private extension ContainerPresenter {
         viewController?.updateDateLabel(with: title)
         // TODO: - Хранить другую модель ContainerViewModel2
         self.squares = fetchArrayDateString(daysOfMonth, .dayFormatToOneDay, .localeIdentifireRU, 0)
-        let viewModel = CalendarViewModel(squares: squares)
+//        let viewModel = CalendarViewModel(squares: squares)
+        let squares = squares.enumerated().map { index, square -> CollectionViewCellViewModel in
+            let isWeekend = isWeekend2(index: index)
+            let item = CollectionViewCellViewModel(value: square,
+                                                   isWeekend: isWeekend)
+            return item
+        }
+        
+        let viewModel = CalendarViewModel2(squares: squares)
+        /* Сделать в моделе состояние. Передать его сюда. В классе CollectionViewCell Сделать функцию
+        которая будет красить и заниматься настроеккой. Тоже самое сделать и с selectedCell.*/
         
 //        let squares2 = squares.enumerated().map{ index, square -> CollectionViewCellViewModel in
 //            let isWeekend = isWeekend2(index: index)
 //            let item = CollectionViewCellViewModel(value: square,
-//                                                   isWeekend: isWeekend,
-//                                                   isSelected: <#Bool#>)
+//                                                   isWeekend: isWeekend)
 //            return item
 //        }
 //        

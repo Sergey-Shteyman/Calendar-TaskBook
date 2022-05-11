@@ -20,7 +20,7 @@ enum SectionType {
 
 // MARK: - RowType
 enum RowType {
-    case calendar(viewModel: CalendarViewModel)
+    case calendar(viewModel: CalendarViewModel2)
     case newTask
     case task(viewModel: ShortTaskViewModel)
 }

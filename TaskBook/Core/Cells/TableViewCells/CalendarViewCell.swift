@@ -20,7 +20,8 @@ final class CalendarViewCell: UITableViewCell {
     
     weak var delegate: CalendarViewCellDelegate?
     
-    private var totalSquares = [String]()
+//    private var totalSquares = [String]()
+    private var totalSquares = [CollectionViewCellViewModel]()
     private var selectedDate: Int?
     
     private lazy var stackView: UIStackView = {
@@ -58,7 +59,7 @@ final class CalendarViewCell: UITableViewCell {
 // MARK: - Public Methods
 extension CalendarViewCell {
     
-    func setupCellConfiguration(viewModel: CalendarViewModel) {
+    func setupCellConfiguration(viewModel: CalendarViewModel2) {
 //        dateLabel.text = viewModel.title
         totalSquares = viewModel.squares
         collectionView.reloadData()

@@ -17,5 +17,5 @@ struct CalendarViewModel2 {
 struct CollectionViewCellViewModel {
     let value: String
     let isWeekend: Bool
-    let isSelected: Bool
+//    let isSelected: Bool
 }

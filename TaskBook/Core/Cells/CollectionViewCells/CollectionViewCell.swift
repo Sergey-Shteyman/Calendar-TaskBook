@@ -21,7 +21,7 @@ final class CollectionViewCell: UICollectionViewCell {
 // MARK: - publick Methods
 extension CollectionViewCell {
 
-    func setupCell(with dayOfMonth: String, color: UIColor, isSelected: Bool) {
+    func setupCell(with dayOfMonth: CollectionViewCellViewModel, color: UIColor, isSelected: Bool) {
         self.dayOfMonth.text = dayOfMonth
         self.dayOfMonth.textColor = color
         if isSelected {
