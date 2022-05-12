@@ -10,32 +10,52 @@ import UIKit
 // MARK: - CalenderViewCell
 final class CollectionViewCell: UICollectionViewCell {
     
-    private lazy var dayOfMonth: UILabel = {
+    private lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 21)
         label.textAlignment = .center
         return label
     }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupCellConfiguration()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 // MARK: - publick Methods
 extension CollectionViewCell {
 
-    func setupCell(with dayOfMonth: CollectionViewCellViewModel, color: UIColor, isSelected: Bool) {
-        self.dayOfMonth.text = dayOfMonth
-        self.dayOfMonth.textColor = color
-        if isSelected {
-            setupLayer()
-            self.backgroundColor = .systemRed
-        } else {
-            self.backgroundColor = .white
-        }
-        setupCellConfiguration()
-    }
+//    func setupCell(with dayOfMonth: CollectionViewCellViewModel, color: UIColor, isSelected: Bool) {
+//        self.dayLabel.text = dayOfMonth.value
+//        self.dayLabel.textColor = color
+//        if isSelected {
+//            setupLayer()
+//            self.backgroundColor = .systemRed
+//        } else {
+//            self.backgroundColor = .white
+//        }
+//        setupCellConfiguration()
+//    }
     
-    // TODO: - Method
     func setupCellWith(viewModel: CollectionViewCellViewModel) {
-        
+        dayLabel.text = viewModel.value
+        if viewModel.isSelected {
+            setupLayer()
+            backgroundColor = .systemRed
+            dayLabel.textColor = .white
+        } else {
+            backgroundColor = .white
+            if viewModel.isWeekend {
+                dayLabel.textColor = .gray
+            } else {
+                dayLabel.textColor = .black
+            }
+        }
     }
 }
 
@@ -56,13 +76,13 @@ private extension CollectionViewCell {
     }
 
     func addSubViews() {
-        contentView.myAddSubView(dayOfMonth)
+        contentView.myAddSubView(dayLabel)
     }
 
     func addConstraints() {
         NSLayoutConstraint.activate([
-            dayOfMonth.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            dayOfMonth.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            dayLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            dayLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
 }

@@ -95,13 +95,12 @@ extension ContainerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // TODO: - Вынести в константы
-        if indexPath.section == 1 {
+        if indexPath.section == NumbewOfSections.newTaskSection {
             // TODO: - Rename
-            presenter?.firstFetchTaskViewController(with: indexPath)
+            presenter?.firstFetchTaskViewController()
         }
-        if indexPath.section > 1 {
-            presenter?.fetchTaskViewController(with: indexPath)
+        if indexPath.section == NumbewOfSections.tasksSection {
+            presenter?.fetchTaskViewController(with: indexPath.row)
         }
     }
 }
@@ -144,27 +143,8 @@ extension ContainerViewController: UITableViewDataSource {
 // MARK: - CalendarViewCellDelegate Impl
 extension ContainerViewController: CalendarViewCellDelegate {
     
-    func selectedSquere(numberOfSqueres: Int) {
-        presenter?.selectedSquere(index: numberOfSqueres)
-    }
-    
-    func calendarViewDidTapItem(index: Int) {
-        presenter?.didTapDay(index: index)
-    }
-    
-    // TODO: - Избавиться 
-    func searchWeekend(indexPath: IndexPath) -> Bool {
-        guard let isWeekend = presenter?.isWeekend(indexPath: indexPath) else {
-            return Bool()
-        }
-        return isWeekend
-    }
-    
-    func currentSquere() -> Int? {
-        guard let currentDay = presenter?.currentDay() else {
-            return nil
-        }
-        return currentDay
+    func didTapSelectedSquare(index: Int) {
+        presenter?.selectedSquere(index: index)
     }
 }
 
@@ -226,7 +206,8 @@ private extension ContainerViewController {
 }
 
 extension ContainerViewController {
-    private enum Constants {
-        static let const = 1
+    private enum NumbewOfSections {
+        static let newTaskSection = 1
+        static let tasksSection = 2
     }
 }

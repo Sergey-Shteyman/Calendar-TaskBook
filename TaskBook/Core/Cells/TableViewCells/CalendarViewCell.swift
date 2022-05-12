@@ -9,10 +9,7 @@ import UIKit
 
 // MARK: - CalendarViewCellDelegate
 protocol CalendarViewCellDelegate: AnyObject {
-    func calendarViewDidTapItem(index: Int)
-    func searchWeekend(indexPath: IndexPath) -> Bool
-    func currentSquere() -> Int?
-    func selectedSquere(numberOfSqueres: Int)
+    func didTapSelectedSquare(index: Int)
 }
 
 // MARK: - CalendarViewCell
@@ -20,7 +17,6 @@ final class CalendarViewCell: UITableViewCell {
     
     weak var delegate: CalendarViewCellDelegate?
     
-//    private var totalSquares = [String]()
     private var totalSquares = [CollectionViewCellViewModel]()
     private var selectedDate: Int?
     
@@ -59,8 +55,7 @@ final class CalendarViewCell: UITableViewCell {
 // MARK: - Public Methods
 extension CalendarViewCell {
     
-    func setupCellConfiguration(viewModel: CalendarViewModel2) {
-//        dateLabel.text = viewModel.title
+    func setupCellConfiguration(viewModel: CalendarViewModel) {
         totalSquares = viewModel.squares
         collectionView.reloadData()
     }
@@ -71,8 +66,7 @@ extension CalendarViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let index = indexPath.item
-        delegate?.calendarViewDidTapItem(index: index)
-        delegate?.selectedSquere(numberOfSqueres: index)
+        delegate?.didTapSelectedSquare(index: index)
         collectionView.reloadData()
     }
 }
@@ -87,24 +81,8 @@ extension CalendarViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CollectionViewCell.self, indePath: indexPath)
-        
-        // TODO: - Убрать всю настройку в метод ячейки
-        // TODO: - Убрать ту делегаты и запаковать все в передачу одной viewModel для этой ячейки чтобы все даннные были в ней
-        guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
-            return UICollectionViewCell()
-        }
-        let currentSquere = delegate?.currentSquere()
-        
-        selectedDate = currentSquere
-        
-        if isDayWeekend {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .gray, isSelected: false)
-        } else {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .black, isSelected: false)
-        }
-        if indexPath.row == selectedDate {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .white, isSelected: true)
-        }
+        let viewModel = totalSquares[indexPath.item]
+        myCell.setupCellWith(viewModel: viewModel)
         return myCell
     }
 }
