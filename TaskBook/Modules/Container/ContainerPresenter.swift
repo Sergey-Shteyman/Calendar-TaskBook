@@ -14,8 +14,8 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didTapNextMonthButton()
     func didTapPreviousMonthButton()
     func selectedSquere(index: Int)
-    func firstFetchTaskViewController()
-    func fetchTaskViewController(with index: Int)
+    func didCreateTask(viewModel: TaskViewModel)
+    func fetchTaskViewController(with index: Int, state: TaskViewControllerState)
 }
 
 // MARK: - ContainerPresenter
@@ -27,18 +27,27 @@ final class ContainerPresenter {
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
     
-    private var today: String
+    private var currentDate = Date()
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
-    private var squares = [String]()
-    private var tasks = [TaskViewModel]()
+    private var squares = [(dateString: String, isSelected: Bool)]()
+//    private var tasks = [TaskViewModel]()
+    private var tasks: [TaskViewModel] = [
+        .init(nameTask: "N E W  T A S K",
+              time: "22-00-00",
+              date: "3-мая-2022",
+              description: "Some Desctription"),
+        .init(nameTask: "Task2",
+              time: "11-00-00",
+              date: "3-мая-2022",
+              description: "Some New Desctription")
+    ]
     
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
         self.moduleBuilder = moduleBuilder
         self.calendarHelper = calendarHelper
         self.dateHelper = dateHelper
-        self.today = calendarHelper.currentDateString(date: calendarHelper.currentDate())
     }
 }
 
@@ -46,6 +55,43 @@ final class ContainerPresenter {
 extension ContainerPresenter: ContainerPresenterProtocol {
     
     func viewIsReady() {
+        updateViewController()
+    }
+    
+    func didTapNextMonthButton() {
+        currentDate = calendarHelper.plusMonth(date: currentDate)
+        updateViewController()
+    }
+    
+    func didTapPreviousMonthButton() {
+        currentDate = calendarHelper.minusMonth(date: currentDate)
+        updateViewController()
+    }
+    
+    func selectedSquere(index: Int) {
+        guard let date = daysOfMonth[index] else {
+            return
+        }
+        selectedDate = date
+        updateViewController()
+    }
+    
+    func didCreateTask(viewModel: TaskViewModel) {
+        tasks.append(viewModel)
+        updateViewController()
+    }
+    
+    func fetchTaskViewController(with index: Int, state: TaskViewControllerState) {
+        let taskViewModel = tasks[index]
+        let taskViewController = moduleBuilder.buildTaskModule(state: state, taskViewModel: taskViewModel)
+        viewController?.routeTo(taskViewController)
+    }
+}
+
+// MARK: - Private Methods
+private extension ContainerPresenter {
+    
+    func updateViewController() {
         let calendarViewModel = fetchCalendarViewModel()
         let taskViewModel = fetchTaskViewModel()
         let sections: [Section] = [
@@ -57,87 +103,25 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         viewController?.updateTableView(sections: sections)
     }
     
-    func didTapNextMonthButton() {
-        selectedDate = calendarHelper.plusMonth(date: selectedDate)
-        viewIsReady()
-    }
-    
-    func didTapPreviousMonthButton() {
-        selectedDate = calendarHelper.minusMonth(date: selectedDate)
-        viewIsReady()
-    }
-    
-    func selectedSquere(index: Int) {
-        if squares[index] != "" {
-            self.today = squares[index]
-        }
-//        guard let date = daysOfMonth[index] else {
-//            return
-//        }
-//        print(date)
-    }
-    
-    func firstFetchTaskViewController() {
-        let taskViewController = moduleBuilder.buildTaskModule(state: .create, taskViewModel: nil)
-        viewController?.routeTo(taskViewController)
-        taskViewController.presenter?.firstOpen()
-    }
-    
-    func fetchTaskViewController(with index: Int) {
-        let taskViewModel = tasks[index]
-        let taskViewController = moduleBuilder.buildTaskModule(state: .read, taskViewModel: taskViewModel)
-        viewController?.routeTo(taskViewController)
-    }
-}
-
-// MARK: - Private Methods
-private extension ContainerPresenter {
-    
     func fetchCalendarViewModel() -> CalendarViewModel {
         fetchDaysOfMonth()
-        let month = calendarHelper.monthString(date: selectedDate)
-        let year = calendarHelper.yearString(date: selectedDate)
+        let month = calendarHelper.monthString(date: currentDate)
+        let year = calendarHelper.yearString(date: currentDate)
         let title = month + " " + year
         viewController?.updateDateLabel(with: title)
-        // TODO: - Хранить другую модель ContainerViewModel
         self.squares = fetchArrayDateString(daysOfMonth, .dayFormatToOneDay, .localeIdentifireRU, 0)
-//        let viewModel = CalendarViewModel(squares: squares)
         let squares = squares.enumerated().map { index, square -> CollectionViewCellViewModel in
             let isWeekend = isWeekend(index: index)
-            let item = CollectionViewCellViewModel(value: square,
+            let item = CollectionViewCellViewModel(value: square.dateString,
                                                    isWeekend: isWeekend,
-                                                   isSelected: false)
+                                                   isSelected: square.isSelected)
             return item
         }
-        
         let viewModel = CalendarViewModel(squares: squares)
-        /* Сделать в моделе состояние. Передать его сюда. В классе CollectionViewCell Сделать функцию
-        которая будет красить и заниматься настроеккой. Тоже самое сделать и с selectedCell.*/
-        
-//        let squares2 = squares.enumerated().map{ index, square -> CollectionViewCellViewModel in
-//            let isWeekend = isWeekend2(index: index)
-//            let item = CollectionViewCellViewModel(value: square,
-//                                                   isWeekend: isWeekend)
-//            return item
-//        }
-//        
-//        let viewModel2 = CalendarViewModel2(squares: squares2)
-//        return viewModel2
-        
         return viewModel
     }
     
     func fetchTaskViewModel() -> [RowType] {
-        tasks = [
-            .init(nameTask: "N E W  T A S K",
-                  time: "22-00-00",
-                  date: "3-мая-2022",
-                  description: "Some Desctription"),
-            .init(nameTask: "Task2",
-                  time: "11-00-00",
-                  date: "3-мая-2022",
-                  description: "Some New Desctription")
-        ]
         return tasks.map { task -> RowType in
             let viewModel = ShortTaskViewModel(nameTask: task.nameTask,
                                                time: task.time)
@@ -148,8 +132,8 @@ private extension ContainerPresenter {
     
     func fetchDaysOfMonth() {
         daysOfMonth.removeAll()
-        let daysInMonth = calendarHelper.daysInMonth(date: selectedDate)
-        let firstDayOfMonth = calendarHelper.firstOfMonth(date: selectedDate)
+        let daysInMonth = calendarHelper.daysInMonth(date: currentDate)
+        let firstDayOfMonth = calendarHelper.firstOfMonth(date: currentDate)
         let startingSpaces = calendarHelper.weekDay(date: firstDayOfMonth)
         
         var startElement = CalendarElements.startElement
@@ -167,16 +151,24 @@ private extension ContainerPresenter {
     }
     
     func fetchArrayDateString(_ daysOfMonth: [Date?], _ dayFormat: DateHelperElements,
-                              _ localIdentifire: DateHelperElements, _ timeZoneSeconds: Int) -> [String] {
-        let squares = daysOfMonth.map { date -> String in
+                              _ localIdentifire: DateHelperElements,
+                              _ timeZoneSeconds: Int) -> [(dateString: String, isSelected: Bool)] {
+        let squares = daysOfMonth.map { date -> (dateString: String, isSelected: Bool) in
             guard let date = date else {
-                return ""
+                return ("", false)
             }
-            let dateString = dateHelper.formateDateToString(dayFormat.rawValue,
-                                                            localIdentifire.rawValue,
-                                                            timeZoneSeconds,
-                                                            date)
-            return dateString
+            let selectedDateString = dateHelper.formateDateToString(DateHelperElements.dayFormateFulDate.rawValue,
+                                                                    localIdentifire.rawValue,
+                                                                    timeZoneSeconds, selectedDate)
+            let dateString = dateHelper.formateDateToString(DateHelperElements.dayFormateFulDate.rawValue,
+                                                           localIdentifire.rawValue,
+                                                           timeZoneSeconds, date)
+            let isSelectedDay = selectedDateString == dateString
+            let dayString = dateHelper.formateDateToString(dayFormat.rawValue,
+                                                           localIdentifire.rawValue,
+                                                           timeZoneSeconds,
+                                                           date)
+            return (dayString, isSelectedDay)
         }
         return squares
     }
@@ -186,14 +178,5 @@ private extension ContainerPresenter {
             return true
         }
         return false
-    }
-    
-    func currentDay() -> Int? {
-        self.squares = fetchArrayDateString(daysOfMonth, .dayFormateFulDate, .localeIdentifireRU, 0)
-        let currentDay = squares.firstIndex(of: today)
-        guard let currentDay = currentDay else {
-            return nil
-        }
-        return currentDay
     }
 }

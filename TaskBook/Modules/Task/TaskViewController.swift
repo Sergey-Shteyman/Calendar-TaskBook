@@ -15,13 +15,14 @@ enum TaskViewControllerState {
 
 // MARK: - TaskViewControllerDelegate
 protocol TaskViewControllerDelegate: AnyObject {
-    func method(viewModel: TaskViewModel)
+    func didCreateTask(viewModel: TaskViewModel)
 }
 
 // MARK: - TaskViewControllerProtocol
 protocol TaskViewControllerProtocol: AnyObject {
     func becomeResponder()
     func update(viewModel: TaskViewModel)
+    func callDelagate(viewModel: TaskViewModel)
 }
 
 // MARK: - TaskViewController
@@ -114,10 +115,7 @@ final class TaskViewController: UIViewController {
         if isBeingDismissed {
             print(#function)
         }
-        if screenState == .create {
-            delegate?.method(viewModel: .init(nameTask: "Test", time: "Test", date: "Test", description: "Test"))
-            // presenter?.viewDidDismiss(textFiel.text, textView.text)
-        }
+        presenter?.viewDidDisappear(title: titleTextField.text, description: descriptionTextView.text)
     }
 
     @objc func doneAction() {
@@ -150,7 +148,9 @@ extension TaskViewController: TaskViewControllerProtocol {
         descriptionTextView.text = viewModel.description
     }
     
-    // func method() { который отдает вью модель в делагат
+    func callDelagate(viewModel: TaskViewModel) {
+        delegate?.didCreateTask(viewModel: viewModel)
+    }
 }
 
 // MARK: - UITextFieldDelegate Impl

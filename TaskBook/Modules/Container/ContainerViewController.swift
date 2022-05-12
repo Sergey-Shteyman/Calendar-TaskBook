@@ -96,11 +96,10 @@ extension ContainerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == NumbewOfSections.newTaskSection {
-            // TODO: - Rename
-            presenter?.firstFetchTaskViewController()
+            presenter?.fetchTaskViewController(with: indexPath.row, state: .create)
         }
         if indexPath.section == NumbewOfSections.tasksSection {
-            presenter?.fetchTaskViewController(with: indexPath.row)
+            presenter?.fetchTaskViewController(with: indexPath.row, state: .read)
         }
     }
 }
@@ -151,8 +150,9 @@ extension ContainerViewController: CalendarViewCellDelegate {
 // MARK: - TaskViewControllerDelegate Impl
 extension ContainerViewController: TaskViewControllerDelegate {
     
-    func method(viewModel: TaskViewModel) {
+    func didCreateTask(viewModel: TaskViewModel) {
         print(viewModel)
+        presenter?.didCreateTask(viewModel: viewModel)
     }
 }
 

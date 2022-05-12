@@ -12,4 +12,3 @@ struct TaskViewModel {
     let date: String
     let description: String
 }
-
