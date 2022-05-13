@@ -95,11 +95,16 @@ extension ContainerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == NumbewOfSections.newTaskSection {
-            presenter?.fetchTaskViewController(with: indexPath.row, state: .create)
-        }
-        if indexPath.section == NumbewOfSections.tasksSection {
-            presenter?.fetchTaskViewController(with: indexPath.row, state: .read)
+        let section = indexPath.section
+        let type = sections[section].type
+        
+        switch type {
+        case .calendar:
+            break
+        case .newTask:
+            presenter?.didTapCreateNewTaskButton()
+        case .tasks:
+            presenter?.didTapTask(with: indexPath.row)
         }
     }
 }

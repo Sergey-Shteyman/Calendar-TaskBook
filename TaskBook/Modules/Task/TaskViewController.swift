@@ -208,7 +208,7 @@ private extension TaskViewController {
         case .create:
             break
         case .read:
-            presenter?.method()
+            presenter?.passedModel()
         }
     }
     

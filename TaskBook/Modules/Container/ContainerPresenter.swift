@@ -14,8 +14,9 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didTapNextMonthButton()
     func didTapPreviousMonthButton()
     func selectedSquere(index: Int)
-    func didCreateTask(viewModel: TaskViewModel)
-    func fetchTaskViewController(with index: Int, state: TaskViewControllerState)
+    func didCreateTask(viewModel: TaskViewModel)    
+    func didTapCreateNewTaskButton()
+    func didTapTask(with index: Int)
 }
 
 // MARK: - ContainerPresenter
@@ -31,17 +32,7 @@ final class ContainerPresenter {
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
     private var squares = [(dateString: String, isSelected: Bool)]()
-//    private var tasks = [TaskViewModel]()
-    private var tasks: [TaskViewModel] = [
-        .init(nameTask: "N E W  T A S K",
-              time: "22-00-00",
-              date: "3-мая-2022",
-              description: "Some Desctription"),
-        .init(nameTask: "Task2",
-              time: "11-00-00",
-              date: "3-мая-2022",
-              description: "Some New Desctription")
-    ]
+    private var tasks = [TaskViewModel]()
     
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
@@ -77,13 +68,29 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     }
     
     func didCreateTask(viewModel: TaskViewModel) {
-        tasks.append(viewModel)
-        updateViewController()
+        var index: Int?
+        tasks.enumerated().forEach {
+            if $1.id == viewModel.id {
+                index = $0
+            }
+        }
+        if let index = index {
+            tasks[index] = viewModel
+            updateViewController()
+        } else {
+            tasks.append(viewModel)
+            updateViewController()
+        }
     }
     
-    func fetchTaskViewController(with index: Int, state: TaskViewControllerState) {
+    func didTapCreateNewTaskButton() {
+        let taskViewController = moduleBuilder.buildTaskModule(state: .create, taskViewModel: nil)
+        viewController?.routeTo(taskViewController)
+    }
+    
+    func didTapTask(with index: Int) {
         let taskViewModel = tasks[index]
-        let taskViewController = moduleBuilder.buildTaskModule(state: state, taskViewModel: taskViewModel)
+        let taskViewController = moduleBuilder.buildTaskModule(state: .read, taskViewModel: taskViewModel)
         viewController?.routeTo(taskViewController)
     }
 }

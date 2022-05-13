@@ -16,10 +16,8 @@ protocol TaskPresenterProtocol: AnyObject {
                     limit: Int) -> Bool
     // TODO: -
     func fetchStringTime(_ localeId: String, _ date: Date) -> String
-    // TODO: - rename
-    func method()
-    
-    // TODO: - Date and time on homeWork
+    func passedModel()
+    // TODO: - Date and time
     func viewDidDisappear(title: String?, description: String?)
 }
 
@@ -70,7 +68,7 @@ extension TaskPresenter: TaskPresenterProtocol {
         return stringTime
     }
     
-    func method() {
+    func passedModel() {
         guard let viewModel = taskViewModel else {
             return
         }
@@ -78,11 +76,16 @@ extension TaskPresenter: TaskPresenterProtocol {
     }
     
     func viewDidDisappear(title: String?, description: String?) {
-        if let viewModel = taskViewModel {
+        if var  viewModel = taskViewModel {
+            viewModel.nameTask = title ?? ""
+            viewModel.description = description ?? ""
             viewController?.callDelagate(viewModel: viewModel)
+            return
         }
-        let viewModel = TaskViewModel(nameTask: title ?? "",
-                                      // TODO: - 
+        let id = UUID().uuidString
+        let viewModel = TaskViewModel(id: id,
+                                      nameTask: title ?? "",
+                                      // TODO: -
                                       time: "",
                                       date: "",
                                       description: description ?? "")
