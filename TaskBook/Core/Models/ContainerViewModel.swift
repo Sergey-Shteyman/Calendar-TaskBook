@@ -22,5 +22,5 @@ enum SectionType {
 enum RowType {
     case calendar(viewModel: CalendarViewModel)
     case newTask
-    case task(viewModel: TaskViewModel)
+    case task(viewModel: ShortTaskViewModel)
 }

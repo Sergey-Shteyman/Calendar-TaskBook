@@ -14,7 +14,11 @@ protocol TaskPresenterProtocol: AnyObject {
                     shouldChangeCharactersIn range: NSRange,
                     replacementString string: String,
                     limit: Int) -> Bool
+    // TODO: -
     func fetchStringTime(_ localeId: String, _ date: Date) -> String
+    func passedModel()
+    // TODO: - Date and time
+    func viewDidDisappear(title: String?, description: String?)
 }
 
 // MARK: - TaskPresenter
@@ -22,12 +26,17 @@ final class TaskPresenter {
     
     weak var viewController: TaskViewController?
     
-    private var moduleBuilder: Buildable?
-    
+    private let moduleBuilder: Buildable
+    private let userDefaults: UserDefaultsManagerProtocol
+    private let taskViewModel: TaskViewModel?
     private let dateFormater = DateFormatter()
     
-    init(moduleBuilder: Buildable) {
+    init(moduleBuilder: Buildable,
+         userDefaults: UserDefaultsManagerProtocol,
+         taskViewModel: TaskViewModel? = nil) {
         self.moduleBuilder = moduleBuilder
+        self.userDefaults = userDefaults
+        self.taskViewModel = taskViewModel
     }
 }
 
@@ -57,6 +66,30 @@ extension TaskPresenter: TaskPresenterProtocol {
         dateFormater.locale = Locale(identifier: localeId)
         let stringTime = dateFormater.string(from: date)
         return stringTime
+    }
+    
+    func passedModel() {
+        guard let viewModel = taskViewModel else {
+            return
+        }
+        viewController?.update(viewModel: viewModel)
+    }
+    
+    func viewDidDisappear(title: String?, description: String?) {
+        if var  viewModel = taskViewModel {
+            viewModel.nameTask = title ?? ""
+            viewModel.description = description ?? ""
+            viewController?.callDelagate(viewModel: viewModel)
+            return
+        }
+        let id = UUID().uuidString
+        let viewModel = TaskViewModel(id: id,
+                                      nameTask: title ?? "",
+                                      // TODO: -
+                                      time: "",
+                                      date: "",
+                                      description: description ?? "")
+        viewController?.callDelagate(viewModel: viewModel)
     }
 }
 

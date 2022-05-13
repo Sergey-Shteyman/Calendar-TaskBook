@@ -7,15 +7,31 @@
 
 import UIKit
 
+// MARK: - TaskViewControllerState
+enum TaskViewControllerState {
+    case create
+    case read
+}
+
+// MARK: - TaskViewControllerDelegate
+protocol TaskViewControllerDelegate: AnyObject {
+    func didCreateTask(viewModel: TaskViewModel)
+}
+
 // MARK: - TaskViewControllerProtocol
 protocol TaskViewControllerProtocol: AnyObject {
     func becomeResponder()
+    func update(viewModel: TaskViewModel)
+    func callDelagate(viewModel: TaskViewModel)
 }
 
 // MARK: - TaskViewController
 final class TaskViewController: UIViewController {
     
     var presenter: TaskPresenter?
+    weak var delegate: TaskViewControllerDelegate?
+    
+    private var screenState: TaskViewControllerState = .create
     
     private let localeId = DateHelperElements.localeIdentifireRU.rawValue
     private let placeholderTitle = TaskElements.placeholderTitle
@@ -89,6 +105,19 @@ final class TaskViewController: UIViewController {
         setupViewController()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        prepareScreenWithState()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if isBeingDismissed {
+            print(#function)
+        }
+        presenter?.viewDidDisappear(title: titleTextField.text, description: descriptionTextView.text)
+    }
+
     @objc func doneAction() {
         containerTextField.resignFirstResponder()
     }
@@ -99,11 +128,28 @@ final class TaskViewController: UIViewController {
     }
 }
 
+// MARK: - Public Methods
+extension TaskViewController {
+    
+    func setupScreenState(_ state: TaskViewControllerState) {
+        screenState = state
+    }
+}
+
 // MARK: - TaskViewControllerProtocol Impl
 extension TaskViewController: TaskViewControllerProtocol {
     
     func becomeResponder() {
         titleTextField.becomeFirstResponder()
+    }
+    
+    func update(viewModel: TaskViewModel) {
+        titleTextField.text = viewModel.nameTask
+        descriptionTextView.text = viewModel.description
+    }
+    
+    func callDelagate(viewModel: TaskViewModel) {
+        delegate?.didCreateTask(viewModel: viewModel)
     }
 }
 
@@ -133,7 +179,6 @@ extension TaskViewController: UITextFieldDelegate {
 extension TaskViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        
         if descriptionTextView.text == descriptionTitle {
             setupPlaceHolderForTextView("", .black, 20, .left)
         }
@@ -156,6 +201,15 @@ private extension TaskViewController {
         setupDoneButtonForDataPicker()
         addSubViews()
         addConstraints()
+    }
+    
+    func prepareScreenWithState() {
+        switch screenState {
+        case .create:
+            break
+        case .read:
+            presenter?.passedModel()
+        }
     }
     
     func setupPlaceHolderForTextView(_ text: String,

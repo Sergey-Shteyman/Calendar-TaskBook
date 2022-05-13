@@ -9,10 +9,7 @@ import UIKit
 
 // MARK: - CalendarViewCellDelegate
 protocol CalendarViewCellDelegate: AnyObject {
-    func calendarViewDidTapItem(index: Int)
-    func searchWeekend(indexPath: IndexPath) -> Bool
-    func currentSquere() -> Int?
-    func selectedSquere(numberOfSqueres: Int)
+    func didTapSelectedSquare(index: Int)
 }
 
 // MARK: - CalendarViewCell
@@ -20,7 +17,7 @@ final class CalendarViewCell: UITableViewCell {
     
     weak var delegate: CalendarViewCellDelegate?
     
-    private var totalSquares = [String]()
+    private var totalSquares = [CollectionViewCellViewModel]()
     private var selectedDate: Int?
     
     private lazy var stackView: UIStackView = {
@@ -59,7 +56,6 @@ final class CalendarViewCell: UITableViewCell {
 extension CalendarViewCell {
     
     func setupCellConfiguration(viewModel: CalendarViewModel) {
-//        dateLabel.text = viewModel.title
         totalSquares = viewModel.squares
         collectionView.reloadData()
     }
@@ -70,8 +66,7 @@ extension CalendarViewCell: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let index = indexPath.item
-        delegate?.calendarViewDidTapItem(index: index)
-        delegate?.selectedSquere(numberOfSqueres: index)
+        delegate?.didTapSelectedSquare(index: index)
         collectionView.reloadData()
     }
 }
@@ -86,22 +81,8 @@ extension CalendarViewCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.myDequeueReusableCell(type: CollectionViewCell.self, indePath: indexPath)
-        
-        guard let isDayWeekend = delegate?.searchWeekend(indexPath: indexPath) else {
-            return UICollectionViewCell()
-        }
-        let currentSquere = delegate?.currentSquere()
-        
-        selectedDate = currentSquere
-        
-        if isDayWeekend {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .gray, isSelected: false)
-        } else {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .black, isSelected: false)
-        }
-        if indexPath.row == selectedDate {
-            myCell.setupCell(with: totalSquares[indexPath.item], color: .white, isSelected: true)
-        }
+        let viewModel = totalSquares[indexPath.item]
+        myCell.setupCellWith(viewModel: viewModel)
         return myCell
     }
 }

@@ -78,6 +78,9 @@ extension ContainerViewController: ContainerViewControllerProtocol {
     }
     
     func routeTo(_ viewController: UIViewController) {
+        if let viewController = viewController as? TaskViewController {
+            viewController.delegate = self
+        }
         present(viewController, animated: true)
     }
     
@@ -92,11 +95,16 @@ extension ContainerViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 1 {
-            presenter?.firstFetchTaskViewController(with: indexPath)
-        }
-        if indexPath.section > 1 {
-            presenter?.fetchTaskViewController(with: indexPath)
+        let section = indexPath.section
+        let type = sections[section].type
+        
+        switch type {
+        case .calendar:
+            break
+        case .newTask:
+            presenter?.didTapCreateNewTaskButton()
+        case .tasks:
+            presenter?.didTapTask(with: indexPath.row)
         }
     }
 }
@@ -139,26 +147,17 @@ extension ContainerViewController: UITableViewDataSource {
 // MARK: - CalendarViewCellDelegate Impl
 extension ContainerViewController: CalendarViewCellDelegate {
     
-    func selectedSquere(numberOfSqueres: Int) {
-        presenter?.selectedSquere(index: numberOfSqueres)
+    func didTapSelectedSquare(index: Int) {
+        presenter?.selectedSquere(index: index)
     }
+}
+
+// MARK: - TaskViewControllerDelegate Impl
+extension ContainerViewController: TaskViewControllerDelegate {
     
-    func currentSquere() -> Int? {
-        guard let currentDay = presenter?.currentDay() else {
-            return nil
-        }
-        return currentDay
-    }
-    
-    func calendarViewDidTapItem(index: Int) {
-        presenter?.didTapDay(index: index)
-    }
-    
-    func searchWeekend(indexPath: IndexPath) -> Bool {
-        guard let isWeekend = presenter?.isWeekend(indexPath: indexPath) else {
-            return Bool()
-        }
-        return isWeekend
+    func didCreateTask(viewModel: TaskViewModel) {
+        print(viewModel)
+        presenter?.didCreateTask(viewModel: viewModel)
     }
 }
 
@@ -208,5 +207,12 @@ private extension ContainerViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+
+extension ContainerViewController {
+    private enum NumbewOfSections {
+        static let newTaskSection = 1
+        static let tasksSection = 2
     }
 }
