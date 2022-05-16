@@ -209,10 +209,3 @@ private extension ContainerViewController {
         ])
     }
 }
-
-extension ContainerViewController {
-    private enum NumbewOfSections {
-        static let newTaskSection = 1
-        static let tasksSection = 2
-    }
-}

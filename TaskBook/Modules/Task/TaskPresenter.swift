@@ -14,8 +14,7 @@ protocol TaskPresenterProtocol: AnyObject {
                     shouldChangeCharactersIn range: NSRange,
                     replacementString string: String,
                     limit: Int) -> Bool
-    // TODO: -
-    func fetchStringTime(_ localeId: String, _ date: Date) -> String
+    func fetchStringTime(_ localeId: String, _ date: Date)
     func passedModel()
     // TODO: - Date and time
     func viewDidDisappear(title: String?, description: String?)
@@ -60,12 +59,12 @@ extension TaskPresenter: TaskPresenterProtocol {
         return count <= limit
     }
     
-    func fetchStringTime(_ localeId: String, _ date: Date) -> String {
+    func fetchStringTime(_ localeId: String, _ date: Date) {
         dateFormater.timeStyle = .short
         dateFormater.dateStyle = .none
         dateFormater.locale = Locale(identifier: localeId)
         let stringTime = dateFormater.string(from: date)
-        return stringTime
+        viewController?.showTime(with: stringTime)
     }
     
     func passedModel() {

@@ -23,6 +23,7 @@ protocol TaskViewControllerProtocol: AnyObject {
     func becomeResponder()
     func update(viewModel: TaskViewModel)
     func callDelagate(viewModel: TaskViewModel)
+    func showTime(with stringTime: String)
 }
 
 // MARK: - TaskViewController
@@ -92,10 +93,12 @@ final class TaskViewController: UIViewController {
         textView.backgroundColor = .systemGray6
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 20
-        textView.textColor = .systemRed
-        textView.font = .boldSystemFont(ofSize: 30)
-        textView.textAlignment = .center
-        textView.text = descriptionTitle
+//        textView.textColor = .systemRed
+//        textView.font = .boldSystemFont(ofSize: 30)
+//        textView.textAlignment = .center
+//        textView.text = descriptionTitle
+        textView.font = .boldSystemFont(ofSize: 20)
+        textView.textAlignment = .left
         textView.delegate = self
         return textView
     }()
@@ -123,8 +126,7 @@ final class TaskViewController: UIViewController {
     }
     
     @objc func stringTime() {
-        let stringTime = presenter?.fetchStringTime(localeId, datePicker.date)
-        containerTextField.text = stringTime
+        presenter?.fetchStringTime(localeId, datePicker.date)
     }
 }
 
@@ -138,6 +140,10 @@ extension TaskViewController {
 
 // MARK: - TaskViewControllerProtocol Impl
 extension TaskViewController: TaskViewControllerProtocol {
+    
+    func showTime(with stringTime: String) {
+        containerTextField.text = stringTime
+    }
     
     func becomeResponder() {
         titleTextField.becomeFirstResponder()
