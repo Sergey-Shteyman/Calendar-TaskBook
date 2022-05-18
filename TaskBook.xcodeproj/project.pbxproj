@@ -12,6 +12,7 @@
 		5E25E5B32826F3720077498B /* TaskElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5B22826F3720077498B /* TaskElements.swift */; };
 		5E25E5B52827A1CE0077498B /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5B42827A1CE0077498B /* UserDefaultsManager.swift */; };
 		5E25E5B7282BC42A0077498B /* ShortTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5B6282BC42A0077498B /* ShortTaskViewModel.swift */; };
+		5E25E5B9283535390077498B /* RealmService .swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5B8283535390077498B /* RealmService .swift */; };
 		5E4E97EB280F1C6500ED5D15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */; };
 		5E4E97ED280F1C6500ED5D15 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */; };
 		5E4E97EF280F1C6500ED5D15 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EE280F1C6500ED5D15 /* CalendarViewCell.swift */; };
@@ -72,6 +73,7 @@
 		5E25E5B22826F3720077498B /* TaskElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskElements.swift; sourceTree = "<group>"; };
 		5E25E5B42827A1CE0077498B /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		5E25E5B6282BC42A0077498B /* ShortTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortTaskViewModel.swift; sourceTree = "<group>"; };
+		5E25E5B8283535390077498B /* RealmService .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmService .swift"; sourceTree = "<group>"; };
 		5E4E97E7280F1C6500ED5D15 /* TaskBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				5E83E8032812F07100160AA8 /* CalendarHelper.swift */,
 				5E99A830281EE60300676A2A /* DateHelper.swift */,
 				5E25E5B42827A1CE0077498B /* UserDefaultsManager.swift */,
+				5E25E5B8283535390077498B /* RealmService .swift */,
 			);
 			path = ServiceLayer;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				5E99A8232817E91D00676A2A /* ContainerPresenter.swift in Sources */,
 				5E83E8022812EFAA00160AA8 /* Arrow.swift in Sources */,
 				5E99A833281EEADF00676A2A /* DateHelperElements.swift in Sources */,
+				5E25E5B9283535390077498B /* RealmService .swift in Sources */,
 				5E83E8042812F07100160AA8 /* CalendarHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

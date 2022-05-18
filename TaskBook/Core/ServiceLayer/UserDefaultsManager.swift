@@ -17,8 +17,8 @@ enum UserDefaultsKey: String {
 
 // MARK: - UserDefaultsManagerProtocol
 protocol UserDefaultsManagerProtocol: AnyObject {
-    static func save(_ value: Any, for key: UserDefaultsKey)
-    static func fetch<T: Decodable>(type: T.Type, for key: UserDefaultsKey) -> T?
+    func save(_ value: Any, for key: UserDefaultsKey)
+    func fetch<T: Decodable>(type: T.Type, for key: UserDefaultsKey) -> T?
 }
 
 // MARK: - UserDefaultsManager
@@ -29,11 +29,11 @@ final class UserDefaultsManager {
 // MARK: - UserDefaultsManagerProtocol
 extension UserDefaultsManager: UserDefaultsManagerProtocol {
     
-    static func save(_ value: Any, for key: UserDefaultsKey) {
+    func save(_ value: Any, for key: UserDefaultsKey) {
         UserDefaults.standard.set(value, forKey: key.rawValue)
     }
     
-    static func fetch<T: Decodable>(type: T.Type, for key: UserDefaultsKey) -> T? {
+    func fetch<T: Decodable>(type: T.Type, for key: UserDefaultsKey) -> T? {
         UserDefaults.standard.object(forKey: key.rawValue) as? T
     }
 }
