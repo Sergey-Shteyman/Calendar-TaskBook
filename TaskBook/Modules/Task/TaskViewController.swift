@@ -93,12 +93,6 @@ final class TaskViewController: UIViewController {
         textView.backgroundColor = .systemGray6
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 20
-//        textView.textColor = .systemRed
-//        textView.font = .boldSystemFont(ofSize: 30)
-//        textView.textAlignment = .center
-//        textView.text = descriptionTitle
-        textView.font = .boldSystemFont(ofSize: 20)
-        textView.textAlignment = .left
         textView.delegate = self
         return textView
     }()
@@ -205,6 +199,7 @@ private extension TaskViewController {
         view.addTapGestureToHideKeyboard()
         inputViewDataPicker()
         setupDoneButtonForDataPicker()
+        configurationDescriptionTextView()
         addSubViews()
         addConstraints()
     }
@@ -212,9 +207,23 @@ private extension TaskViewController {
     func prepareScreenWithState() {
         switch screenState {
         case .create:
-            break
+            titleTextField.becomeFirstResponder()
         case .read:
             presenter?.passedModel()
+            configurationDescriptionTextView()
+        }
+    }
+    
+    func configurationDescriptionTextView() {
+        if descriptionTextView.text.isEmpty || descriptionTextView.text == descriptionTitle {
+            descriptionTextView.textColor = .systemRed
+            descriptionTextView.font = .boldSystemFont(ofSize: 30)
+            descriptionTextView.textAlignment = .center
+            descriptionTextView.text = descriptionTitle
+        } else {
+            descriptionTextView.textColor = .black
+            descriptionTextView.font = .boldSystemFont(ofSize: 20)
+            descriptionTextView.textAlignment = .left
         }
     }
     
