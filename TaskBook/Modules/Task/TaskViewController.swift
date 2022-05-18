@@ -109,10 +109,14 @@ final class TaskViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        if isBeingDismissed {
-            print(#function)
-        }
-        presenter?.viewDidDisappear(title: titleTextField.text, description: descriptionTextView.text)
+//        if isBeingDismissed {
+//
+//        }
+        setupValidationNameTaskTextField()
+        
+        presenter?.viewDidDisappear(title: titleTextField.text,
+                                    time: containerTextField.text,
+                                    description: descriptionTextView.text)
     }
 
     @objc func doneAction() {
@@ -145,6 +149,7 @@ extension TaskViewController: TaskViewControllerProtocol {
     
     func update(viewModel: TaskViewModel) {
         titleTextField.text = viewModel.nameTask
+        containerTextField.text = viewModel.time
         descriptionTextView.text = viewModel.description
     }
     
@@ -239,6 +244,15 @@ private extension TaskViewController {
     
     func inputViewDataPicker() {
         containerTextField.inputView = datePicker
+    }
+    
+    func setupValidationNameTaskTextField() {
+        guard let text = titleTextField.text else {
+            return
+        }
+        if text.isEmpty {
+            titleTextField.text = placeholderTitle
+        }
     }
     
     func setupDoneButtonForDataPicker() {

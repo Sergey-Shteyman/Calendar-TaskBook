@@ -9,7 +9,7 @@
 struct TaskViewModel {
     let id: String
     var nameTask: String
-    let time: String
+    var time: String
     let date: String
     var description: String
 }

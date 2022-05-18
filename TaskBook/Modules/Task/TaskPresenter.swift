@@ -16,8 +16,7 @@ protocol TaskPresenterProtocol: AnyObject {
                     limit: Int) -> Bool
     func fetchStringTime(_ localeId: String, _ date: Date)
     func passedModel()
-    // TODO: - Date and time
-    func viewDidDisappear(title: String?, description: String?)
+    func viewDidDisappear(title: String?, time: String?, description: String?)
 }
 
 // MARK: - TaskPresenter
@@ -74,18 +73,18 @@ extension TaskPresenter: TaskPresenterProtocol {
         viewController?.update(viewModel: viewModel)
     }
     
-    func viewDidDisappear(title: String?, description: String?) {
+    func viewDidDisappear(title: String?, time: String?, description: String?) {
         if var  viewModel = taskViewModel {
             viewModel.nameTask = title ?? ""
             viewModel.description = description ?? ""
+            viewModel.time = time ?? ""
             viewController?.callDelagate(viewModel: viewModel)
             return
         }
         let id = UUID().uuidString
         let viewModel = TaskViewModel(id: id,
                                       nameTask: title ?? "",
-                                      // TODO: -
-                                      time: "",
+                                      time: time ?? "",
                                       date: "",
                                       description: description ?? "")
         viewController?.callDelagate(viewModel: viewModel)
