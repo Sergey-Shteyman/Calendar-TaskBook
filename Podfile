@@ -9,6 +9,7 @@ target 'TaskBook' do
 
 pod 'SwiftLint'
 pod 'Alamofire'
+pod 'RealmSwift'
 
   target 'TaskBookTests' do
     inherit! :search_paths
