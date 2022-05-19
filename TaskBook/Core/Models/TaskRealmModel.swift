@@ -8,6 +8,7 @@
 import RealmSwift
 
 // MARK: - TaskRealmModel
+/// Модель для работы с REALM
 final class TaskRealmModel: Object {
     @objc dynamic var taskId = ""
     @objc dynamic var date = Date()

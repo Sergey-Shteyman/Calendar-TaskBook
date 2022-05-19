@@ -14,7 +14,7 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didTapNextMonthButton()
     func didTapPreviousMonthButton()
     func selectedSquere(index: Int)
-    func didCreateTask(viewModel: TaskViewModel)    
+    func didCreateTask(model: TaskModel)
     func didTapCreateNewTaskButton()
     func didTapTask(with index: Int)
     func deleteTask(with index: Int)
@@ -33,7 +33,7 @@ final class ContainerPresenter {
     private var selectedDate = Date()
     private var daysOfMonth = [Date?]()
     private var squares = [(dateString: String, isSelected: Bool)]()
-    private var tasks = [TaskViewModel]()
+    private var tasks = [TaskModel]()
             
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
@@ -69,30 +69,34 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         updateViewController()
     }
     
-    func didCreateTask(viewModel: TaskViewModel) {
+    func didCreateTask(model: TaskModel) {
         var index: Int?
         tasks.enumerated().forEach {
-            if $1.id == viewModel.id {
+            if $1.id == model.id {
                 index = $0
             }
         }
         if let index = index {
-            tasks[index] = viewModel
+            tasks[index] = model
             updateViewController()
         } else {
-            tasks.append(viewModel)
+            tasks.append(model)
             updateViewController()
         }
     }
     
     func didTapCreateNewTaskButton() {
-        let taskViewController = moduleBuilder.buildTaskModule(state: .create, taskViewModel: nil)
+        let taskViewController = moduleBuilder.buildTaskModule(state: .create,
+                                                               taskModel: nil,
+                                                               selectedDate: selectedDate)
         viewController?.routeTo(taskViewController)
     }
     
     func didTapTask(with index: Int) {
-        let taskViewModel = tasks[index]
-        let taskViewController = moduleBuilder.buildTaskModule(state: .read, taskViewModel: taskViewModel)
+        let taskModel = tasks[index]
+        let taskViewController = moduleBuilder.buildTaskModule(state: .read,
+                                                               taskModel: taskModel,
+                                                               selectedDate: selectedDate)
         viewController?.routeTo(taskViewController)
     }
     
@@ -137,8 +141,9 @@ private extension ContainerPresenter {
     
     func fetchTaskViewModel() -> [RowType] {
         return tasks.map { task -> RowType in
-            let viewModel = ShortTaskViewModel(nameTask: task.nameTask,
-                                               time: task.time)
+            let viewModel = ShortTaskViewModel(name: task.name,
+                                               // TODO: - хелпер для перевода даты во премя
+                                               time: "")
             let item = RowType.task(viewModel: viewModel)
             return item
         }

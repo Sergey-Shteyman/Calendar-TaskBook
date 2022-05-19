@@ -175,8 +175,8 @@ extension ContainerViewController: CalendarViewCellDelegate {
 // MARK: - TaskViewControllerDelegate Impl
 extension ContainerViewController: TaskViewControllerDelegate {
     
-    func didCreateTask(viewModel: TaskViewModel) {
-        presenter?.didCreateTask(viewModel: viewModel)
+    func didCreateTask(model: TaskModel) {
+        presenter?.didCreateTask(model: model)
     }
 }
 

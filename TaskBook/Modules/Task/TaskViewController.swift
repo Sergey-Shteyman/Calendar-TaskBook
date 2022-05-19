@@ -15,14 +15,14 @@ enum TaskViewControllerState {
 
 // MARK: - TaskViewControllerDelegate
 protocol TaskViewControllerDelegate: AnyObject {
-    func didCreateTask(viewModel: TaskViewModel)
+    func didCreateTask(model: TaskModel)
 }
 
 // MARK: - TaskViewControllerProtocol
 protocol TaskViewControllerProtocol: AnyObject {
     func becomeResponder()
-    func update(viewModel: TaskViewModel)
-    func callDelagate(viewModel: TaskViewModel)
+    func update(model: TaskModel)
+    func callDelagate(model: TaskModel)
     func showTime(with stringTime: String)
 }
 
@@ -115,7 +115,7 @@ final class TaskViewController: UIViewController {
         setupValidationNameTaskTextField()
         
         presenter?.viewDidDisappear(title: titleTextField.text,
-                                    time: containerTextField.text,
+//                                    time: containerTextField.text,
                                     description: descriptionTextView.text)
     }
 
@@ -147,14 +147,14 @@ extension TaskViewController: TaskViewControllerProtocol {
         titleTextField.becomeFirstResponder()
     }
     
-    func update(viewModel: TaskViewModel) {
-        titleTextField.text = viewModel.nameTask
-        containerTextField.text = viewModel.time
-        descriptionTextView.text = viewModel.description
+    func update(model: TaskModel) {
+        titleTextField.text = model.name
+//        containerTextField.text = model.time
+        descriptionTextView.text = model.description
     }
     
-    func callDelagate(viewModel: TaskViewModel) {
-        delegate?.didCreateTask(viewModel: viewModel)
+    func callDelagate(model: TaskModel) {
+        delegate?.didCreateTask(model: model)
     }
 }
 

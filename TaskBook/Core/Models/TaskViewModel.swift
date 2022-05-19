@@ -6,10 +6,32 @@
 //
 
 // MARK: - TaskViewModel
+/// ViewModel для отображения данных на TaskViewController
 struct TaskViewModel {
     let id: String
-    var nameTask: String
+    var name: String
     var time: String
     let date: String
     var description: String
+    
+    init(id: String,
+         name: String,
+         time: String,
+         date: String,
+         description: String) {
+        self.id = id
+        self.name = name
+        self.time = time
+        self.date = date
+        self.description = description
+    }
+    
+    init(taskModel: TaskModel) {
+        id = taskModel.id
+        name = taskModel.name
+        // TODO: - тут я буду использовать хелпер 
+        time = ""
+        date = ""
+        description = taskModel.description
+    }
 }

@@ -8,12 +8,12 @@
 import Foundation
 
 // MARK: - TaskModel
-/// Это модель с которой нужно работать в презенторе для работы с сырыми данными 
+/// Модель работы с сырыми данными в презенторе 
 struct TaskModel {
     let id: String
-    let date: Date
-    let name: String
-    let description: String
+    var date: Date
+    var name: String
+    var description: String
     
     init(id: String, date: Date, name: String, description: String) {
         self.id = id

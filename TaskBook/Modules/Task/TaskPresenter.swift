@@ -16,7 +16,9 @@ protocol TaskPresenterProtocol: AnyObject {
                     limit: Int) -> Bool
     func fetchStringTime(_ localeId: String, _ date: Date)
     func passedModel()
-    func viewDidDisappear(title: String?, time: String?, description: String?)
+    func viewDidDisappear(title: String?,
+//                          time: String?,
+                          description: String?)
 }
 
 // MARK: - TaskPresenter
@@ -26,15 +28,18 @@ final class TaskPresenter {
     
     private let moduleBuilder: Buildable
     private let userDefaults: UserDefaultsManagerProtocol
-    private let taskViewModel: TaskViewModel?
+    private let taskModel: TaskModel?
+    private let selectedDate: Date
     private let dateFormater = DateFormatter()
     
     init(moduleBuilder: Buildable,
          userDefaults: UserDefaultsManagerProtocol,
-         taskViewModel: TaskViewModel? = nil) {
+         taskModel: TaskModel? = nil,
+         selectedDate: Date) {
         self.moduleBuilder = moduleBuilder
         self.userDefaults = userDefaults
-        self.taskViewModel = taskViewModel
+        self.taskModel = taskModel
+        self.selectedDate = selectedDate
     }
 }
 
@@ -67,27 +72,28 @@ extension TaskPresenter: TaskPresenterProtocol {
     }
     
     func passedModel() {
-        guard let viewModel = taskViewModel else {
+        guard let taskModel = taskModel else {
             return
         }
-        viewController?.update(viewModel: viewModel)
+        viewController?.update(model: taskModel)
     }
     
-    func viewDidDisappear(title: String?, time: String?, description: String?) {
-        if var  viewModel = taskViewModel {
-            viewModel.nameTask = title ?? ""
-            viewModel.description = description ?? ""
-            viewModel.time = time ?? ""
-            viewController?.callDelagate(viewModel: viewModel)
+    func viewDidDisappear(title: String?,
+//                          time: String?,
+                          description: String?) {
+        if var  taskModel = taskModel {
+            taskModel.name = title ?? ""
+            taskModel.description = description ?? ""
+//            taskModel.time = time ?? ""
+            viewController?.callDelagate(model: taskModel)
             return
         }
         let id = UUID().uuidString
-        let viewModel = TaskViewModel(id: id,
-                                      nameTask: title ?? "",
-                                      time: time ?? "",
-                                      date: "",
-                                      description: description ?? "")
-        viewController?.callDelagate(viewModel: viewModel)
+        let model = TaskModel(id: id,
+                              date: selectedDate,
+                              name: title ?? "",
+                              description: description ?? "")
+        viewController?.callDelagate(model: model)
     }
 }
 
