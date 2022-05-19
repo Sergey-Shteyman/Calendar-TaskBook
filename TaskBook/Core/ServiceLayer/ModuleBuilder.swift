@@ -12,7 +12,7 @@ protocol Buildable {
     func buildContainerModule() -> ContainerViewController
     func buildTaskModule(state: TaskViewControllerState,
                          taskModel: TaskModel?,
-                          selectedDate: Date) -> TaskViewController
+                         selectedDate: Date) -> TaskViewController
 }
 
 // MARK: - ModuleBuilder
