@@ -17,6 +17,7 @@ protocol ContainerPresenterProtocol: AnyObject {
     func didCreateTask(viewModel: TaskViewModel)    
     func didTapCreateNewTaskButton()
     func didTapTask(with index: Int)
+    func deleteTask(with index: Int)
 }
 
 // MARK: - ContainerPresenter
@@ -33,7 +34,7 @@ final class ContainerPresenter {
     private var daysOfMonth = [Date?]()
     private var squares = [(dateString: String, isSelected: Bool)]()
     private var tasks = [TaskViewModel]()
-    
+            
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
         self.moduleBuilder = moduleBuilder
@@ -47,6 +48,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     
     func viewIsReady() {
         updateViewController()
+        print(tasks)
     }
     
     func didTapNextMonthButton() {
@@ -92,6 +94,11 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         let taskViewModel = tasks[index]
         let taskViewController = moduleBuilder.buildTaskModule(state: .read, taskViewModel: taskViewModel)
         viewController?.routeTo(taskViewController)
+    }
+    
+    func deleteTask(with index: Int) {
+        tasks.remove(at: index)
+        updateViewController()
     }
 }
 

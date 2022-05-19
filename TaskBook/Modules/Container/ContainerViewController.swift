@@ -142,6 +142,26 @@ extension ContainerViewController: UITableViewDataSource {
             return cell
         }
     }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        let section = indexPath.section
+        let type = sections[section].type
+        switch type {
+        case .calendar:
+            return .none
+        case .newTask:
+            return .none
+        case .tasks:
+            return .delete
+        }
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            presenter?.deleteTask(with: indexPath.row)
+        }
+    }
 }
 
 // MARK: - CalendarViewCellDelegate Impl
@@ -156,7 +176,6 @@ extension ContainerViewController: CalendarViewCellDelegate {
 extension ContainerViewController: TaskViewControllerDelegate {
     
     func didCreateTask(viewModel: TaskViewModel) {
-//        print(viewModel)
         presenter?.didCreateTask(viewModel: viewModel)
     }
 }

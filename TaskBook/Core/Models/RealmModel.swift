@@ -7,14 +7,25 @@
 
 import RealmSwift
 
-final class RealModel: Object {
+// MARK: - TaskRealmModel
+final class TaskRealmModel: Object {
     @objc dynamic var taskId = ""
+    @objc dynamic var date = Date()
     @objc dynamic var taskName = ""
+//    @objc dynamic var taskTime = ""
+    @objc dynamic var descriptionTask = ""
     
-    convenience init(taskId: String, taskName: String) {
+    convenience init(taskId: String,
+                     date: Date,
+                     taskName: String,
+//                     taskTime: String,
+                     descriptionTask: String) {
         self.init()
         self.taskId = taskId
+        self.date = date
         self.taskName = taskName
+//        self.taskTime = taskTime
+        self.descriptionTask = descriptionTask
     }
     
     override class func primaryKey() -> String? {
