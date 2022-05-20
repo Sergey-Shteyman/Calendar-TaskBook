@@ -28,18 +28,18 @@ final class ContainerPresenter {
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
 
-    private var currentDate = Date()
-    private var selectedDate = Date()
+    private var currentDate = Date().onlyDate
+    private var selectedDate = Date().onlyDate
     private var daysOfMonth = [Date?]()
     private var squares = [(dateString: String, isSelected: Bool)]()
     private var tasks = [TaskModel]()
+    private var taskModel = [TaskModel]()
 
     init(moduleBuilder: Buildable,
          calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
         self.moduleBuilder = moduleBuilder
         self.calendarHelper = calendarHelper
-        self.dateHelper = dateHelper
-    }
+        self.dateHelper = dateHelper    }
 }
 
 // MARK: - ContainerPresenterProtocol Impl
@@ -47,7 +47,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
 
     func viewIsReady() {
         updateViewController()
-        print(tasks)
+//        print(tasks)
     }
 
     func didTapNextMonthButton() {
@@ -66,6 +66,8 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         }
         selectedDate = date
         updateViewController()
+//        let newDate = dateHelper.formatedDate(selectedDate, DateHelperElements.dayFormateFulDate.rawValue)
+//        print(newDate)
     }
 
     func didCreateTask(model: TaskModel) {
@@ -92,9 +94,8 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     }
 
     func didTapTask(with index: Int) {
-        let taskModel = tasks[index]
         let taskViewController = moduleBuilder.buildTaskModule(state: .read,
-                                                               taskModel: taskModel,
+                                                               taskModel: taskModel[index],
                                                                selectedDate: selectedDate)
         viewController?.routeTo(taskViewController)
     }
@@ -110,13 +111,12 @@ private extension ContainerPresenter {
 
     func updateViewController() {
         let calendarViewModel = fetchCalendarViewModel()
-        let taskViewModel = fetchTaskViewModel()
+        let taskViewModel = fetchTaskModel()
         let sections: [Section] = [
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
             .init(type: .newTask, rows: [.newTask]),
             .init(type: .tasks, rows: taskViewModel)
         ]
-
         viewController?.updateTableView(sections: sections)
     }
 
@@ -138,8 +138,9 @@ private extension ContainerPresenter {
         return viewModel
     }
 
-    func fetchTaskViewModel() -> [RowType] {
+    func fetchTaskModel() -> [RowType] {
         let filteredTasks = tasks.filter { $0.date == selectedDate }
+        taskModel = filteredTasks
         return filteredTasks.map { task -> RowType in
             let viewModel = ShortTaskViewModel(name: task.name,
                                                // TODO: - хелпер для перевода даты во премя
