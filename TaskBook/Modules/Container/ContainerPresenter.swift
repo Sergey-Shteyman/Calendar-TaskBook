@@ -51,6 +51,10 @@ final class ContainerPresenter {
 extension ContainerPresenter: ContainerPresenterProtocol {
 
     func viewIsReady() {
+        let taskRealmModelArray = Array(realmService.read(TaskRealmModel.self))
+        tasks = taskRealmModelArray.map({ realmModel -> TaskModel in
+            TaskModel(taskRealmModel: realmModel)
+        })
         updateViewController()
     }
 
@@ -83,6 +87,17 @@ extension ContainerPresenter: ContainerPresenterProtocol {
             tasks[index] = model
             updateViewController()
         } else {
+            let taskObject = TaskRealmModel(taskModel: model)
+            realmService.create(taskObject) { [weak self]result in
+                switch result {
+                case .success:
+                    self?.tasks.append(model)
+                    self?.updateViewController()
+                case .failure(let error):
+                    // handle error(show error allert)
+                    print(error.localizedDescription)
+                }
+            }
             tasks.append(model)
             updateViewController()
         }

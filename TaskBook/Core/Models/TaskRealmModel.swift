@@ -29,6 +29,14 @@ final class TaskRealmModel: Object {
         self.descriptionTask = descriptionTask
     }
     
+    convenience init(taskModel: TaskModel) {
+        self.init()
+        self.taskId = taskModel.id
+        self.date = taskModel.date
+        self.taskName = taskModel.name
+        self.descriptionTask = taskModel.description
+    }
+    
     override class func primaryKey() -> String? {
         return "taskId"
     }

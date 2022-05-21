@@ -9,8 +9,8 @@ import RealmSwift
 
 // MARK: - RealmServiceProtocol
 protocol RealmServiceProtocol {
-    func read<T: Object>(_ object: T, complition: @escaping (Result<Void, Error>) -> Void)
-    func create<T: Object>(_ objectType: T.Type) -> Results<T>
+    func create<T: Object>(_ object: T, complition: @escaping (Result<Void, Error>) -> Void)
+    func read<T: Object>(_ objectType: T.Type) -> Results<T>
     func update<T: Object>(_ object: T, with dictionary: [String: Any?],
                            complition: @escaping (Result<Void, Error>) -> Void)
     func delete<T: Object>(_ object: T, complition: @escaping (Result<Void, Error>) -> Void)
@@ -33,7 +33,7 @@ final class RealmService {
 // MARK: - RealmServiceProtocol Impl
 extension RealmService: RealmServiceProtocol {
     
-    func read<T: Object>(_ object: T, complition: @escaping (Result<Void, Error>) -> Void) {
+    func create<T: Object>(_ object: T, complition: @escaping (Result<Void, Error>) -> Void) {
         do {
             try realm.write {
                 realm.add(object)
@@ -45,7 +45,7 @@ extension RealmService: RealmServiceProtocol {
         }
     }
     
-    func create<T: Object>(_ objectType: T.Type) -> Results<T> {
+    func read<T: Object>(_ objectType: T.Type) -> Results<T> {
         return realm.objects(objectType)
     }
     
