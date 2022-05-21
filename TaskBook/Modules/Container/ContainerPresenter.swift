@@ -98,8 +98,6 @@ extension ContainerPresenter: ContainerPresenterProtocol {
                     print(error.localizedDescription)
                 }
             }
-            tasks.append(model)
-            updateViewController()
         }
     }
 
