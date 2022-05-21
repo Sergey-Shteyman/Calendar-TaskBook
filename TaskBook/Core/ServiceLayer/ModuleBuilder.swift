@@ -21,11 +21,13 @@ final class ModuleBuilder {
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
     private let userDefaults: UserDefaultsManagerProtocol
+    private let realmService: RealmServiceProtocol
 
     init() {
         calendarHelper = CalendarHelper()
         dateHelper = DateHelper()
         userDefaults = UserDefaultsManager()
+        realmService = RealmService()
     }
 }
 
@@ -36,7 +38,8 @@ extension ModuleBuilder: Buildable {
         let viewController = ContainerViewController()
         let presenter = ContainerPresenter(moduleBuilder: self,
                                            calendarHelper: calendarHelper,
-                                           dateHelper: dateHelper)
+                                           dateHelper: dateHelper,
+                                           realmService: realmService)
         viewController.presenter = presenter
         presenter.viewController = viewController
         return viewController

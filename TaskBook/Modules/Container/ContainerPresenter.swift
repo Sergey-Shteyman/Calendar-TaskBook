@@ -27,6 +27,7 @@ final class ContainerPresenter {
     private let moduleBuilder: Buildable
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
+    private let realmService: RealmServiceProtocol
 
     private var currentDate = Date().onlyDate
     private var selectedDate = Date().onlyDate
@@ -36,10 +37,14 @@ final class ContainerPresenter {
     private var taskModel = [TaskModel]()
 
     init(moduleBuilder: Buildable,
-         calendarHelper: CalendarHelperProtocol, dateHelper: DateHelperProtocol) {
+         calendarHelper: CalendarHelperProtocol,
+         dateHelper: DateHelperProtocol,
+         realmService: RealmServiceProtocol) {
         self.moduleBuilder = moduleBuilder
         self.calendarHelper = calendarHelper
-        self.dateHelper = dateHelper    }
+        self.dateHelper = dateHelper
+        self.realmService = realmService
+    }
 }
 
 // MARK: - ContainerPresenterProtocol Impl
@@ -47,7 +52,6 @@ extension ContainerPresenter: ContainerPresenterProtocol {
 
     func viewIsReady() {
         updateViewController()
-//        print(tasks)
     }
 
     func didTapNextMonthButton() {
@@ -66,8 +70,6 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         }
         selectedDate = date
         updateViewController()
-//        let newDate = dateHelper.formatedDate(selectedDate, DateHelperElements.dayFormateFulDate.rawValue)
-//        print(newDate)
     }
 
     func didCreateTask(model: TaskModel) {

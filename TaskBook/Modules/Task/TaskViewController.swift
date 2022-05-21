@@ -109,11 +109,7 @@ final class TaskViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        if isBeingDismissed {
-//
-//        }
         setupValidationNameTaskTextField()
-        
         presenter?.viewDidDisappear(title: titleTextField.text,
 //                                    time: containerTextField.text,
                                     description: descriptionTextView.text)

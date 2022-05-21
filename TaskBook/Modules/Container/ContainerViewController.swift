@@ -74,19 +74,25 @@ final class ContainerViewController: UIViewController {
 extension ContainerViewController: ContainerViewControllerProtocol {
 
     func updateDateLabel(with title: String) {
-        dateLabel.text = title
+        DispatchQueue.main.async {
+            self.dateLabel.text = title
+        }
     }
 
     func routeTo(_ viewController: UIViewController) {
         if let viewController = viewController as? TaskViewController {
             viewController.delegate = self
         }
-        present(viewController, animated: true)
+        DispatchQueue.main.async {
+            self.present(viewController, animated: true)
+        }
     }
 
     func updateTableView(sections: [Section]) {
         self.sections = sections
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -128,9 +134,8 @@ extension ContainerViewController: UITableViewDataSource {
         switch type {
         case .calendar(let viewModel):
             let cell = tableView.myDequeueReusableCell(type: CalendarViewCell.self, indePath: indexPath)
-            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             cell.delegate = self
-            cell.setupCellConfiguration(viewModel: viewModel)
+            cell.setupCellConfiguration(viewModel: viewModel, delegate: self)
             return cell
         case .newTask:
             let cell = tableView.myDequeueReusableCell(type: NewTaskCell.self, indePath: indexPath)
