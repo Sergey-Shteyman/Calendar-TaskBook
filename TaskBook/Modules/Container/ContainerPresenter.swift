@@ -44,6 +44,9 @@ final class ContainerPresenter {
         self.calendarHelper = calendarHelper
         self.dateHelper = dateHelper
         self.realmService = realmService
+        
+        print(currentDate)
+        print(selectedDate)
     }
 }
 
@@ -73,6 +76,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
             return
         }
         selectedDate = date
+        print(selectedDate)
         updateViewController()
     }
 
@@ -84,11 +88,28 @@ extension ContainerPresenter: ContainerPresenterProtocol {
             }
         }
         if let index = index {
-            tasks[index] = model
-            updateViewController()
+            // Логика обновления уже существующей задачи
+            let taskRealmModelArray = Array(realmService.read(TaskRealmModel.self))
+            let taskId = tasks[index].id
+            guard let taskObject = taskRealmModelArray.filter({ $0.taskId == taskId }).first else {
+                // handle error(show update error alert)
+                return
+            }
+            realmService.update(taskObject, with: ["date": model.date,
+                                                   "taskName": model.name,
+                                                   "descriptionTask": model.description]) { [weak self] result in
+                switch result {
+                case .success:
+                    self?.tasks[index] = model
+                    self?.updateViewController()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         } else {
+            // Логика сохранения задачи
             let taskObject = TaskRealmModel(taskModel: model)
-            realmService.create(taskObject) { [weak self]result in
+            realmService.create(taskObject) { [weak self] result in
                 switch result {
                 case .success:
                     self?.tasks.append(model)
@@ -116,8 +137,17 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     }
 
     func deleteTask(with index: Int) {
-        tasks.remove(at: index)
-        updateViewController()
+        let taskModel = tasks[index]
+//        let taskObject = TaskRealmModel(taskModel: taskModel)
+        realmService.delete(type: TaskRealmModel.self, primaryKey: taskModel.id) { [weak self] result in
+            switch result {
+            case .success:
+                self?.tasks.remove(at: index)
+                self?.updateViewController()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 

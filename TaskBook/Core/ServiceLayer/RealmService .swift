@@ -13,8 +13,7 @@ protocol RealmServiceProtocol {
     func read<T: Object>(_ objectType: T.Type) -> Results<T>
     func update<T: Object>(_ object: T, with dictionary: [String: Any?],
                            complition: @escaping (Result<Void, Error>) -> Void)
-    func delete<T: Object>(_ object: T, complition: @escaping (Result<Void, Error>) -> Void)
-//    func delete<T: Object>(type: T.Type, primaryKey: String, complition: @escaping (Result<Void, Error>) -> Void)
+    func delete<T: Object>(type: T.Type, primaryKey: String, complition: @escaping (Result<Void, Error>) -> Void)
 }
 
 // MARK: - RealmService
@@ -63,27 +62,17 @@ extension RealmService: RealmServiceProtocol {
         }
     }
     
-    func delete<T: Object>(_ object: T, complition: @escaping (Result<Void, Error>) -> Void) {
+    func delete<T: Object>(type: T.Type, primaryKey: String, complition: @escaping (Result<Void, Error>) -> Void) {
         do {
             try realm.write({
-                realm.delete(object)
+                guard let item = realm.object(ofType: type, forPrimaryKey: primaryKey) else {
+                    return
+                }
+                realm.delete(item)
                 complition(.success(Void()))
             })
         } catch {
             complition(.failure(error))
         }
     }
-    
-//    func delete<T: Object>(type: T.Type, primaryKey: String, complition: @escaping (Result<Void, Error>) -> Void) {
-//        do {
-//            try realm.write({
-//                guard let item = realm.object(ofType: type, forPrimaryKey: primaryKey) else {
-//                    return
-//                }
-//                realm.delete(item)
-//            })
-//        } catch {
-//            complition(.failure(error))
-//        }
-//    }
 }

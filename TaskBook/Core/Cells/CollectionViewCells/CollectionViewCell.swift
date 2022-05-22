@@ -29,18 +29,6 @@ final class CollectionViewCell: UICollectionViewCell {
 
 // MARK: - publick Methods
 extension CollectionViewCell {
-
-//    func setupCell(with dayOfMonth: CollectionViewCellViewModel, color: UIColor, isSelected: Bool) {
-//        self.dayLabel.text = dayOfMonth.value
-//        self.dayLabel.textColor = color
-//        if isSelected {
-//            setupLayer()
-//            self.backgroundColor = .systemRed
-//        } else {
-//            self.backgroundColor = .white
-//        }
-//        setupCellConfiguration()
-//    }
     
     func setupCellWith(viewModel: CollectionViewCellViewModel) {
         dayLabel.text = viewModel.value
