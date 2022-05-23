@@ -14,6 +14,7 @@ protocol RealmServiceProtocol {
     func update<T: Object>(_ object: T, with dictionary: [String: Any?],
                            complition: @escaping (Result<Void, Error>) -> Void)
     func delete<T: Object>(type: T.Type, primaryKey: String, complition: @escaping (Result<Void, Error>) -> Void)
+    func deleteAll(complition: @escaping (Result<Void, Error>) -> Void)
 }
 
 // MARK: - RealmService
@@ -69,6 +70,17 @@ extension RealmService: RealmServiceProtocol {
                     return
                 }
                 realm.delete(item)
+                complition(.success(Void()))
+            })
+        } catch {
+            complition(.failure(error))
+        }
+    }
+    
+    func deleteAll(complition: @escaping (Result<Void, Error>) -> Void) {
+        do {
+            try realm.write({
+                realm.deleteAll()
                 complition(.success(Void()))
             })
         } catch {
