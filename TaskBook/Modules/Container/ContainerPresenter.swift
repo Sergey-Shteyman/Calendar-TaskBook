@@ -169,11 +169,11 @@ private extension ContainerPresenter {
     
     func fetchSections() -> [Section] {
         let calendarViewModel = fetchCalendarViewModel()
-        let taskViewModel = fetchTaskModel()
+        let taskModel = fetchTaskModel()
         let sections: [Section] = [
             .init(type: .calendar, rows: [.calendar(viewModel: calendarViewModel)]),
             .init(type: .newTask, rows: [.newTask]),
-            .init(type: .tasks, rows: taskViewModel)
+            .init(type: .tasks, rows: taskModel)
         ]
         return sections
     }

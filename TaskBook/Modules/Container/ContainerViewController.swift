@@ -60,6 +60,8 @@ final class ContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViewController()
+        let realmService: RealmService = RealmService()
+        print(realmService.read(TaskRealmModel.self))
     }
 
     @objc func changeToPreviousMonth() {

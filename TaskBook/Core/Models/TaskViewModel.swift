@@ -29,7 +29,7 @@ struct TaskViewModel {
     init(taskModel: TaskModel) {
         id = taskModel.id
         name = taskModel.name
-        time = ""
+        time = taskModel.time
         date = ""
         description = taskModel.description
     }
