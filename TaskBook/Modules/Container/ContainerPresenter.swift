@@ -30,8 +30,8 @@ final class ContainerPresenter {
     private let realmService: RealmServiceProtocol
     private let newDate = Date()
 
-    private var currentDate = Date().onlyDate
-    private var selectedDate = Date().onlyDate
+    private var currentDate = Date().getOnlyDate()
+    private var selectedDate = Date().getOnlyDate()
     private var daysOfMonth = [Date?]()
     private var squares = [(dateString: String, isSelected: Bool)]()
     private var tasks = [TaskModel]()
@@ -45,10 +45,6 @@ final class ContainerPresenter {
         self.calendarHelper = calendarHelper
         self.dateHelper = dateHelper
         self.realmService = realmService
-        
-//        print(Date)
-        print(currentDate)
-        print(selectedDate)
     }
 }
 
@@ -77,6 +73,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
         guard let date = daysOfMonth[index] else {
             return
         }
+        
         selectedDate = date
         print(selectedDate)
         updateViewController()
@@ -224,7 +221,7 @@ private extension ContainerPresenter {
             } else {
                 let value = startElement - startingSpaces
                 let date = Calendar.current.date(byAdding: .day, value: value, to: firstDayOfMonth)
-                daysOfMonth.append(date)
+                daysOfMonth.append(date?.getOnlyDate())
             }
             startElement += 1
         }
