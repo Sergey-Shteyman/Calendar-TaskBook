@@ -18,6 +18,16 @@ final class TaskCell: UITableViewCell {
         return label
     }()
     
+    private lazy var timeLabel: UILabel = {
+        let label = UILabel()
+        label.layer.borderWidth = 2
+        label.layer.cornerRadius = 7
+        label.layer.borderColor = UIColor.systemRed.cgColor
+        label.textAlignment = .center
+        label.font = .boldSystemFont(ofSize: 17)
+        return label
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCell()
@@ -32,6 +42,7 @@ final class TaskCell: UITableViewCell {
 extension TaskCell {
     func setupCellConfiguration(_ viewModel: ShortTaskViewModel) {
         titleLabel.text = viewModel.name
+        setupTime(viewModel: viewModel)
     }
 }
 
@@ -43,8 +54,16 @@ private extension TaskCell {
         addConstraints()
     }
     
+    func setupTime(viewModel: ShortTaskViewModel) {
+        if viewModel.time == TaskElements.timeTitle {
+            timeLabel.text = "Time"
+        } else {
+            timeLabel.text = viewModel.time
+        }
+    }
+    
     func addSubViews() {
-        let arraySubViews = [titleLabel]
+        let arraySubViews = [titleLabel, timeLabel]
         myAddSubViews(from: arraySubViews)
 
     }
@@ -52,7 +71,12 @@ private extension TaskCell {
     func addConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            timeLabel.widthAnchor.constraint(equalToConstant: 55),
+            timeLabel.heightAnchor.constraint(equalToConstant: 25)
         ])
     }
 }
