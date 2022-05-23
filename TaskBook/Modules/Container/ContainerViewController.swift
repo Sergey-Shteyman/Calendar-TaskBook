@@ -12,6 +12,7 @@ protocol ContainerViewControllerProtocol: AnyObject {
     func updateDateLabel(with title: String)
     func updateTableView (sections: [Section])
     func routeTo(_ viewController: UIViewController)
+    func updateSections(sections: [Section])
 }
 
 // MARK: - ContainerViewController
@@ -94,6 +95,10 @@ extension ContainerViewController: ContainerViewControllerProtocol {
             self.tableView.reloadData()
         }
     }
+    
+    func updateSections(sections: [Section]) {
+        self.sections = sections
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -165,6 +170,7 @@ extension ContainerViewController: UITableViewDataSource {
                    commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             presenter?.deleteTask(with: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 }

@@ -11,12 +11,16 @@ extension Date {
 
     var onlyDate: Date {
         let calender = Calendar.current
-//        let nowUTC = Date().onlyDate
-//        calender.timeZone = .current.secondsFromGMT(for: nowUTC)
         var dateComponents = calender.dateComponents([.year, .month, .day], from: self)
         dateComponents.timeZone = NSTimeZone.local
         return calender.date(from: dateComponents) ?? Date()
     }
+    
+    func stripTime() -> Date {
+            let components = Calendar.current.dateComponents([.year, .month, .day], from: self)
+            let date = Calendar.current.date(from: components)
+            return date!
+        }
     
     func localDate() -> Date {
         let nowUTC = Date().onlyDate

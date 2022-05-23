@@ -28,6 +28,7 @@ final class ContainerPresenter {
     private let calendarHelper: CalendarHelperProtocol
     private let dateHelper: DateHelperProtocol
     private let realmService: RealmServiceProtocol
+    private let newDate = Date()
 
     private var currentDate = Date().onlyDate
     private var selectedDate = Date().onlyDate
@@ -45,6 +46,7 @@ final class ContainerPresenter {
         self.dateHelper = dateHelper
         self.realmService = realmService
         
+//        print(Date)
         print(currentDate)
         print(selectedDate)
     }
@@ -137,13 +139,16 @@ extension ContainerPresenter: ContainerPresenterProtocol {
     }
 
     func deleteTask(with index: Int) {
-        let taskModel = tasks[index]
-//        let taskObject = TaskRealmModel(taskModel: taskModel)
-        realmService.delete(type: TaskRealmModel.self, primaryKey: taskModel.id) { [weak self] result in
+        let model = taskModel[index]
+        realmService.delete(type: TaskRealmModel.self, primaryKey: taskModel[index].id) { [weak self] result in
             switch result {
             case .success:
-                self?.tasks.remove(at: index)
-                self?.updateViewController()
+                self?.tasks.enumerated().forEach({ index, task in
+                    if task.id == model.id {
+                        self?.tasks.remove(at: index)
+                    }
+                })
+                self?.updateSections()
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -153,8 +158,18 @@ extension ContainerPresenter: ContainerPresenterProtocol {
 
 // MARK: - Private Methods
 private extension ContainerPresenter {
+    
+    func updateSections() {
+        let sections = fetchSections()
+        viewController?.updateSections(sections: sections)
+    }
 
     func updateViewController() {
+        let sections = fetchSections()
+        viewController?.updateTableView(sections: sections)
+    }
+    
+    func fetchSections() -> [Section] {
         let calendarViewModel = fetchCalendarViewModel()
         let taskViewModel = fetchTaskModel()
         let sections: [Section] = [
@@ -162,7 +177,7 @@ private extension ContainerPresenter {
             .init(type: .newTask, rows: [.newTask]),
             .init(type: .tasks, rows: taskViewModel)
         ]
-        viewController?.updateTableView(sections: sections)
+        return sections
     }
 
     func fetchCalendarViewModel() -> CalendarViewModel {
