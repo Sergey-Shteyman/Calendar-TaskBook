@@ -17,7 +17,7 @@ protocol TaskPresenterProtocol: AnyObject {
     func fetchStringTime(_ localeId: String, _ date: Date)
     func passedModel()
     func viewDidDisappear(title: String?,
-//                          time: String?,
+                          time: String?,
                           description: String?)
 }
 
@@ -79,12 +79,12 @@ extension TaskPresenter: TaskPresenterProtocol {
     }
     
     func viewDidDisappear(title: String?,
-//                          time: String?,
+                          time: String?,
                           description: String?) {
         if var  taskModel = taskModel {
             taskModel.name = title ?? ""
             taskModel.description = description ?? ""
-//            taskModel.time = time ?? ""
+            taskModel.time = time ?? ""
             viewController?.callDelagate(model: taskModel)
             return
         }
@@ -92,6 +92,7 @@ extension TaskPresenter: TaskPresenterProtocol {
         let model = TaskModel(id: id,
                               date: selectedDate,
                               name: title ?? "",
+                              time: time ?? "",
                               description: description ?? "")
         viewController?.callDelagate(model: model)
     }

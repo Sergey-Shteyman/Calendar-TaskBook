@@ -96,6 +96,7 @@ extension ContainerPresenter: ContainerPresenterProtocol {
             }
             realmService.update(taskObject, with: ["date": model.date,
                                                    "taskName": model.name,
+                                                   "taskTime": model.time,
                                                    "descriptionTask": model.description]) { [weak self] result in
                 switch result {
                 case .success:
@@ -200,8 +201,7 @@ private extension ContainerPresenter {
         taskModel = filteredTasks
         return filteredTasks.map { task -> RowType in
             let viewModel = ShortTaskViewModel(name: task.name,
-                                               // TODO: - хелпер для перевода даты во премя
-                                               time: "")
+                                               time: task.time)
             let item = RowType.task(viewModel: viewModel)
             return item
         }

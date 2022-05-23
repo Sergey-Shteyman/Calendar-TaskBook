@@ -29,7 +29,6 @@ struct TaskViewModel {
     init(taskModel: TaskModel) {
         id = taskModel.id
         name = taskModel.name
-        // TODO: - тут я буду использовать хелпер 
         time = ""
         date = ""
         description = taskModel.description

@@ -111,7 +111,7 @@ final class TaskViewController: UIViewController {
         super.viewDidDisappear(animated)
         setupValidationNameTaskTextField()
         presenter?.viewDidDisappear(title: titleTextField.text,
-//                                    time: containerTextField.text,
+                                    time: containerTextField.text,
                                     description: descriptionTextView.text)
     }
 
@@ -145,7 +145,7 @@ extension TaskViewController: TaskViewControllerProtocol {
     
     func update(model: TaskModel) {
         titleTextField.text = model.name
-//        containerTextField.text = model.time
+        containerTextField.text = model.time
         descriptionTextView.text = model.description
     }
     

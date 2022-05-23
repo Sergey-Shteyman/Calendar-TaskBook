@@ -13,19 +13,19 @@ final class TaskRealmModel: Object {
     @objc dynamic var taskId = ""
     @objc dynamic var date = Date()
     @objc dynamic var taskName = ""
-//    @objc dynamic var taskTime = ""
+    @objc dynamic var taskTime = ""
     @objc dynamic var descriptionTask = ""
     
     convenience init(taskId: String,
                      date: Date,
                      taskName: String,
-//                     taskTime: String,
+                     taskTime: String,
                      descriptionTask: String) {
         self.init()
         self.taskId = taskId
         self.date = date
         self.taskName = taskName
-//        self.taskTime = taskTime
+        self.taskTime = taskTime
         self.descriptionTask = descriptionTask
     }
     
@@ -34,6 +34,7 @@ final class TaskRealmModel: Object {
         self.taskId = taskModel.id
         self.date = taskModel.date
         self.taskName = taskModel.name
+        self.taskTime = taskModel.time
         self.descriptionTask = taskModel.description
     }
     

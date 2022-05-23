@@ -19,7 +19,6 @@ struct ShortTaskViewModel {
     
     init(taskModel: TaskModel) {
         name = taskModel.name
-        // TODO: - тут я буду использовать хелпер
-        time = ""
+        time = taskModel.time
     }
 }
