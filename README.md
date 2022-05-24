@@ -5,9 +5,10 @@
 # Функционал
 
 В приложении присутствует 2 экрана - список дел с календарем, подробное описание дела.
-<!-- <img src="[drawing.jpg](https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Снимок%20экрана%202022-05-24%20в%2017.23.26.png)" alt="drawing" width="200"/> -->
 
-<!-- <img src="(https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Снимок%20экрана%202022-05-24%20в%2017.23.10.png)" width="200" height="200" /> -->
+ Calendar             |  Task
+:-------------------------:|:-------------------------:
+<img src=https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Calendar.png width="300" height="650">  |  <img src=https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Task.png width="300" height="650"> 
 
 **Список дел с календарем -** экран на котором присутствует возможность выбрать один день, после выбора дня в конце экрана должна обновиться секция с делами
 
@@ -17,7 +18,7 @@
 
  + Для контроля качества и чистоты кода использовал утилиту SwiftLint
  + Использовал сервисного слоя для подготовки данных
- + Приложение написано на архитектуре MVP
+ + Приложение написано на архитектуре MVC
  + Ориентация - портретная
  + Для локального хранения использовал Realm
  + Cocoa Pods
@@ -32,11 +33,29 @@
 
 ### Приложение находится на стадии разработки. Каждый день стараюсь привнести, что-то новое, добавить технологию, отладить работу. Спасибо за понимание!
 
-# Скриншоты 
-![Calendar](https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Снимок%20экрана%202022-05-24%20в%2017.23.10.png)
+# Скриншоты работы приложения
 
-![NewTask](https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Снимок%20экрана%202022-05-24%20в%2017.36.45.png)
 
-![Task](https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Снимок%20экрана%202022-05-24%20в%2017.23.26.png)
+<h3><p align="center"> Если Задача не была заполненна, она создается с дефолтными значениями.</p></h3>
 
-![KeyboardLayout](https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Снимок%20экрана%202022-05-24%20в%2017.23.39.png)
+<p align="center"> <img src=https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/CalendarWithTasks.png width="300" height="650"></p>
+
+
+<h3><p align="center"> Демонастрация выбора пользователем времени</p></h3>
+
+<p align="center"><img src=https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/DataPicker.png width="300" height="650"></p>
+
+
+<h3><p align="center"> Полностью заполенная задача</p></h3>
+
+<p align="center"> <img src=https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/Description.png width="300" height="650"></p>
+
+
+<h3><p align="center"> Фильтрация по дням. </p></h3>
+
+<p align="center"> <img src=https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/FiltrationByDay.png width="300" height="650"> </p>
+
+
+<h3><p align="center"> Демонстрация работы адаптивных констрейнов(На данный момент дорабатывается) </p></h3>
+
+<p align="center"> <img src=https://github.com/Sergey-Shteyman/Calendar-TaskBook/blob/main/Screenshots/AdaptiveConstraints.png width="300" height="650"> </p>
