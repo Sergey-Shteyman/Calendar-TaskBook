@@ -1,0 +1,18 @@
+Target dependency graph (7 targets)
+Alamofire in Pods, no dependencies
+Realm in Pods, no dependencies
+RealmSwift in Pods, depends on:
+Realm in Pods (explicit)
+SwiftLint in Pods, no dependencies
+Pods-TaskBook in Pods, depends on:
+Alamofire in Pods (explicit)
+Realm in Pods (explicit)
+RealmSwift in Pods (explicit)
+SwiftLint in Pods (explicit)
+Pods-TaskBook-TaskBookUITests in Pods, depends on:
+Alamofire in Pods (explicit)
+Realm in Pods (explicit)
+RealmSwift in Pods (explicit)
+SwiftLint in Pods (explicit)
+Pods-TaskBookTests in Pods, depends on:
+Pods-TaskBook in Pods (explicit)
