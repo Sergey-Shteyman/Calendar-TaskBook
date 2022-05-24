@@ -15,14 +15,15 @@ enum TaskViewControllerState {
 
 // MARK: - TaskViewControllerDelegate
 protocol TaskViewControllerDelegate: AnyObject {
-    func didCreateTask(viewModel: TaskViewModel)
+    func didCreateTask(model: TaskModel)
 }
 
 // MARK: - TaskViewControllerProtocol
 protocol TaskViewControllerProtocol: AnyObject {
     func becomeResponder()
-    func update(viewModel: TaskViewModel)
-    func callDelagate(viewModel: TaskViewModel)
+    func update(model: TaskModel)
+    func callDelagate(model: TaskModel)
+    func showTime(with stringTime: String)
 }
 
 // MARK: - TaskViewController
@@ -92,10 +93,6 @@ final class TaskViewController: UIViewController {
         textView.backgroundColor = .systemGray6
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 20
-        textView.textColor = .systemRed
-        textView.font = .boldSystemFont(ofSize: 30)
-        textView.textAlignment = .center
-        textView.text = descriptionTitle
         textView.delegate = self
         return textView
     }()
@@ -112,10 +109,10 @@ final class TaskViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        if isBeingDismissed {
-            print(#function)
-        }
-        presenter?.viewDidDisappear(title: titleTextField.text, description: descriptionTextView.text)
+        setupValidationNameTaskTextField()
+        presenter?.viewDidDisappear(title: titleTextField.text,
+                                    time: containerTextField.text,
+                                    description: descriptionTextView.text)
     }
 
     @objc func doneAction() {
@@ -123,8 +120,7 @@ final class TaskViewController: UIViewController {
     }
     
     @objc func stringTime() {
-        let stringTime = presenter?.fetchStringTime(localeId, datePicker.date)
-        containerTextField.text = stringTime
+        presenter?.fetchStringTime(localeId, datePicker.date)
     }
 }
 
@@ -139,17 +135,22 @@ extension TaskViewController {
 // MARK: - TaskViewControllerProtocol Impl
 extension TaskViewController: TaskViewControllerProtocol {
     
+    func showTime(with stringTime: String) {
+        containerTextField.text = stringTime
+    }
+    
     func becomeResponder() {
         titleTextField.becomeFirstResponder()
     }
     
-    func update(viewModel: TaskViewModel) {
-        titleTextField.text = viewModel.nameTask
-        descriptionTextView.text = viewModel.description
+    func update(model: TaskModel) {
+        titleTextField.text = model.name
+        containerTextField.text = model.time
+        descriptionTextView.text = model.description
     }
     
-    func callDelagate(viewModel: TaskViewModel) {
-        delegate?.didCreateTask(viewModel: viewModel)
+    func callDelagate(model: TaskModel) {
+        delegate?.didCreateTask(model: model)
     }
 }
 
@@ -199,6 +200,7 @@ private extension TaskViewController {
         view.addTapGestureToHideKeyboard()
         inputViewDataPicker()
         setupDoneButtonForDataPicker()
+        configurationDescriptionTextView()
         addSubViews()
         addConstraints()
     }
@@ -206,9 +208,23 @@ private extension TaskViewController {
     func prepareScreenWithState() {
         switch screenState {
         case .create:
-            break
+            titleTextField.becomeFirstResponder()
         case .read:
             presenter?.passedModel()
+            configurationDescriptionTextView()
+        }
+    }
+    
+    func configurationDescriptionTextView() {
+        if descriptionTextView.text.isEmpty || descriptionTextView.text == descriptionTitle {
+            descriptionTextView.textColor = .systemRed
+            descriptionTextView.font = .boldSystemFont(ofSize: 30)
+            descriptionTextView.textAlignment = .center
+            descriptionTextView.text = descriptionTitle
+        } else {
+            descriptionTextView.textColor = .black
+            descriptionTextView.font = .boldSystemFont(ofSize: 20)
+            descriptionTextView.textAlignment = .left
         }
     }
     
@@ -224,6 +240,15 @@ private extension TaskViewController {
     
     func inputViewDataPicker() {
         containerTextField.inputView = datePicker
+    }
+    
+    func setupValidationNameTaskTextField() {
+        guard let text = titleTextField.text else {
+            return
+        }
+        if text.isEmpty {
+            titleTextField.text = placeholderTitle
+        }
     }
     
     func setupDoneButtonForDataPicker() {

@@ -55,8 +55,9 @@ final class CalendarViewCell: UITableViewCell {
 // MARK: - Public Methods
 extension CalendarViewCell {
     
-    func setupCellConfiguration(viewModel: CalendarViewModel) {
+    func setupCellConfiguration(viewModel: CalendarViewModel, delegate: CalendarViewCellDelegate) {
         totalSquares = viewModel.squares
+        self.delegate = delegate
         collectionView.reloadData()
     }
 }
@@ -103,6 +104,7 @@ extension CalendarViewCell: UICollectionViewDelegateFlowLayout {
 private extension CalendarViewCell {
 
     func setupCell() {
+        selectionStyle = .none
         addSubViews()
         addDaysToStackView()
         addConstraints()
