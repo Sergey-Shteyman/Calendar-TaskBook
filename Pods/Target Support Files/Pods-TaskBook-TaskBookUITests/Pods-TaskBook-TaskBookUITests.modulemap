@@ -1,6 +1,0 @@
-framework module Pods_TaskBook_TaskBookUITests {
-  umbrella header "Pods-TaskBook-TaskBookUITests-umbrella.h"
-
-  export *
-  module * { export * }
-}
