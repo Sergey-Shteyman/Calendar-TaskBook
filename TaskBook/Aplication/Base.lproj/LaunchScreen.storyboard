@@ -15,18 +15,41 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" T A S K  B O O K" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBx-3H-b6I">
+                                <rect key="frame" x="0.0" y="436.5" width="414" height="23"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" text="S E R G E Y   S H T E Y M A N" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="294" translatesAutoresizingMaskIntoConstraints="NO" id="TQx-9u-aDU">
+                                <rect key="frame" x="0.0" y="412.5" width="414" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <color key="tintColor" systemColor="systemGray6Color"/>
+                        <constraints>
+                            <constraint firstItem="TQx-9u-aDU" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Afz-Zi-XFQ"/>
+                            <constraint firstItem="VBx-3H-b6I" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Auq-LK-rgQ"/>
+                            <constraint firstItem="VBx-3H-b6I" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="JPz-DS-BdU"/>
+                            <constraint firstItem="VBx-3H-b6I" firstAttribute="top" secondItem="TQx-9u-aDU" secondAttribute="bottom" constant="8" id="STz-hm-F0S"/>
+                            <constraint firstAttribute="trailing" secondItem="VBx-3H-b6I" secondAttribute="trailing" id="eFn-OI-hxv"/>
+                            <constraint firstItem="TQx-9u-aDU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fkZ-cS-xnh"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
