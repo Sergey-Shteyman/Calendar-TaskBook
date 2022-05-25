@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 // MARK: - TaskViewControllerState
 enum TaskViewControllerState {
@@ -33,6 +34,9 @@ final class TaskViewController: UIViewController {
     weak var delegate: TaskViewControllerDelegate?
     
     private var screenState: TaskViewControllerState = .create
+    private var bottomConstraint: NSLayoutConstraint?
+    private var bottomKeyboardConstraint: NSLayoutConstraint?
+    private var constraint: NSLayoutConstraint?
     
     private let localeId = DateHelperElements.localeIdentifireRU.rawValue
     private let placeholderTitle = TaskElements.placeholderTitle
@@ -94,6 +98,7 @@ final class TaskViewController: UIViewController {
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 20
         textView.delegate = self
+        textView.autocorrectionType = .no
         return textView
     }()
  
@@ -104,22 +109,26 @@ final class TaskViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addObservesForKeyBoard()
         prepareScreenWithState()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        removeObservesForKeyBoard()
         setupValidationNameTaskTextField()
         presenter?.viewDidDisappear(title: titleTextField.text,
                                     time: containerTextField.text,
                                     description: descriptionTextView.text)
     }
 
-    @objc func doneAction() {
+    @objc
+    private func doneAction() {
         containerTextField.resignFirstResponder()
     }
     
-    @objc func stringTime() {
+    @objc
+    private func stringTime() {
         presenter?.fetchStringTime(localeId, datePicker.date)
     }
 }
@@ -271,13 +280,14 @@ private extension TaskViewController {
     }
     
     func addConstraints() {
+
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: view.topAnchor),
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             label.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: 100),
             
-            titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 70),
+            titleTextField.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor, constant: 70),
             titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             
@@ -286,10 +296,119 @@ private extension TaskViewController {
             containerTextField.widthAnchor.constraint(equalToConstant: 120),
             containerTextField.heightAnchor.constraint(equalToConstant: 80),
             
-            descriptionTextView.topAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -200),
+            descriptionTextView.topAnchor.constraint(greaterThanOrEqualTo: containerTextField.bottomAnchor, constant: 16),
             descriptionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             descriptionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
+            descriptionTextView.heightAnchor.constraint(equalToConstant: 200)
         ])
+        
+        if #available(iOS 15.0, *) {
+            bottomConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
+            constraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        } else {
+            bottomConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        }
+        
+        bottomConstraint?.isActive = true
+        
+//        if #available(iOS 15.0, *) {
+//            descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
+//        } else {
+//            if let bottomConstraint = self.bottomConstraint {
+//            }
+//        }
+    }
+    
+    func addObservesForKeyBoard() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    func removeObservesForKeyBoard() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillShowNotification,
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillHideNotification,
+                                                  object: nil)
+    }
+    
+    @objc
+    private func keyboardWillShow(_ notification: Notification) {
+        if #available(iOS 15.0, *) {
+            guard titleTextField.isFirstResponder else {
+                return
+            }
+            guard let bottomConstraint = self.bottomConstraint,
+                  let constraint = self.constraint else {
+                return
+            }
+            NSLayoutConstraint.deactivate([
+                bottomConstraint
+            ])
+            NSLayoutConstraint.activate([
+                constraint
+            ])
+        } else {
+            if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+                let keyboardHight = keyboardSize.height
+                bottomKeyboardConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                                                       constant: -keyboardHight - 25)
+                guard descriptionTextView.isFirstResponder else {
+                    return
+                }
+                guard let bottomConstraint = self.bottomConstraint,
+                      let bottomKeyboardConstraint = self.bottomKeyboardConstraint else {
+                    return
+                }
+                NSLayoutConstraint.deactivate([
+                    bottomConstraint
+                ])
+                NSLayoutConstraint.activate([
+                    bottomKeyboardConstraint
+                ])
+                view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc
+    private func keyboardWillHide() {
+        if #available(iOS 15.0, *) {
+            guard titleTextField.isFirstResponder else {
+                return
+            }
+            guard let bottomConstraint = self.bottomConstraint,
+                  let constraint = self.constraint else {
+                return
+            }
+            NSLayoutConstraint.deactivate([
+                constraint
+            ])
+            NSLayoutConstraint.activate([
+                bottomConstraint
+            ])
+        } else {
+            guard descriptionTextView.isFirstResponder else {
+                return
+            }
+            guard let bottomConstraint = self.bottomConstraint,
+                  let bottomKeyboardConstraint = self.bottomKeyboardConstraint else {
+                return
+            }
+            NSLayoutConstraint.deactivate([
+                bottomKeyboardConstraint
+            ])
+            NSLayoutConstraint.activate([
+                bottomConstraint
+            ])
+            view.layoutIfNeeded()
+        }
     }
 }
