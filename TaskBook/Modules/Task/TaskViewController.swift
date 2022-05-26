@@ -34,9 +34,9 @@ final class TaskViewController: UIViewController {
     weak var delegate: TaskViewControllerDelegate?
     
     private var screenState: TaskViewControllerState = .create
-    private var bottomConstraint: NSLayoutConstraint?
+    private var topKeyboardConstraint: NSLayoutConstraint?
     private var bottomKeyboardConstraint: NSLayoutConstraint?
-    private var constraint: NSLayoutConstraint?
+    private var bottomViewConstraint: NSLayoutConstraint?
     
     private let localeId = DateHelperElements.localeIdentifireRU.rawValue
     private let placeholderTitle = TaskElements.placeholderTitle
@@ -98,7 +98,7 @@ final class TaskViewController: UIViewController {
         textView.layer.borderWidth = 1
         textView.layer.cornerRadius = 20
         textView.delegate = self
-        textView.autocorrectionType = .no
+        textView.autocorrectionType = .yes
         return textView
     }()
  
@@ -303,20 +303,13 @@ private extension TaskViewController {
         ])
         
         if #available(iOS 15.0, *) {
-            bottomConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
-            constraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            topKeyboardConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
+            bottomViewConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         } else {
-            bottomConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            topKeyboardConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         }
-        
-        bottomConstraint?.isActive = true
-        
-//        if #available(iOS 15.0, *) {
-//            descriptionTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
-//        } else {
-//            if let bottomConstraint = self.bottomConstraint {
-//            }
-//        }
+        topKeyboardConstraint?.isActive = true
+        view.layoutIfNeeded()
     }
     
     func addObservesForKeyBoard() {
@@ -340,75 +333,41 @@ private extension TaskViewController {
     }
     
     @objc
-    private func keyboardWillShow(_ notification: Notification) {
+    func keyboardWillShow(_ notification: Notification) {
         if #available(iOS 15.0, *) {
             guard titleTextField.isFirstResponder else {
                 return
             }
-            guard let bottomConstraint = self.bottomConstraint,
-                  let constraint = self.constraint else {
-                return
-            }
-            NSLayoutConstraint.deactivate([
-                bottomConstraint
-            ])
-            NSLayoutConstraint.activate([
-                constraint
-            ])
+            updateConstraints(deactivateConstraint: topKeyboardConstraint,
+                              activateConstraint: bottomViewConstraint)
         } else {
             if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
                 let keyboardHight = keyboardSize.height
                 bottomKeyboardConstraint = descriptionTextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                                                       constant: -keyboardHight - 25)
+                                                                                       constant: -keyboardHight)
                 guard descriptionTextView.isFirstResponder else {
                     return
                 }
-                guard let bottomConstraint = self.bottomConstraint,
-                      let bottomKeyboardConstraint = self.bottomKeyboardConstraint else {
-                    return
-                }
-                NSLayoutConstraint.deactivate([
-                    bottomConstraint
-                ])
-                NSLayoutConstraint.activate([
-                    bottomKeyboardConstraint
-                ])
-                view.layoutIfNeeded()
+                updateConstraints(deactivateConstraint: topKeyboardConstraint,
+                                  activateConstraint: bottomKeyboardConstraint)
             }
         }
     }
     
     @objc
-    private func keyboardWillHide() {
+    func keyboardWillHide() {
         if #available(iOS 15.0, *) {
             guard titleTextField.isFirstResponder else {
                 return
             }
-            guard let bottomConstraint = self.bottomConstraint,
-                  let constraint = self.constraint else {
-                return
-            }
-            NSLayoutConstraint.deactivate([
-                constraint
-            ])
-            NSLayoutConstraint.activate([
-                bottomConstraint
-            ])
+            updateConstraints(deactivateConstraint: bottomViewConstraint,
+                              activateConstraint: topKeyboardConstraint)
         } else {
             guard descriptionTextView.isFirstResponder else {
                 return
             }
-            guard let bottomConstraint = self.bottomConstraint,
-                  let bottomKeyboardConstraint = self.bottomKeyboardConstraint else {
-                return
-            }
-            NSLayoutConstraint.deactivate([
-                bottomKeyboardConstraint
-            ])
-            NSLayoutConstraint.activate([
-                bottomConstraint
-            ])
-            view.layoutIfNeeded()
+            updateConstraints(deactivateConstraint: bottomKeyboardConstraint,
+                              activateConstraint: topKeyboardConstraint)
         }
     }
 }

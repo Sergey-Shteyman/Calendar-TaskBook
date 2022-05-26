@@ -14,6 +14,7 @@
 		5E25E5BB2835534A0077498B /* TaskRealmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5BA2835534A0077498B /* TaskRealmModel.swift */; };
 		5E25E5BD28362EF30077498B /* TaskModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5BC28362EF30077498B /* TaskModel.swift */; };
 		5E25E5BF2838468A0077498B /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5BE2838468A0077498B /* Date.swift */; };
+		5E25E5C2283F6F910077498B /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E25E5C1283F6F910077498B /* UIViewController.swift */; };
 		5E4E97EB280F1C6500ED5D15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */; };
 		5E4E97ED280F1C6500ED5D15 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */; };
 		5E4E97EF280F1C6500ED5D15 /* CalendarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4E97EE280F1C6500ED5D15 /* CalendarViewCell.swift */; };
@@ -79,6 +80,7 @@
 		5E25E5BA2835534A0077498B /* TaskRealmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRealmModel.swift; sourceTree = "<group>"; };
 		5E25E5BC28362EF30077498B /* TaskModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskModel.swift; sourceTree = "<group>"; };
 		5E25E5BE2838468A0077498B /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		5E25E5C1283F6F910077498B /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		5E4E97E7280F1C6500ED5D15 /* TaskBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E4E97EA280F1C6500ED5D15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E4E97EC280F1C6500ED5D15 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				5E83E7FA281296BE00160AA8 /* UICollectionView.swift */,
 				5E83E7FC281296CC00160AA8 /* UICollectionViewCell.swift */,
 				5E25E5BE2838468A0077498B /* Date.swift */,
+				5E25E5C1283F6F910077498B /* UIViewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				5E25E5B32826F3720077498B /* TaskElements.swift in Sources */,
 				5E99A83A2821391D00676A2A /* TaskPresenter.swift in Sources */,
 				5E83E7FB281296BE00160AA8 /* UICollectionView.swift in Sources */,
+				5E25E5C2283F6F910077498B /* UIViewController.swift in Sources */,
 				5E99A81A2817DFA800676A2A /* ContainerViewController.swift in Sources */,
 				5E99A8382821390800676A2A /* TaskViewController.swift in Sources */,
 				5E99A827281AAA6500676A2A /* CalendarViewModel.swift in Sources */,
