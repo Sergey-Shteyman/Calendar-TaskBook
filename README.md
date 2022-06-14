@@ -25,9 +25,8 @@
 
 # Быстрый старт
 
- + pod 'SwiftLint' 
- + pod 'Alamofire'
- + pod 'RealmSwift'
+ + git clone https://github.com/Sergey-Shteyman/Calendar-TaskBook
+ + pod install
 
 # P.S.
 
